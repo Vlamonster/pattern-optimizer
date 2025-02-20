@@ -80,7 +80,7 @@ local function optimize()
           for i, v in ipairs(response.outputs) do
             log("id: " .. v.id .. ", amount: " .. tostring(v.amount) .. ", meta: " .. tostring(v.meta) .. ", nbt = '" .. v.nbt .. "'")
             database.set(i + 9, v.id, v.meta, v.nbt)
-            interface.setInterfacePatternOutput(slot, database.address,i+9, v.amount, i)
+            interface.setInterfacePatternOutput(slot, database.address, i + 9, v.amount, i)
             database.clear(i + 9)
           end
           log("--------------------")
