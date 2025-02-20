@@ -50,7 +50,8 @@ local machines = {
     ["blackhole"] = { id = "Pseudostable Black Hole Containment Field", recipes = { "Neutronium Compressor", "Compressor" }, energyUsage = 64 * UMV, maximumOverclockTier = 12 },
     ["electrolyzer"] = { id = "Industrial Electrolyzer", recipes = { "Multiblock Electrolyzer" }, energyUsage = 4 * UMV },
     ["dehydrator"] = { id = "Utupu-Tanuri", recipes = { "Multiblock Dehydrator" }, energyUsage = 4 * UEV },
-    ["implosion"] = { id = "Electric Implosion Compressor", recipes = { "Implosion Compressor" }, energyUsage = 64 * UMV, tier = 4 }
+    ["implosion"] = { id = "Electric Implosion Compressor", recipes = { "Implosion Compressor" }, energyUsage = 64 * UMV, tier = 4 },
+    ["chembath"] = { id = "Ore Washing Plant", recipes = { "Chemical Bath" }, energyUsage = 4 * UMV },
 }
 
 return machines

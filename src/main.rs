@@ -14,8 +14,9 @@ fn main() -> Result<(), std::io::Error> {
     let listener = TcpListener::bind("0.0.0.0:3939")?;
     println!("Server listening on port 3939");
 
-    let recipes =
-        Arc::new(serde_json::from_str::<RecipeDatabase>(include_str!("resources/recipes.json")).unwrap());
+    let recipes = Arc::new(
+        serde_json::from_str::<RecipeDatabase>(include_str!("resources/recipes.json")).unwrap(),
+    );
 
     for stream in listener.incoming() {
         match stream {

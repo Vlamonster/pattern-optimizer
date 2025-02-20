@@ -39,7 +39,7 @@ local function optimize()
     -- Set up connection to optimization server
     local host = "vlamonster.duckdns.org"
     local port = 3939
-    local socket = internet.open(host, port)
+    local socket repeat socket = internet.open(host, port) until socket
 
     if not machines[args.machine] then
         print("Machine '" .. args.machine .. "' not found in machines.lua. Use `optimize list` to view available machines")
@@ -65,7 +65,8 @@ local function optimize()
           database.clear(i)
         end
         socket:write(json.encode(msg))
-        local response = json.decode(socket:read())
+        local response repeat response = socket:read() until response
+        response = json.decode(response)
         if response.error then
           print(response.error)
         else

@@ -19,6 +19,7 @@ mod large_fluid_extractor;
 mod mega_alloy_blast_smelter;
 mod mega_blast_furnace;
 mod mega_vacuum_freezer;
+mod ore_washing_plant;
 mod precise_auto_assembler_mt_3662;
 mod pseudostable_black_hole_containment_field;
 mod utupu_tanuri;
@@ -26,6 +27,7 @@ mod vacuum_freezer;
 mod volcanus;
 
 use crate::machines::mega_alloy_blast_smelter::MegaAlloyBlastSmelter;
+use crate::machines::ore_washing_plant::OreWashingPlant;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
@@ -89,6 +91,7 @@ pub fn get_advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Re
         "Industrial Electrolyzer" => IndustrialElectrolyzer,
         "Utupu-Tanuri" => UtupuTanuri,
         "Electric Implosion Compressor" => ElectricImplosionCompressor,
+        "Ore Washing Plant" => OreWashingPlant,
     })
 }
 
