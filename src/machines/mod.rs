@@ -18,6 +18,7 @@ mod industrial_wire_factory;
 mod large_fluid_extractor;
 mod mega_alloy_blast_smelter;
 mod mega_blast_furnace;
+mod mega_chemical_reactor;
 mod mega_vacuum_freezer;
 mod ore_washing_plant;
 mod precise_auto_assembler_mt_3662;
@@ -26,8 +27,6 @@ mod utupu_tanuri;
 mod vacuum_freezer;
 mod volcanus;
 
-use crate::machines::mega_alloy_blast_smelter::MegaAlloyBlastSmelter;
-use crate::machines::ore_washing_plant::OreWashingPlant;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
@@ -47,8 +46,11 @@ use industrial_mixing_machine::IndustrialMixingMachine;
 use industrial_sledgehammer::IndustrialSledgehammer;
 use industrial_wire_factory::IndustrialWireFactory;
 use large_fluid_extractor::LargeFluidExtractor;
+use mega_alloy_blast_smelter::MegaAlloyBlastSmelter;
 use mega_blast_furnace::MegaBlastFurnace;
+use mega_chemical_reactor::MegaChemicalReactor;
 use mega_vacuum_freezer::MegaVacuumFreezer;
+use ore_washing_plant::OreWashingPlant;
 use precise_auto_assembler_mt_3662::PreciseAutoAssemblerMT3662;
 use pseudostable_black_hole_containment_field::PseudostableBlackHoleContainmentField;
 use utupu_tanuri::UtupuTanuri;
@@ -92,6 +94,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Utupu-Tanuri" => UtupuTanuri,
         "Electric Implosion Compressor" => ElectricImplosionCompressor,
         "Ore Washing Plant" => OreWashingPlant,
+        "Mega Chemical Reactor" => MegaChemicalReactor,
     })
 }
 
