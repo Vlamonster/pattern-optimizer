@@ -65,6 +65,7 @@ local function optimize()
           database.clear(i)
         end
         socket:write(json.encode(msg))
+        socket:flush()
         local response repeat response = socket:read() until response
         response = json.decode(response)
         if response.error then
