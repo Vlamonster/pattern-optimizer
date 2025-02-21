@@ -1,6 +1,7 @@
 use crate::model::Recipe;
 use serde::Serialize;
 use std::collections::HashMap;
+use std::iter::once;
 
 /// Represents the optimized processing plan returned by the server.
 ///
@@ -31,11 +32,28 @@ pub struct AdvisedItem {
 pub fn advise(
     meta_map: &HashMap<String, u64>,
     recipe: &Recipe,
-    advised_batch_size: u64,
+    advised_batch: u64,
 ) -> OptimizedPattern {
+    let max_factor = recipe
+        .item_inputs
+        .iter()
+        .chain(recipe.item_outputs.iter())
+        .map(|item| item.amount)
+        .chain(
+            recipe
+                .fluid_inputs
+                .iter()
+                .chain(recipe.fluid_outputs.iter())
+                .map(|fluid| fluid.amount),
+        )
+        .map(|amount| i32::MAX as u64 / u64::max(amount, 1))
+        .chain(once(advised_batch))
+        .min()
+        .unwrap();
+
     let item_inputs = recipe.item_inputs.iter().map(|item| AdvisedItem {
         id: item.id.clone().unwrap(),
-        amount: u64::max(item.amount * advised_batch_size, 1),
+        amount: u64::max(item.amount * max_factor, 1),
         meta: *meta_map
             .get(&item.id.clone().unwrap())
             .unwrap_or(&item.meta),
@@ -44,21 +62,21 @@ pub fn advise(
 
     let fluid_inputs = recipe.fluid_inputs.iter().map(|fluid| AdvisedItem {
         id: "ae2fc:fluid_drop".to_string(),
-        amount: fluid.amount * advised_batch_size,
+        amount: fluid.amount * max_factor,
         meta: 0,
         nbt: format!("{{Fluid: \"{}\"}}", fluid.id),
     });
 
     let item_outputs = recipe.item_outputs.iter().map(|item| AdvisedItem {
         id: item.id.clone().unwrap(),
-        amount: u64::max(item.amount * advised_batch_size, 1),
+        amount: u64::max(item.amount * max_factor, 1),
         meta: item.meta,
         nbt: item.nbt.clone().unwrap_or_default(),
     });
 
     let fluid_outputs = recipe.fluid_outputs.iter().map(|fluid| AdvisedItem {
         id: "ae2fc:fluid_drop".to_string(),
-        amount: fluid.amount * advised_batch_size,
+        amount: fluid.amount * max_factor,
         meta: 0,
         nbt: format!("{{Fluid: \"{}\"}}", fluid.id),
     });

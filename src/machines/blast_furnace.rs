@@ -5,7 +5,7 @@ use crate::optimization_request::MachineConfiguration;
 pub struct BlastFurnace();
 
 impl Overclock for BlastFurnace {
-    fn get_energy_modifier(
+    fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
         recipe: &Recipe,
@@ -17,7 +17,7 @@ impl Overclock for BlastFurnace {
         energy_modifier * f64::powi(0.95, discounts as i32)
     }
 
-    fn get_perfect_overclocks(
+    fn perfect_overclocks(
         &self,
         machine: &MachineConfiguration,
         recipe: &Recipe,

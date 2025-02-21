@@ -8,7 +8,7 @@ impl Overclock for LargeFluidExtractor {
     const SPEED_MODIFIER: f64 = 1.50;
     const ENERGY_MODIFIER: f64 = 0.80;
 
-    fn get_max_parallels(
+    fn max_parallels(
         &self,
         _parallels_offset: u64,
         _parallels_per_tier: u64,
@@ -18,11 +18,11 @@ impl Overclock for LargeFluidExtractor {
         8 * machine.solenoid_tier
     }
 
-    fn get_speed_modifier(&self, machine: &MachineConfiguration, speed_modifier: f64) -> f64 {
+    fn speed_modifier(&self, machine: &MachineConfiguration, speed_modifier: f64) -> f64 {
         speed_modifier + 0.10 * machine.coil_tier as f64
     }
 
-    fn get_energy_modifier(
+    fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
         _recipe: &Recipe,

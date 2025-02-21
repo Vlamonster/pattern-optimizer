@@ -7,7 +7,7 @@ pub struct MegaAlloyBlastSmelter();
 impl Overclock for MegaAlloyBlastSmelter {
     const PARALLELS_OFFSET: u64 = 256;
 
-    fn get_speed_modifier(&self, machine: &MachineConfiguration, _speed_modifier: f64) -> f64 {
+    fn speed_modifier(&self, machine: &MachineConfiguration, _speed_modifier: f64) -> f64 {
         let speedups = u64::min(
             u64::saturating_sub(machine.coil_tier, 4),
             machine.glass_tier,
@@ -15,7 +15,7 @@ impl Overclock for MegaAlloyBlastSmelter {
         1.00 / (1.00 - 0.05 * speedups as f64)
     }
 
-    fn get_energy_modifier(
+    fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
         recipe: &Recipe,

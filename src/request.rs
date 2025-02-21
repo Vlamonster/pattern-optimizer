@@ -1,5 +1,5 @@
 use crate::advice::{advise, OptimizedPattern};
-use crate::machines::get_advised_batch;
+use crate::machines::advised_batch;
 use crate::model::RecipeDatabase;
 use crate::optimization_request::OptimizationRequest;
 use std::collections::HashMap;
@@ -116,7 +116,7 @@ pub fn process_request(
                 return RecipeLookupResult::Found(advise(
                     &meta_map,
                     recipe,
-                    get_advised_batch(&request.machine, request.ticks, recipe),
+                    advised_batch(&request.machine, request.ticks, recipe),
                 ));
             }
             return RecipeLookupResult::RecipeNotFound;

@@ -58,13 +58,13 @@ use volcanus::Volcanus;
 macro_rules! machine_batch_match {
     ($machine:expr, $ticks:expr, $recipe:expr, { $($name:literal => $struct:ident),* $(,)? }) => {
         match $machine.id.as_str() {
-            $( $name => $struct().get_advised_batch($machine, $ticks, $recipe), )*
+            $( $name => $struct().advised_batch($machine, $ticks, $recipe), )*
             _ => panic!("unknown machine: {:?}", $machine),
         }
     };
 }
 
-pub fn get_advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> u64 {
+pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> u64 {
     machine_batch_match!(machine, ticks, recipe, {
         "Industrial Material Press" => IndustrialMaterialPress,
         "Industrial Extrusion Machine" => IndustrialExtrusionMachine,
@@ -101,7 +101,7 @@ pub trait Overclock {
     const SPEED_MODIFIER: f64 = 1.00;
     const ENERGY_MODIFIER: f64 = 1.00;
 
-    fn get_max_parallels(
+    fn max_parallels(
         &self,
         parallels_offset: u64,
         parallels_per_tier: u64,
@@ -111,11 +111,11 @@ pub trait Overclock {
         parallels_offset + tier * parallels_per_tier
     }
 
-    fn get_speed_modifier(&self, _machine: &MachineConfiguration, speed_modifier: f64) -> f64 {
+    fn speed_modifier(&self, _machine: &MachineConfiguration, speed_modifier: f64) -> f64 {
         speed_modifier
     }
 
-    fn get_energy_modifier(
+    fn energy_modifier(
         &self,
         _machine: &MachineConfiguration,
         _recipe: &Recipe,
@@ -125,7 +125,7 @@ pub trait Overclock {
         energy_modifier
     }
 
-    fn get_perfect_overclocks(
+    fn perfect_overclocks(
         &self,
         _machine: &MachineConfiguration,
         _recipe: &Recipe,
@@ -135,7 +135,7 @@ pub trait Overclock {
     }
 
     #[rustfmt::skip]
-    fn get_advised_batch(&self, machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> u64 {
+    fn advised_batch(&self, machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> u64 {
         // Extract machine parameters or fallback to defaults
         let parallels_offset = machine.parallels_offset.unwrap_or(Self::PARALLELS_OFFSET);
         let parallels_per_tier = machine.parallels_per_tier.unwrap_or(Self::PARALLELS_PER_TIER);
@@ -146,10 +146,10 @@ pub trait Overclock {
         let tier = u64::ilog(machine.energy_usage / 8, 4) as u64;
 
         // Calculate max parallels allowed at this tier
-        let max_parallels = self.get_max_parallels(parallels_offset, parallels_per_tier, tier, machine);
+        let max_parallels = self.max_parallels(parallels_offset, parallels_per_tier, tier, machine);
 
         // Adjust energy consumption based on machine and recipe specifics
-        let energy_modifier = self.get_energy_modifier(machine, recipe, tier, energy_modifier);
+        let energy_modifier = self.energy_modifier(machine, recipe, tier, energy_modifier);
         let adjusted_energy_usage = f64::ceil(recipe.energy_usage as f64 * energy_modifier) as u64;
         let mut effective_parallels = u64::min(machine.energy_usage / adjusted_energy_usage, max_parallels);
         let energy_used = effective_parallels * adjusted_energy_usage;
@@ -159,12 +159,12 @@ pub trait Overclock {
         let overclocks = u64::min(overclocks, machine.maximum_overclock_tier - tier);
 
         // Split into regular and perfect overclocks
-        let perfect_overclocks = u64::min(overclocks, self.get_perfect_overclocks(machine, recipe, tier));
+        let perfect_overclocks = u64::min(overclocks, self.perfect_overclocks(machine, recipe, tier));
         let regular_overclocks = overclocks - perfect_overclocks;
 
         // Compute adjusted processing time based on overclocks and speed modifier
         let overclocked_processing_time = recipe.duration as f64
-            / self.get_speed_modifier(machine, speed_modifier)
+            / self.speed_modifier(machine, speed_modifier)
             / 2f64.powi(regular_overclocks as i32)
             / 4f64.powi(perfect_overclocks as i32);
 

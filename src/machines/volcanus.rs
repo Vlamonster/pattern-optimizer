@@ -9,7 +9,7 @@ impl Overclock for Volcanus {
     const SPEED_MODIFIER: f64 = 2.20;
     const ENERGY_MODIFIER: f64 = 0.90;
 
-    fn get_energy_modifier(
+    fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
         recipe: &Recipe,
@@ -21,7 +21,7 @@ impl Overclock for Volcanus {
         energy_modifier * f64::powi(0.95, discounts as i32)
     }
 
-    fn get_perfect_overclocks(
+    fn perfect_overclocks(
         &self,
         machine: &MachineConfiguration,
         recipe: &Recipe,

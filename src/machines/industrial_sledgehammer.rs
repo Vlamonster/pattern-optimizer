@@ -6,7 +6,7 @@ pub struct IndustrialSledgehammer();
 impl Overclock for IndustrialSledgehammer {
     const SPEED_MODIFIER: f64 = 2.00;
 
-    fn get_max_parallels(
+    fn max_parallels(
         &self,
         _parallels_offset: u64,
         _parallels_per_tier: u64,

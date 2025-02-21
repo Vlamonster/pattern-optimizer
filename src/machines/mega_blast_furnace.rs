@@ -7,7 +7,7 @@ pub struct MegaBlastFurnace();
 impl Overclock for MegaBlastFurnace {
     const PARALLELS_OFFSET: u64 = 256;
 
-    fn get_energy_modifier(
+    fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
         recipe: &Recipe,
@@ -19,7 +19,7 @@ impl Overclock for MegaBlastFurnace {
         energy_modifier * f64::powi(0.95, discounts as i32)
     }
 
-    fn get_perfect_overclocks(
+    fn perfect_overclocks(
         &self,
         machine: &MachineConfiguration,
         recipe: &Recipe,

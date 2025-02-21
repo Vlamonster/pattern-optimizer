@@ -6,7 +6,7 @@ pub struct IndustrialMacerationStack();
 impl Overclock for IndustrialMacerationStack {
     const SPEED_MODIFIER: f64 = 1.60;
 
-    fn get_max_parallels(
+    fn max_parallels(
         &self,
         _parallels_offset: u64,
         _parallels_per_tier: u64,

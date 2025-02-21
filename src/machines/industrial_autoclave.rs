@@ -5,7 +5,7 @@ use crate::optimization_request::MachineConfiguration;
 pub struct IndustrialAutoclave();
 
 impl Overclock for IndustrialAutoclave {
-    fn get_max_parallels(
+    fn max_parallels(
         &self,
         _parallels_offset: u64,
         _parallels_per_tier: u64,
@@ -15,11 +15,11 @@ impl Overclock for IndustrialAutoclave {
         12 * machine.item_pipe_casing_tier
     }
 
-    fn get_speed_modifier(&self, machine: &MachineConfiguration, _speed_modifier: f64) -> f64 {
+    fn speed_modifier(&self, machine: &MachineConfiguration, _speed_modifier: f64) -> f64 {
         1.00 + 0.25 * machine.coil_tier as f64
     }
 
-    fn get_energy_modifier(
+    fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
         _recipe: &Recipe,

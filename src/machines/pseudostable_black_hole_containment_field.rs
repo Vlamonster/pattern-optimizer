@@ -7,7 +7,7 @@ impl Overclock for PseudostableBlackHoleContainmentField {
     const SPEED_MODIFIER: f64 = 5.00;
     const ENERGY_MODIFIER: f64 = 0.70;
 
-    fn get_max_parallels(
+    fn max_parallels(
         &self,
         _parallels_offset: u64,
         _parallels_per_tier: u64,
