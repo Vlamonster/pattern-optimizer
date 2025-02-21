@@ -29,14 +29,16 @@ pub struct AdvisedItem {
 }
 
 pub fn advise(
-    damage_map: &HashMap<String, u64>,
+    meta_map: &HashMap<String, u64>,
     recipe: &Recipe,
     advised_batch_size: u64,
 ) -> OptimizedPattern {
     let item_inputs = recipe.item_inputs.iter().map(|item| AdvisedItem {
         id: item.id.clone().unwrap(),
         amount: u64::max(item.amount * advised_batch_size, 1),
-        meta: damage_map[&item.localized_name.clone().unwrap()],
+        meta: *meta_map
+            .get(&item.id.clone().unwrap())
+            .unwrap_or(&item.meta),
         nbt: item.nbt.clone().unwrap_or_default(),
     });
 

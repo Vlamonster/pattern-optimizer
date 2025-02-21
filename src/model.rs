@@ -77,6 +77,7 @@ pub struct Recipe {
 /// - `meta`: The item's metadata or damage value.
 /// - `nbt`: Optional NBT data associated with the item.
 #[derive(Deserialize, Debug, Clone)]
+#[allow(unused)]
 pub struct RecipeItem {
     #[serde(rename = "id")]
     pub id: Option<String>,

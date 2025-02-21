@@ -107,13 +107,14 @@ pub fn process_request(
                     }
                 })
             }) {
-                let damage_map = request
-                    .inputs
+                let meta_map = recipe
+                    .item_inputs
                     .iter()
-                    .map(|input| (input.label.clone(), input.damage))
+                    .filter(|input| input.meta == 32767)
+                    .map(|input| (input.id.clone().unwrap(), input.meta))
                     .collect::<HashMap<String, u64>>();
                 return RecipeLookupResult::Found(advise(
-                    &damage_map,
+                    &meta_map,
                     recipe,
                     get_advised_batch(&request.machine, request.ticks, recipe),
                 ));
