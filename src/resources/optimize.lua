@@ -44,12 +44,24 @@ local function listMachines()
   os.exit(0)
 end
 
-local function optimize()
-    -- Set up connection to optimization server
+local function openSocket()
     local host = "vlamonster.duckdns.org"
     local port = 3939
-    local socket repeat socket = internet.open(host, port) until socket
+    local socket
+    repeat
+        socket = internet.open(host, port)
+        if not socket then
+            print("Connection failed. Retrying in 5 seconds...")
+            os.sleep(5)
+        end
+    until socket
     socket:setTimeout(30)
+    return socket
+end
+
+local function optimize()
+    -- Set up connection to optimization server
+    local socket = openSocket()
 
     if not machines[args.machine] then
         print("Machine '" .. args.machine .. "' not found in machines.lua. Use `optimize list` to view available machines")
@@ -77,7 +89,15 @@ local function optimize()
         socket:write(json.encode(msg))
         socket:flush()
         local response = socket:read()
-        if not response then print("Server has not replied in 30s. Exiting.") os.exit(1) end
+        while not response do
+            print("Connection failed. Retrying in 5 seconds...")
+            os.sleep(5)
+            socket:close()
+            socket = openSocket()
+            socket:write(json.encode(msg))
+            socket:flush()
+            response = socket:read()
+        end
         response = json.decode(response)
         if response.error then
           print(response.error)
