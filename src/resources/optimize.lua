@@ -1,5 +1,22 @@
 local args = {...}
 
+-- Optimization server parameters
+local HOST = "vlamonster.duckdns.org"
+local PORT = 3939
+local RETRY_DELAY = 5
+local TIMEOUT = 30
+
+-- Interface and pattern parameters
+local MAX_SLOT = 36
+local MAX_ITEMS = 9
+
+-- Terminal colors
+local RED = "\27[0;31m"
+local YELLOW = "\27[0;33m"
+local CYAN = "\27[0;36m"
+local WHITE = "\27[0;97m"
+
+-- Required OpenComputer libraries
 local computer = require("computer")
 local component = require("component")
 local internet = require("internet")
@@ -8,31 +25,43 @@ local internet = require("internet")
 local database = component.database
 local interface = component.me_interface
 
-local function ensure_file(filename, url)
-  if not io.open(filename, "r") then
-    print("Missing " .. filename)
+local function downloadFile(filename, url)
     if not os.execute("wget " .. url .. " " .. filename) then
-      print("Failed to install " .. filename)
-      os.exit(1)
+        print("Failed to install " .. filename)
+        os.exit(1)
     end
+end
+
+local function ensureFile(filename, url)
+  local file = io.open(filename, "r")
+  if file then
+    file:close()
+  else
+    print("Missing " .. filename)
+    download_file(filename, url)
   end
   return require(filename:gsub("%.lua$", ""))
 end
 
-local json = ensure_file("dkjson.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/dkjson.lua")
-local argparse = ensure_file("argparse.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/argparse.lua")
+-- Ensure external dependencies are loaded
+local json = ensureFile("dkjson.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/dkjson.lua")
+local argparse = ensureFile("argparse.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/argparse.lua")
 package.loaded.machines = nil -- Do not use cached version since user likely changes settings frequently
-local machines = ensure_file("machines.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/machines.lua")
+local machines = ensureFile("machines.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/machines.lua")
 
 local function log(...)
   if not args.quiet then print(...) end
 end
 
-function format_number(n)
+local function formatIdentifier(id, meta)
+    return string.format("%s:%d", id, meta)
+end
+
+local function formatNumber(n)
     return tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
 end
 
-function format_nbt(nbt)
+local function formatNBT(nbt)
     return nbt ~= "" and ("(NBT: " .. nbt .. ")") or ""
 end
 
@@ -45,81 +74,94 @@ local function listMachines()
 end
 
 local function openSocket()
-    local host = "vlamonster.duckdns.org"
-    local port = 3939
     local socket
     repeat
-        socket = internet.open(host, port)
+        socket = internet.open(HOST, PORT)
         if not socket then
-            print("Connection failed. Retrying in 5 seconds...")
-            os.sleep(5)
+            print("Connection failed. Retrying in " .. RETRY_DELAY .. " seconds...")
+            os.sleep(RETRY_DELAY)
         end
     until socket
-    socket:setTimeout(30)
+    socket:setTimeout(TIMEOUT)
     socket.stream.socket.finishConnect()
     return socket
+end
+
+local function prepareMessage(slot)
+    local message = {
+        machine = machines[args.machine],
+        ticks = tonumber(args.ticks),
+        inputs = {},
+        outputs = {}
+    }
+    for i = 1, MAX_ITEMS do
+        interface.storeInterfacePatternInput(slot, i, database.address, i)
+        local input = database.get(i)
+        if not input then break end
+        table.insert(message.inputs, input)
+        database.clear(i)
+    end
+    for i = 1, MAX_ITEMS do
+        interface.storeInterfacePatternOutput(slot, i, database.address, i)
+        local output = database.get(i)
+        if not output then break end
+        table.insert(message.outputs, output)
+        database.clear(i)
+    end
+    return message
+end
+
+local function sendAndGetResponse(socket, message)
+    local encodedMessage = json.encode(message)
+    socket:write(encodedMessage)
+    socket:flush()
+    local response = socket:read()
+    while not response do
+        print("Connection failed. Retrying in " .. tostring(RETRY_DELAY) .. " seconds...")
+        os.sleep(RETRY_DELAY)
+        socket:close()
+        socket = openSocket()
+        socket:write(encodedMessage)
+        socket:flush()
+        response = socket:read()
+    end
+    return json.decode(response)
+end
+
+local function handleItems(type, items, slot)
+    log(string.format("  %s>>%s %s:", YELLOW, WHITE, type:upper()))
+    local setFunction = type == "inputs" and interface.setInterfacePatternInput or interface.setInterfacePatternOutput
+    for i, v in ipairs(items) do
+        local identifier = formatIdentifier(v.id, v.meta)
+        local amount = formatNumber(v.amount)
+        local nbt = formatNBT(v.nbt)
+        log(string.format("    %s-%s %-40s %sx%s %-15s%s", CYAN, WHITE, identifier, CYAN, WHITE, amount, nbt))
+        database.set(i, v.id, v.meta, v.nbt)
+        setFunction(slot, database.address, i, v.amount, i)
+        database.clear(i)
+    end
 end
 
 local function optimize()
     -- Set up connection to optimization server
     local socket = openSocket()
-
     if not machines[args.machine] then
         print("Machine '" .. args.machine .. "' not found in machines.lua. Use `optimize list` to view available machines")
         os.exit(1)
     end
-
-    for slot = 1, 36 do
-      if interface.getInterfacePattern(slot) then
-        log("\27[0;31m[\27[0;97m SLOT " .. tostring(slot) .. " \27[0;31m]\27[0;97m")
-        local msg = {machine = machines[args.machine], ticks = tonumber(args.ticks), inputs = {}, outputs = {}}
-        for i = 1, 9 do
-          interface.storeInterfacePatternInput(slot, i, database.address, i)
-          local input = database.get(i)
-          if not input then break end
-          table.insert(msg.inputs, input)
-          database.clear(i)
+    for slot = 1, MAX_SLOT do
+        if interface.getInterfacePattern(slot) then
+            log(string.format("%s[%s SLOT %d %s]%s", RED, WHITE, slot, RED, WHITE));
+            local message = prepareMessage(slot)
+            local response = sendAndGetResponse(socket, message)
+            if response.error then
+                print(response.error)
+            else
+                handleItems("inputs", response.inputs, slot)
+                handleItems("outputs", response.outputs, slot)
+                log("------------------------------------")
+            end
         end
-        for i = 1, 9 do
-          interface.storeInterfacePatternOutput(slot, i, database.address, i)
-          local output = database.get(i)
-          if not output then break end
-          table.insert(msg.outputs, output)
-          database.clear(i)
-        end
-        socket:write(json.encode(msg))
-        socket:flush()
-        local response = socket:read()
-        while not response do
-            print("Connection failed. Retrying in 5 seconds...")
-            os.sleep(5)
-            socket:close()
-            socket = openSocket()
-            socket:write(json.encode(msg))
-            socket:flush()
-            response = socket:read()
-        end
-        response = json.decode(response)
-        if response.error then
-          print(response.error)
-        else
-          log("  \27[0;33m>>\27[0;97m INPUTS:")
-          for i, v in ipairs(response.inputs) do
-            log(string.format("    \27[0;36m-\27[0;97m %-40s \27[0;36mx\27[0;97m %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
-            database.set(i, v.id, v.meta, v.nbt)
-            interface.setInterfacePatternInput(slot, database.address, i, v.amount, i)
-            database.clear(i)
-          end
-          log("  \27[0;33m>>\27[0;97m OUTPUTS:")
-          for i, v in ipairs(response.outputs) do
-            log(string.format("    \27[0;36m-\27[0;97m %-40s \27[0;36mx\27[0;97m %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
-            database.set(i + 9, v.id, v.meta, v.nbt)
-            interface.setInterfacePatternOutput(slot, database.address, i + 9, v.amount, i)
-            database.clear(i + 9)
-          end
-          log("------------------------------------")
-        end
-      end
     end
     computer.beep()
     socket:close()
