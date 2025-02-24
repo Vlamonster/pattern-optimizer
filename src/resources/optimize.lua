@@ -21,6 +21,7 @@ end
 
 local json = ensure_file("dkjson.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/dkjson.lua")
 local argparse = ensure_file("argparse.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/argparse.lua")
+package.loaded.machines = nil -- Do not use cached version since user likely changes settings frequently
 local machines = ensure_file("machines.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/machines.lua")
 
 local function log(...)
@@ -40,6 +41,7 @@ local function optimize()
     local host = "vlamonster.duckdns.org"
     local port = 3939
     local socket repeat socket = internet.open(host, port) until socket
+    socket:setTimeout(30)
 
     if not machines[args.machine] then
         print("Machine '" .. args.machine .. "' not found in machines.lua. Use `optimize list` to view available machines")
@@ -66,7 +68,8 @@ local function optimize()
         end
         socket:write(json.encode(msg))
         socket:flush()
-        local response repeat response = socket:read() until response
+        local response = socket:read()
+        if not response then print("Server has not replied in 30s. Exiting.") os.exit(1) end
         response = json.decode(response)
         if response.error then
           print(response.error)
