@@ -88,12 +88,7 @@ local function openSocket()
 end
 
 local function prepareMessage(slot)
-    local message = {
-        machine = machines[args.machine],
-        ticks = tonumber(args.ticks),
-        inputs = {},
-        outputs = {}
-    }
+    local message = { machine = machines[args.machine], ticks = tonumber(args.ticks), inputs = {}, outputs = {} }
     for i = 1, MAX_ITEMS do
         interface.storeInterfacePatternInput(slot, i, database.address, i)
         local input = database.get(i)
