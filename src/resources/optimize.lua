@@ -56,6 +56,7 @@ local function openSocket()
         end
     until socket
     socket:setTimeout(30)
+    socket.stream.socket.finishConnect()
     return socket
 end
 
