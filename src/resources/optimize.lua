@@ -28,6 +28,14 @@ local function log(...)
   if not args.quiet then print(...) end
 end
 
+function format_number(n)
+    return tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
+end
+
+function format_nbt(nbt)
+    return nbt ~= "" and ("(NBT: " .. nbt .. ")") or ""
+end
+
 local function listMachines()
   print("Available machines:")
   for k, v in pairs(machines) do
@@ -50,7 +58,7 @@ local function optimize()
 
     for slot = 1, 36 do
       if interface.getInterfacePattern(slot) then
-        log("PROCESSING SLOT " .. slot)
+        log("[ SLOT " .. tostring(slot) .. " ]")
         local msg = {machine = machines[args.machine], ticks = tonumber(args.ticks), inputs = {}, outputs = {}}
         for i = 1, 9 do
           interface.storeInterfacePatternInput(slot, i, database.address, i)
@@ -74,21 +82,21 @@ local function optimize()
         if response.error then
           print(response.error)
         else
-          log("INPUTS:")
+          log("  >> INPUTS:")
           for i, v in ipairs(response.inputs) do
-            log("id: " .. v.id .. ", amount: " .. tostring(v.amount) .. ", meta: " .. tostring(v.meta) .. ", nbt = '" .. v.nbt .. "'")
+            log(string.format("    - %-40s x %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
             database.set(i, v.id, v.meta, v.nbt)
             interface.setInterfacePatternInput(slot, database.address, i, v.amount, i)
             database.clear(i)
           end
-          log("OUTPUTS:")
+          log("  >> OUTPUTS:")
           for i, v in ipairs(response.outputs) do
-            log("id: " .. v.id .. ", amount: " .. tostring(v.amount) .. ", meta: " .. tostring(v.meta) .. ", nbt = '" .. v.nbt .. "'")
+            log(string.format("    - %-40s x %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
             database.set(i + 9, v.id, v.meta, v.nbt)
             interface.setInterfacePatternOutput(slot, database.address, i + 9, v.amount, i)
             database.clear(i + 9)
           end
-          log("--------------------")
+          log("------------------------------------")
         end
       end
     end
