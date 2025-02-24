@@ -71,7 +71,7 @@ local function optimize()
 
     for slot = 1, 36 do
       if interface.getInterfacePattern(slot) then
-        log("[ SLOT " .. tostring(slot) .. " ]")
+        log("\27[0;31m[\27[0;97m SLOT " .. tostring(slot) .. " \27[0;31m]\27[0;97m")
         local msg = {machine = machines[args.machine], ticks = tonumber(args.ticks), inputs = {}, outputs = {}}
         for i = 1, 9 do
           interface.storeInterfacePatternInput(slot, i, database.address, i)
@@ -103,16 +103,16 @@ local function optimize()
         if response.error then
           print(response.error)
         else
-          log("  >> INPUTS:")
+          log("  \27[0;33m>>\27[0;97m INPUTS:")
           for i, v in ipairs(response.inputs) do
-            log(string.format("    - %-40s x %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
+            log(string.format("    \27[0;36m-\27[0;97m %-40s \27[0;36mx\27[0;97m %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
             database.set(i, v.id, v.meta, v.nbt)
             interface.setInterfacePatternInput(slot, database.address, i, v.amount, i)
             database.clear(i)
           end
-          log("  >> OUTPUTS:")
+          log("  \27[0;33m>>\27[0;97m OUTPUTS:")
           for i, v in ipairs(response.outputs) do
-            log(string.format("    - %-40s x %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
+            log(string.format("    \27[0;36m-\27[0;97m %-40s \27[0;36mx\27[0;97m %-15s%s", string.format("%s:%d", v.id, v.meta), format_number(v.amount), format_nbt(v.nbt)))
             database.set(i + 9, v.id, v.meta, v.nbt)
             interface.setInterfacePatternOutput(slot, database.address, i + 9, v.amount, i)
             database.clear(i + 9)
