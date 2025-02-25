@@ -36,7 +36,7 @@ local machines = {
     ["volcanus"] = { id = "Volcanus", recipes = { "Blast Furnace" }, energyUsage = 4 * UMV, coilTier = 14 },
     --["godforge"] = { id = "God Forge", energyUsage = 2 * G },
     ["freezer"] = { id = "Vacuum Freezer", recipes = { "Vacuum Freezer" }, energyUsage = 1 * ULV },
-    ["mvf"] = { id = "Mega Vacuum Freezer", recipes = { "Vacuum Freezer" }, energyUsage = 1 * ULV },
+    ["mvf"] = { id = "Mega Vacuum Freezer", recipes = { "Vacuum Freezer" }, energyUsage = 1 * ULV, tier = 1 --[[ tier equals perfect overclocks from subspace cooling --]] },
     ["cryo"] = { id = "Cryogenic Freezer", recipes = { "Vacuum Freezer" }, energyUsage = 4 * UMV },
     ["mixer"] = { id = "Industrial Mixing Machine", recipes = { "Multiblock Mixer" }, energyUsage = 4 * UMV },
     ["engraver"] = { id = "Hyper-Intensity Laser Engraver", recipes = { "Laser Engraver" }, energyUsage = 4 * UMV, laserAmperage = 4194304 --[[ 4_194_304 --]] },
