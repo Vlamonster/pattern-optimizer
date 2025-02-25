@@ -154,6 +154,8 @@ local function optimize()
             else
                 handleItems("inputs", response.inputs, slot)
                 handleItems("outputs", response.outputs, slot)
+                log(string.format("  %s>>%s DURATION: ", YELLOW, WHITE))
+                log(string.format("    %s-%s %.2fs / %dt", CYAN, WHITE, response.duration / 20, response.duration))
                 log("------------------------------------")
             end
         end

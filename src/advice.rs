@@ -12,6 +12,7 @@ use std::iter::once;
 pub struct OptimizedPattern {
     pub inputs: Vec<AdvisedItem>,
     pub outputs: Vec<AdvisedItem>,
+    pub duration: u64,
 }
 
 /// Represents an optimized item with adjusted batch size and metadata.
@@ -33,6 +34,7 @@ pub fn advise(
     meta_map: &HashMap<String, u64>,
     recipe: &Recipe,
     advised_batch: u64,
+    duration: u64,
 ) -> OptimizedPattern {
     let max_factor = recipe
         .item_inputs
@@ -84,5 +86,6 @@ pub fn advise(
     OptimizedPattern {
         inputs: item_inputs.chain(fluid_inputs).collect(),
         outputs: item_outputs.chain(fluid_outputs).collect(),
+        duration,
     }
 }

@@ -113,11 +113,10 @@ pub fn process_request(
                     .filter(|input| input.meta == 32767)
                     .map(|input| (input.id.clone().unwrap(), input.meta))
                     .collect::<HashMap<String, u64>>();
-                return RecipeLookupResult::Found(advise(
-                    &meta_map,
-                    recipe,
-                    advised_batch(&request.machine, request.ticks, recipe),
-                ));
+                let (advised_batch, duration) =
+                    advised_batch(&request.machine, request.ticks, recipe);
+                let optimized_pattern = advise(&meta_map, recipe, advised_batch, duration);
+                return RecipeLookupResult::Found(optimized_pattern);
             }
             return RecipeLookupResult::RecipeNotFound;
         }

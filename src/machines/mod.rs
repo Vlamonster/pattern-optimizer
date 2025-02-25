@@ -66,7 +66,7 @@ macro_rules! machine_batch_match {
     };
 }
 
-pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> u64 {
+pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> (u64, u64) {
     machine_batch_match!(machine, ticks, recipe, {
         "Industrial Material Press" => IndustrialMaterialPress,
         "Industrial Extrusion Machine" => IndustrialExtrusionMachine,
@@ -138,7 +138,7 @@ pub trait Overclock {
     }
 
     #[rustfmt::skip]
-    fn advised_batch(&self, machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> u64 {
+    fn advised_batch(&self, machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> (u64, u64) {
         // Extract machine parameters or fallback to defaults
         let parallels_offset = machine.parallels_offset.unwrap_or(Self::PARALLELS_OFFSET);
         let parallels_per_tier = machine.parallels_per_tier.unwrap_or(Self::PARALLELS_PER_TIER);
@@ -181,9 +181,11 @@ pub trait Overclock {
 
         // Compute the advised batch size
         if corrected_processing_time <= ticks {
-            (effective_parallels as f64 * (ticks as f64 + 0.99) / corrected_processing_time as f64) as u64
+            let advised_batch = (effective_parallels as f64 * (ticks as f64 + 0.99) / corrected_processing_time as f64) as u64;
+            let duration = corrected_processing_time * ((ticks as f64 + 0.99) / corrected_processing_time as f64) as u64;
+            (advised_batch, duration)
         } else {
-            effective_parallels
+            (effective_parallels, corrected_processing_time)
         }
     }
 }
