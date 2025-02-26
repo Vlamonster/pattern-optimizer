@@ -38,7 +38,7 @@ local function ensureFile(filename, url)
     file:close()
   else
     print("Missing " .. filename)
-    download_file(filename, url)
+    downloadFile(filename, url)
   end
   return require(filename:gsub("%.lua$", ""))
 end
