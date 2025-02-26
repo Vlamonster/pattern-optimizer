@@ -1,7 +1,7 @@
 local args = {...}
 
 -- Optimization server parameters
-local HOST = "vlamonster.duckdns.org"
+local HOST =  "vlamonster.jonathanb.nl" -- If this host does not resolve, try "vlamonster.duckdns.org"
 local PORT = 3939
 local RETRY_DELAY = 5
 local TIMEOUT = 30
