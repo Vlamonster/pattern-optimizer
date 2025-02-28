@@ -3,8 +3,9 @@ use crate::machines::advised_batch;
 use crate::model::RecipeDatabase;
 use crate::optimization_request::OptimizationRequest;
 use std::collections::HashMap;
-use std::io::{Read, Write};
+use std::io::Write;
 use std::net::TcpStream;
+use serde_json::Deserializer;
 
 pub enum RecipeLookupResult {
     Found(OptimizedPattern),
@@ -15,23 +16,10 @@ pub enum RecipeLookupResult {
 
 pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
     println!("Client connected: {}", stream.peer_addr().unwrap());
-    let mut buffer = [0; 8192];
 
-    loop {
-        let bytes_read = match stream.read(&mut buffer) {
-            Ok(0) => {
-                println!("Client disconnected: {}", stream.peer_addr().unwrap());
-                return;
-            }
-            Ok(bytes) => bytes,
-            Err(error) => {
-                eprintln!("Failed to read from socket: {error}");
-                break;
-            }
-        };
-
-        let request = match serde_json::from_slice(&buffer[..bytes_read]) {
-            Ok(req) => req,
+    for request in Deserializer::from_reader(stream.try_clone().unwrap()).into_iter() {
+        let request = match request {
+            Ok(r) => r,
             Err(err) => {
                 eprintln!("Failed to parse request JSON: {err}");
                 continue;
