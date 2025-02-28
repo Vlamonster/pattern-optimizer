@@ -21,10 +21,11 @@ impl Overclock for Zyngen {
 
     fn perfect_overclocks(
         &self,
-        _machine: &MachineConfiguration,
+        machine: &MachineConfiguration,
         _recipe: &Recipe,
         _tier: u64,
     ) -> u64 {
-        u64::MAX
+        let heat = 901 + 900 * machine.coil_tier;
+        heat / 1800
     }
 }
