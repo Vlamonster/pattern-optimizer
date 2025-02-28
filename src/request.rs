@@ -2,8 +2,9 @@ use crate::advice::{advise, OptimizedPattern};
 use crate::machines::advised_batch;
 use crate::model::RecipeDatabase;
 use crate::optimization_request::OptimizationRequest;
+use serde_json::{json, Deserializer};
 use std::collections::HashMap;
-use std::io::{Read, Write};
+use std::io::Write;
 use std::net::TcpStream;
 
 pub enum RecipeLookupResult {
@@ -15,23 +16,10 @@ pub enum RecipeLookupResult {
 
 pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
     println!("Client connected: {}", stream.peer_addr().unwrap());
-    let mut buffer = [0; 8192];
 
-    loop {
-        let bytes_read = match stream.read(&mut buffer) {
-            Ok(0) => {
-                println!("Client disconnected: {}", stream.peer_addr().unwrap());
-                return;
-            }
-            Ok(bytes) => bytes,
-            Err(error) => {
-                eprintln!("Failed to read from socket: {error}");
-                break;
-            }
-        };
-
-        let request = match serde_json::from_slice(&buffer[..bytes_read]) {
-            Ok(req) => req,
+    for request in Deserializer::from_reader(stream.try_clone().unwrap()).into_iter() {
+        let request = match request {
+            Ok(r) => r,
             Err(err) => {
                 eprintln!("Failed to parse request JSON: {err}");
                 continue;
@@ -49,7 +37,7 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 stream.flush().unwrap();
             }
             RecipeLookupResult::RecipeNotFound => {
-                let error_message = r#"{"error": "Recipe not found for the given inputs"}"#;
+                let error_message = json!({"error": "Recipe not found for the given inputs"});
                 if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
                 {
                     eprintln!("Failed to write to socket: {error}");
@@ -58,7 +46,7 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 stream.flush().unwrap();
             }
             RecipeLookupResult::MachineNotFound => {
-                let error_message = r#"{"error": "Machine not found"}"#;
+                let error_message = json!({"error": "Machine not found"});
                 if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
                 {
                     eprintln!("Failed to write to socket: {error}");
@@ -67,7 +55,7 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 stream.flush().unwrap();
             }
             RecipeLookupResult::WrongCategory => {
-                let error_message = r#"{"error": "Category does not exist"}"#;
+                let error_message = json!({"error": "Category does not exist"});
                 if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
                 {
                     eprintln!("Failed to write to socket: {error}");
