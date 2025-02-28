@@ -53,6 +53,7 @@ local machines = {
     ["implosion"] = { id = "Electric Implosion Compressor", recipes = { "Implosion Compressor" }, energyUsage = 64 * UMV, tier = 4 },
     ["chembath"] = { id = "Ore Washing Plant", recipes = { "Chemical Bath" }, energyUsage = 4 * UMV },
     ["megachem"] = { id = "Mega Chemical Reactor", recipes = { "Large Chemical Reactor" }, energyUsage = 64 * UMV },
+    ["lathe"] = { id = "Industrial Precision Lathe", recipes = { "Lathe" }, energyUsage = 4 * UEV, itemPipeCasingTier = 8 },
 }
 
 return machines

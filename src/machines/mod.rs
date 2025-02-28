@@ -13,6 +13,7 @@ mod industrial_extrusion_machine;
 mod industrial_maceration_stack;
 mod industrial_material_press;
 mod industrial_mixing_machine;
+mod industrial_precision_lathe;
 mod industrial_sledgehammer;
 mod industrial_wire_factory;
 mod large_fluid_extractor;
@@ -27,6 +28,7 @@ mod utupu_tanuri;
 mod vacuum_freezer;
 mod volcanus;
 
+use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
@@ -95,6 +97,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Electric Implosion Compressor" => ElectricImplosionCompressor,
         "Ore Washing Plant" => OreWashingPlant,
         "Mega Chemical Reactor" => MegaChemicalReactor,
+        "Industrial Precision Lathe" => IndustrialPrecisionLathe,
     })
 }
 
