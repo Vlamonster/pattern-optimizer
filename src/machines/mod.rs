@@ -27,8 +27,10 @@ mod pseudostable_black_hole_containment_field;
 mod utupu_tanuri;
 mod vacuum_freezer;
 mod volcanus;
+mod zyngen;
 
 use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
+use crate::machines::zyngen::Zyngen;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
@@ -98,6 +100,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Ore Washing Plant" => OreWashingPlant,
         "Mega Chemical Reactor" => MegaChemicalReactor,
         "Industrial Precision Lathe" => IndustrialPrecisionLathe,
+        "Zyngen" => Zyngen,
     })
 }
 
