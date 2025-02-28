@@ -2,10 +2,10 @@ use crate::advice::{advise, OptimizedPattern};
 use crate::machines::advised_batch;
 use crate::model::RecipeDatabase;
 use crate::optimization_request::OptimizationRequest;
+use serde_json::{json, Deserializer};
 use std::collections::HashMap;
 use std::io::Write;
 use std::net::TcpStream;
-use serde_json::Deserializer;
 
 pub enum RecipeLookupResult {
     Found(OptimizedPattern),
@@ -37,7 +37,7 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 stream.flush().unwrap();
             }
             RecipeLookupResult::RecipeNotFound => {
-                let error_message = r#"{"error": "Recipe not found for the given inputs"}"#;
+                let error_message = json!({"error": "Recipe not found for the given inputs"});
                 if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
                 {
                     eprintln!("Failed to write to socket: {error}");
@@ -46,7 +46,7 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 stream.flush().unwrap();
             }
             RecipeLookupResult::MachineNotFound => {
-                let error_message = r#"{"error": "Machine not found"}"#;
+                let error_message = json!({"error": "Machine not found"});
                 if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
                 {
                     eprintln!("Failed to write to socket: {error}");
@@ -55,7 +55,7 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 stream.flush().unwrap();
             }
             RecipeLookupResult::WrongCategory => {
-                let error_message = r#"{"error": "Category does not exist"}"#;
+                let error_message = json!({"error": "Category does not exist"});
                 if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
                 {
                     eprintln!("Failed to write to socket: {error}");
