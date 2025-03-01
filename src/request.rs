@@ -106,8 +106,8 @@ pub fn process_request(
                 let optimized_pattern = advise(&meta_map, recipe, advised_batch, duration);
                 return RecipeLookupResult::Found(optimized_pattern);
             }
-            return RecipeLookupResult::RecipeNotFound;
         }
+        return RecipeLookupResult::RecipeNotFound;
     }
     RecipeLookupResult::MachineNotFound
 }
