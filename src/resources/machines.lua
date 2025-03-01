@@ -57,7 +57,7 @@ local machines = {
     ["cutter"] = {
         id = "Industrial Cutting Factory",
         recipes = {"Cutting Machine"},
-        energyUsage = 4 * UMV
+        energyUsage = 16 * UMV
     },
     ["fextractor"] = {
         id = "Large Fluid Extractor",
