@@ -114,7 +114,7 @@ local machines = {
     ["engraver"] = {
         id = "Hyper-Intensity Laser Engraver",
         recipes = {"Laser Engraver"},
-        energyUsage = 4 * UMV,
+        energyUsage = 16 * UMV,
         laserAmperage = 4194304 -- 4_194_304
     },
     ["centrifuge"] = {
@@ -202,7 +202,7 @@ local machines = {
     },
     ["implosion"] = {
             id = "Electric Implosion Compressor",
-            recipes = {"Electric Implosion Compressor"}, -- recipes not yet extracted
+            recipes = {"Electric Implosion Compressor"},
             energyUsage = 64 * UMV,
             tier = 4
     },
