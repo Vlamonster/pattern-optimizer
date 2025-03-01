@@ -51,7 +51,7 @@ local machines = {
     ["solidifier"] = {
         id = "Fluid Shaper",
         recipes = {"Fluid Solidifier"},
-        energyUsage = 4 * UMV,
+        energyUsage = 64 * UMV,
         width = 6 -- width equals the expansion width
     },
     ["cutter"] = {
