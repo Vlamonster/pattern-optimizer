@@ -29,6 +29,7 @@ mod vacuum_freezer;
 mod volcanus;
 mod zyngen;
 
+use crate::machines::high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
 use crate::machines::zyngen::Zyngen;
 use crate::model::Recipe;
@@ -60,6 +61,8 @@ use pseudostable_black_hole_containment_field::PseudostableBlackHoleContainmentF
 use utupu_tanuri::UtupuTanuri;
 use vacuum_freezer::VacuumFreezer;
 use volcanus::Volcanus;
+
+mod high_current_industrial_arc_furnace;
 
 macro_rules! machine_batch_match {
     ($machine:expr, $ticks:expr, $recipe:expr, { $($name:literal => $struct:ident),* $(,)? }) => {
@@ -101,6 +104,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Mega Chemical Reactor" => MegaChemicalReactor,
         "Industrial Precision Lathe" => IndustrialPrecisionLathe,
         "Zyngen" => Zyngen,
+        "High Current Industrial Arc Furnace" => HighCurrentIndustrialArcFurnace,
     })
 }
 

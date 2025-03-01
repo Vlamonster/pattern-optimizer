@@ -60,8 +60,8 @@ pub struct MachineConfiguration {
     pub maximum_overclock_tier: u64,
     #[serde(rename = "tier", default = "tier")]
     pub tier: u64,
-    #[serde(rename = "expansionWidth", default = "expansion_width")]
-    pub expansion_width: u64,
+    #[serde(rename = "width", default = "width")]
+    pub width: u64,
     #[serde(rename = "solenoidTier", default = "solenoid_tier")]
     pub solenoid_tier: u64,
     #[serde(rename = "coilTier", default = "coil_tier")]
@@ -84,7 +84,7 @@ fn coil_tier() -> u64 {
     1
 }
 
-fn expansion_width() -> u64 {
+fn width() -> u64 {
     0
 }
 
