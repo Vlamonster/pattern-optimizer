@@ -26,6 +26,6 @@ impl Overclock for Zyngen {
         _tier: u64,
     ) -> u64 {
         let heat = 901 + 900 * machine.coil_tier;
-        heat / 1800
+        heat / 900
     }
 }
