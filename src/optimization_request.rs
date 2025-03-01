@@ -62,6 +62,8 @@ pub struct MachineConfiguration {
     pub tier: u64,
     #[serde(rename = "width", default = "width")]
     pub width: u64,
+    #[serde(rename = "height", default = "height")]
+    pub height: u64,
     #[serde(rename = "solenoidTier", default = "solenoid_tier")]
     pub solenoid_tier: u64,
     #[serde(rename = "coilTier", default = "coil_tier")]
@@ -85,6 +87,10 @@ fn coil_tier() -> u64 {
 }
 
 fn width() -> u64 {
+    0
+}
+
+fn height() -> u64 {
     0
 }
 

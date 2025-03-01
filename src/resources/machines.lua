@@ -159,12 +159,6 @@ local machines = {
         recipes = {"Multiblock Dehydrator"},
         energyUsage = 4 * UEV
     },
-    ["implosion"] = {
-        id = "Electric Implosion Compressor",
-        recipes = {"Implosion Compressor"},
-        energyUsage = 64 * UMV,
-        tier = 4
-    },
     ["chembath"] = {
         id = "Ore Washing Plant",
         recipes = {"Chemical Bath"},
@@ -200,7 +194,18 @@ local machines = {
         energyUsage = 4 * UEV,
         tier = 2,
         width = 7
-    }
+    },
+    ["nactivator"] = {
+        id = "Neutron Activator",
+        recipes = {}, -- recipes not yet extracted
+        height = 64,
+    },
+    ["implosion"] = {
+            id = "Electric Implosion Compressor",
+            recipes = {}, -- recipes not yet extracted
+            energyUsage = 64 * UMV,
+            tier = 4
+    },
     --["godforge"] = { id = "God Forge", energyUsage = 2 * G },
     --["compressor"] = { id = "Large Electric Compressor", recipes = { "Compressor" }, energyUsage = 1 * ULV },
     --["hipcompressor"] = { id = "Hot Isostatic Pressurization Unit", recipes = { "Compressor" }, energyUsage = 1 * ULV },
