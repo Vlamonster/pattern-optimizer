@@ -90,13 +90,16 @@ local machines = {
         energyUsage = 4 * UMV,
         coilTier = 14
     },
-
-    ["freezer"] = {id = "Vacuum Freezer", recipes = {"Vacuum Freezer"}, energyUsage = 1 * ULV},
+    ["freezer"] = {
+        id = "Vacuum Freezer",
+        recipes = {"Vacuum Freezer"},
+        energyUsage = 1 * ULV
+    },
     ["mvf"] = {
         id = "Mega Vacuum Freezer",
         recipes = {"Vacuum Freezer"},
-        energyUsage = 1 * ULV,
-        tier = 1 -- tier equals perfect overclocks from subspace cooling
+        energyUsage = 64 * UMV,
+        tier = 0 -- tier equals perfect overclocks from subspace cooling
     },
     ["cryo"] = {
         id = "Cryogenic Freezer",
