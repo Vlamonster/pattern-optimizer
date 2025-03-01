@@ -202,7 +202,7 @@ local machines = {
     },
     ["implosion"] = {
             id = "Electric Implosion Compressor",
-            recipes = {}, -- recipes not yet extracted
+            recipes = {"Electric Implosion Compressor"}, -- recipes not yet extracted
             energyUsage = 64 * UMV,
             tier = 4
     },
