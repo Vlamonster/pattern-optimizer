@@ -13,6 +13,7 @@ mod industrial_extrusion_machine;
 mod industrial_maceration_stack;
 mod industrial_material_press;
 mod industrial_mixing_machine;
+mod industrial_precision_lathe;
 mod industrial_sledgehammer;
 mod industrial_wire_factory;
 mod large_fluid_extractor;
@@ -26,7 +27,11 @@ mod pseudostable_black_hole_containment_field;
 mod utupu_tanuri;
 mod vacuum_freezer;
 mod volcanus;
+mod zyngen;
 
+use crate::machines::high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
+use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
+use crate::machines::zyngen::Zyngen;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
@@ -56,6 +61,8 @@ use pseudostable_black_hole_containment_field::PseudostableBlackHoleContainmentF
 use utupu_tanuri::UtupuTanuri;
 use vacuum_freezer::VacuumFreezer;
 use volcanus::Volcanus;
+
+mod high_current_industrial_arc_furnace;
 
 macro_rules! machine_batch_match {
     ($machine:expr, $ticks:expr, $recipe:expr, { $($name:literal => $struct:ident),* $(,)? }) => {
@@ -95,6 +102,9 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Electric Implosion Compressor" => ElectricImplosionCompressor,
         "Ore Washing Plant" => OreWashingPlant,
         "Mega Chemical Reactor" => MegaChemicalReactor,
+        "Industrial Precision Lathe" => IndustrialPrecisionLathe,
+        "Zyngen" => Zyngen,
+        "High Current Industrial Arc Furnace" => HighCurrentIndustrialArcFurnace,
     })
 }
 

@@ -1,12 +1,10 @@
 use crate::machines::Overclock;
 use crate::optimization_request::MachineConfiguration;
 
-pub struct FluidShaper();
+pub struct HighCurrentIndustrialArcFurnace();
 
-impl Overclock for FluidShaper {
-    // Assumed to run continuously
-    const SPEED_MODIFIER: f64 = 3.00;
-    const ENERGY_MODIFIER: f64 = 0.80;
+impl Overclock for HighCurrentIndustrialArcFurnace {
+    const SPEED_MODIFIER: f64 = 3.50;
 
     fn max_parallels(
         &self,
@@ -15,6 +13,7 @@ impl Overclock for FluidShaper {
         tier: u64,
         machine: &MachineConfiguration,
     ) -> u64 {
-        (2 + 3 * machine.width) * tier
+        let plasma_modifier = if machine.tier == 1 { 1 } else { 8 };
+        plasma_modifier * machine.width * tier
     }
 }
