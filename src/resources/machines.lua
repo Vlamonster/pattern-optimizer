@@ -27,6 +27,11 @@ local machines = {
         recipes = {"Bending Machine"},
         energyUsage = 4 * UMV
     },
+    ["press"] = {
+        id = "Industrial Material Press",
+        recipes = {"Forming Press"},
+        energyUsage = 16 * UMV
+    },
     ["extruder"] = {
         id = "Industrial Extrusion Machine",
         recipes = {"Extruder"},
