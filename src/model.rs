@@ -7,19 +7,6 @@ use serde::Deserialize;
 ///   and its associated recipes.
 #[derive(Deserialize, Debug)]
 pub struct RecipeDatabase {
-    pub sources: Vec<Source>,
-}
-
-/// Represents a collection of machines and their associated recipes within a specific category.
-///
-/// # Fields
-/// - `machines`: A list of `Machine` structures representing different processing units.
-/// - `category`: The type of source this belongs to (e.g., `"gregtech"` or another system).
-#[derive(Deserialize, Debug)]
-pub struct Source {
-    #[serde(rename = "type")]
-    pub category: String,
-    #[serde(rename = "machines")]
     pub machines: Vec<Machine>,
 }
 

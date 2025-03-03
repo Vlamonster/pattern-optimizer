@@ -17,6 +17,7 @@ mod industrial_precision_lathe;
 mod industrial_sledgehammer;
 mod industrial_wire_factory;
 mod large_fluid_extractor;
+mod large_sifter_control_block;
 mod mega_alloy_blast_smelter;
 mod mega_blast_furnace;
 mod mega_chemical_reactor;
@@ -31,6 +32,7 @@ mod zyngen;
 
 use crate::machines::high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
+use crate::machines::large_sifter_control_block::LargeSifterControlBlock;
 use crate::machines::zyngen::Zyngen;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
@@ -105,6 +107,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Industrial Precision Lathe" => IndustrialPrecisionLathe,
         "Zyngen" => Zyngen,
         "High Current Industrial Arc Furnace" => HighCurrentIndustrialArcFurnace,
+        "Large Sifter Control Block" => LargeSifterControlBlock,
     })
 }
 

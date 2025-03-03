@@ -206,6 +206,11 @@ local machines = {
             energyUsage = 64 * UMV,
             tier = 4
     },
+    ["sifter"] = {
+            id = "Large Sifter Control Block",
+            recipes = {"Sifter"},
+            energyUsage = 16 * UMV,
+    },
     --["godforge"] = { id = "God Forge", energyUsage = 2 * G },
     --["compressor"] = { id = "Large Electric Compressor", recipes = { "Compressor" }, energyUsage = 1 * ULV },
     --["hipcompressor"] = { id = "Hot Isostatic Pressurization Unit", recipes = { "Compressor" }, energyUsage = 1 * ULV },

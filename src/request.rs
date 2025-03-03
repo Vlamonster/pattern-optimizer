@@ -11,7 +11,6 @@ pub enum RecipeLookupResult {
     Found(OptimizedPattern),
     RecipeNotFound,
     MachineNotFound,
-    WrongCategory,
 }
 
 pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
@@ -54,15 +53,6 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 }
                 stream.flush().unwrap();
             }
-            RecipeLookupResult::WrongCategory => {
-                let error_message = json!({"error": "Category does not exist"});
-                if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
-                {
-                    eprintln!("Failed to write to socket: {error}");
-                    break;
-                }
-                stream.flush().unwrap();
-            }
         }
     }
 }
@@ -71,43 +61,42 @@ pub fn process_request(
     request: &OptimizationRequest,
     recipes: &RecipeDatabase,
 ) -> RecipeLookupResult {
-    for source in &recipes.sources {
-        if source.category != "gregtech" {
-            return RecipeLookupResult::WrongCategory;
+    let mut machine_present = false;
+    for machine in &recipes.machines {
+        if !request.machine.recipes.contains(&machine.name) {
+            continue;
         }
-        for machine in &source.machines {
-            if !request.machine.recipes.contains(&machine.name) {
-                continue;
-            }
-            if let Some(recipe) = machine.recipes.iter().find(|recipe| {
-                request.inputs.iter().all(|request_item| {
-                    if let Some(fluid_drop) = &request_item.fluid_drop {
-                        recipe
-                            .fluid_inputs
-                            .iter()
-                            .any(|recipe_fluid| recipe_fluid.id == fluid_drop.name)
-                    } else {
-                        recipe.item_inputs.iter().any(|recipe_item| {
-                            recipe_item.id.as_ref() == Some(&request_item.name)
-                                && (recipe_item.meta == request_item.damage
-                                    || recipe_item.meta == 32767)
-                        })
-                    }
-                })
-            }) {
-                let meta_map = recipe
-                    .item_inputs
-                    .iter()
-                    .filter(|input| input.meta == 32767)
-                    .map(|input| (input.id.clone().unwrap(), input.meta))
-                    .collect::<HashMap<String, u64>>();
-                let (advised_batch, duration) =
-                    advised_batch(&request.machine, request.ticks, recipe);
-                let optimized_pattern = advise(&meta_map, recipe, advised_batch, duration);
-                return RecipeLookupResult::Found(optimized_pattern);
-            }
+        machine_present = true;
+        if let Some(recipe) = machine.recipes.iter().find(|recipe| {
+            request.inputs.iter().all(|request_item| {
+                if let Some(fluid_drop) = &request_item.fluid_drop {
+                    recipe
+                        .fluid_inputs
+                        .iter()
+                        .any(|recipe_fluid| recipe_fluid.id == fluid_drop.name)
+                } else {
+                    recipe.item_inputs.iter().any(|recipe_item| {
+                        recipe_item.id.as_ref() == Some(&request_item.name)
+                            && (recipe_item.meta == request_item.damage
+                                || recipe_item.meta == 32767)
+                    })
+                }
+            })
+        }) {
+            let meta_map = recipe
+                .item_inputs
+                .iter()
+                .filter(|input| input.meta == 32767)
+                .map(|input| (input.id.clone().unwrap(), input.meta))
+                .collect::<HashMap<String, u64>>();
+            let (advised_batch, duration) = advised_batch(&request.machine, request.ticks, recipe);
+            let optimized_pattern = advise(&meta_map, recipe, advised_batch, duration);
+            return RecipeLookupResult::Found(optimized_pattern);
         }
-        return RecipeLookupResult::RecipeNotFound;
     }
-    RecipeLookupResult::MachineNotFound
+    if machine_present {
+        RecipeLookupResult::RecipeNotFound
+    } else {
+        RecipeLookupResult::MachineNotFound
+    }
 }
