@@ -1,5 +1,6 @@
 mod blast_furnace;
 mod circuit_assembly_line;
+mod component_assembly_line;
 mod cryogenic_freezer;
 mod dissection_apparatus;
 mod electric_implosion_compressor;
@@ -33,6 +34,7 @@ mod volcanus;
 mod zyngen;
 
 use crate::machines::circuit_assembly_line::CircuitAssemblyLine;
+use crate::machines::component_assembly_line::ComponentAssemblyLine;
 use crate::machines::high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
 use crate::machines::large_sifter_control_block::LargeSifterControlBlock;
@@ -110,6 +112,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "High Current Industrial Arc Furnace" => HighCurrentIndustrialArcFurnace,
         "Large Sifter Control Block" => LargeSifterControlBlock,
         "Circuit Assembly Line" => CircuitAssemblyLine,
+        "Component Assembly Line" => ComponentAssemblyLine,
     })
 }
 
