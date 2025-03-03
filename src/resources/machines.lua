@@ -226,6 +226,7 @@ local machines = {
         id = "Component Assembly Line",
         recipes = {"Component Assembly Line"},
         energyUsage = 65536 * UEV, -- 65_536
+        tier = 12,
     },
     --["godforge"] = { id = "God Forge", energyUsage = 2 * G },
     --["compressor"] = { id = "Large Electric Compressor", recipes = { "Compressor" }, energyUsage = 1 * ULV },
