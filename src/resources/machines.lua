@@ -162,7 +162,7 @@ local machines = {
     ["chembath"] = {
         id = "Ore Washing Plant",
         recipes = {"Chemical Bath"},
-        energyUsage = 4 * UMV
+        energyUsage = 16 * UMV
     },
     ["megachem"] = {
         id = "Mega Chemical Reactor",
