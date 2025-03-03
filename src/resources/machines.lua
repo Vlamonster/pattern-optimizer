@@ -201,21 +201,25 @@ local machines = {
         height = 64,
     },
     ["implosion"] = {
-            id = "Electric Implosion Compressor",
-            recipes = {"Electric Implosion Compressor"},
-            energyUsage = 64 * UMV,
-            tier = 4
+        id = "Electric Implosion Compressor",
+        recipes = {"Electric Implosion Compressor"},
+        energyUsage = 64 * UMV,
+        tier = 4
     },
     ["sifter"] = {
-            id = "Large Sifter Control Block",
-            recipes = {"Sifter"},
-            energyUsage = 16 * UMV,
+        id = "Large Sifter Control Block",
+        recipes = {"Sifter"},
+        energyUsage = 16 * UMV,
+    },
+    ["cal"] = {
+        id = "Circuit Assembly Line",
+        recipes = {"Circuit Assembly Line", "Circuit Assembler"},
+        energyUsage = 1 * UMV,
     },
     --["godforge"] = { id = "God Forge", energyUsage = 2 * G },
     --["compressor"] = { id = "Large Electric Compressor", recipes = { "Compressor" }, energyUsage = 1 * ULV },
     --["hipcompressor"] = { id = "Hot Isostatic Pressurization Unit", recipes = { "Compressor" }, energyUsage = 1 * ULV },
     --["neutroniumcompressor"] = { id = "Neutronium Compressor", recipes = { "Neutronium Compressor" }, energyUsage = 1 * ULV },
 }
-
 
 return machines

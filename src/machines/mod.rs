@@ -1,9 +1,11 @@
 mod blast_furnace;
+mod circuit_assembly_line;
 mod cryogenic_freezer;
 mod dissection_apparatus;
 mod electric_implosion_compressor;
 mod fluid_shaper;
 mod god_forge;
+mod high_current_industrial_arc_furnace;
 mod hyper_intensity_laser_engraver;
 mod industrial_autoclave;
 mod industrial_centrifuge;
@@ -30,6 +32,7 @@ mod vacuum_freezer;
 mod volcanus;
 mod zyngen;
 
+use crate::machines::circuit_assembly_line::CircuitAssemblyLine;
 use crate::machines::high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
 use crate::machines::large_sifter_control_block::LargeSifterControlBlock;
@@ -63,8 +66,6 @@ use pseudostable_black_hole_containment_field::PseudostableBlackHoleContainmentF
 use utupu_tanuri::UtupuTanuri;
 use vacuum_freezer::VacuumFreezer;
 use volcanus::Volcanus;
-
-mod high_current_industrial_arc_furnace;
 
 macro_rules! machine_batch_match {
     ($machine:expr, $ticks:expr, $recipe:expr, { $($name:literal => $struct:ident),* $(,)? }) => {
@@ -108,6 +109,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Zyngen" => Zyngen,
         "High Current Industrial Arc Furnace" => HighCurrentIndustrialArcFurnace,
         "Large Sifter Control Block" => LargeSifterControlBlock,
+        "Circuit Assembly Line" => CircuitAssemblyLine,
     })
 }
 
