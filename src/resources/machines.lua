@@ -109,7 +109,7 @@ local machines = {
     ["mixer"] = {
         id = "Industrial Mixing Machine",
         recipes = {"Multiblock Mixer"},
-        energyUsage = 4 * UMV
+        energyUsage = 16 * UMV
     },
     ["engraver"] = {
         id = "Hyper-Intensity Laser Engraver",
