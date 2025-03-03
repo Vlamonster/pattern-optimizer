@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use std::fmt::{Display, Formatter};
 
 /// Represents a crafting or processing request sent by the client to the server.
 ///
@@ -185,4 +186,36 @@ pub struct FluidDrop {
     pub amount: u64,
     #[serde(rename = "hasTag")]
     pub has_tag: bool,
+}
+
+impl Display for OptimizationRequest {
+    #[rustfmt::skip]
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Machine: {}", self.machine.id)?;
+        writeln!(f, "Using recipes: {}", self.machine.recipes.join(", "))?;
+        writeln!(f, "- Energy usage: {} EU/t", self.machine.energy_usage)?;
+
+        if let Some(parallels_offset) = self.machine.parallels_offset {
+            writeln!(f, "- Parallels offset: {}", parallels_offset)?;
+        }
+        if let Some(parallels_per_tier) = self.machine.parallels_per_tier {
+            writeln!(f, "- Parallels per tier: {}", parallels_per_tier)?;
+        }
+        if let Some(speed_modifier) = self.machine.speed_modifier {
+            writeln!(f, "- Speed modifier: {:.2}", speed_modifier)?;
+        }
+        if let Some(energy_modifier) = self.machine.energy_modifier {
+            writeln!(f, "- Energy modifier: {:.2}", energy_modifier)?;
+        }
+
+        writeln!(f, "- Maximum overclock tier: {}", self.machine.maximum_overclock_tier)?;
+        writeln!(f, "- Tier: {}", self.machine.tier)?;
+        writeln!(f, "- Dimensions (W x H): {} x {}", self.machine.width, self.machine.height)?;
+        writeln!(f, "- Solenoid tier: {}", self.machine.solenoid_tier)?;
+        writeln!(f, "- Coil tier: {}", self.machine.coil_tier)?;
+        writeln!(f, "- Laser amperage: {} A", self.machine.laser_amperage)?;
+        writeln!(f, "- Pipe casing tier: {}", self.machine.pipe_casing_tier)?;
+        writeln!(f, "- Item pipe casing tier: {}", self.machine.item_pipe_casing_tier)?;
+        writeln!(f, "- Glass tier: {}", self.machine.glass_tier)
+    }
 }

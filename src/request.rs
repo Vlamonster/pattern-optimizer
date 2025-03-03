@@ -14,7 +14,8 @@ pub enum RecipeLookupResult {
 }
 
 pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
-    println!("Client connected: {}", stream.peer_addr().unwrap());
+    let peer_addr = stream.peer_addr().unwrap();
+    println!("Client connected: {peer_addr}");
 
     for request in Deserializer::from_reader(stream.try_clone().unwrap()).into_iter() {
         let request = match request {
@@ -24,6 +25,9 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
                 continue;
             }
         };
+
+        println!("Received a request from {peer_addr}:");
+        println!("{request}");
 
         match process_request(&request, recipes) {
             RecipeLookupResult::Found(response) => {
