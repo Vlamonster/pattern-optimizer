@@ -5,14 +5,18 @@ use crate::optimization_request::{GorgeUpgrades, MachineConfiguration};
 pub struct HelioflarePowerForge();
 
 impl HelioflarePowerForge {
-    fn heat(dtr: u64) -> u64 {
-        (f64::log2(dtr as f64) / f64::log2(1.5) * 1000.0) as u64 + 12_601
+    fn heat(machine: &MachineConfiguration) -> u64 {
+        if machine.upgrades.sefcp {
+            (f64::log2(machine.dtr as f64) / f64::log2(1.12) * 1000.0) as u64 + 12_601
+        } else {
+            (f64::log2(machine.dtr as f64) / f64::log2(1.5) * 1000.0) as u64 + 12_601
+        }
     }
 
     fn effective_heat(machine: &MachineConfiguration) -> u64 {
         u64::min(
             Self::effective_heat_capacity(&machine.upgrades),
-            Self::heat(machine.dtr),
+            Self::heat(machine),
         )
     }
 
