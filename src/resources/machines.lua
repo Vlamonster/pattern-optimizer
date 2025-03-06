@@ -236,6 +236,7 @@ local machines = {
     ["gorge1"] = {
         id = "Helioflare Power Forge",
         recipes = {"Blast Furnace"},
+        dtr = 6, -- Dimensionally Transcendent Residue Factor
         upgrades = {
             START = true,
             IGCC = true,

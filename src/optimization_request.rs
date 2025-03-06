@@ -79,6 +79,8 @@ pub struct MachineConfiguration {
     pub glass_tier: u64,
     #[serde(rename = "upgrades", default)]
     pub upgrades: GorgeUpgrades,
+    #[serde(rename = "dtr", default)]
+    pub dtr: u64,
 }
 
 fn maximum_overclock_tier() -> u64 {
