@@ -47,7 +47,7 @@ pub struct MachineConfiguration {
     pub id: String,
     #[serde(rename = "recipes")]
     pub recipes: Vec<String>,
-    #[serde(rename = "energyUsage")]
+    #[serde(rename = "energyUsage", default)]
     pub energy_usage: u64,
     #[serde(rename = "parallelsOffset")]
     pub parallels_offset: Option<u64>,
