@@ -23,6 +23,14 @@ impl HelioflarePowerForge {
             todo!("Case not handled yet!")
         }
     }
+
+    fn energy_usage(machine: &MachineConfiguration) -> u64 {
+        if machine.upgrades.giss {
+            2_000_000_000 + 100_000_000 * machine.dtr
+        } else {
+            2_000_000_000
+        }
+    }
 }
 
 impl Overclock for HelioflarePowerForge {
@@ -65,8 +73,7 @@ impl Overclock for HelioflarePowerForge {
         if !machine.upgrades.start {
             panic!("Missing upgrade START");
         }
-        let energy_usage = 2_000_000_000;
-
+        let energy_usage = Self::energy_usage(machine);
         let speed_modifier = machine.speed_modifier.unwrap_or(Self::SPEED_MODIFIER);
         let energy_modifier = machine.energy_modifier.unwrap_or(Self::ENERGY_MODIFIER);
 

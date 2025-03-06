@@ -135,27 +135,12 @@ pub struct GorgeUpgrades {
     /// `Multiplier = 1 / (Heat^0.01)`
     #[serde(rename = "IGCC", default)]
     pub igcc: bool,
-    /// Spacetime Topology Expansion Modulator
-    ///
-    /// Increases fuel efficiency by multiplying actual fuel consumption by `0.8`.
-    #[serde(rename = "STEM", default)]
-    pub stem: bool,
-    /// Cosmic Fuel Chamber Expansion
-    ///
-    /// Multiplies the maximum fuel consumption by `1.2`.
-    #[serde(rename = "CFCE", default)]
-    pub cfce: bool,
     /// Graviton-Induced Superconductivity System
     ///
     /// Increases the base processing voltage of all modules by:
     /// `Stellar Fuel Units/sec * 10^8 EU/t`
     #[serde(rename = "GISS", default)]
     pub giss: bool,
-    /// Fluid Dynamics Integration Module
-    ///
-    /// Unlocks the Helioflux Melting Core module.
-    #[serde(rename = "FDIM", default)]
-    pub fdim: bool,
     /// Superluminal Amplifier
     ///
     /// Unlocks a multiplier to maximum parallel based on fuel consumption rate.
