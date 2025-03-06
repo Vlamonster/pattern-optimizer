@@ -53,11 +53,19 @@ impl Overclock for HelioflarePowerForge {
         machine: &MachineConfiguration,
         recipe: &Recipe,
         _tier: u64,
-        energy_modifier: f64,
+        mut energy_modifier: f64,
     ) -> f64 {
+        // Heat discounts
         let heat = Self::effective_heat(machine);
         let discounts = (heat - recipe.special as u64) / 900;
-        energy_modifier * f64::powi(0.95, discounts as i32)
+        energy_modifier *= f64::powi(0.95, discounts as i32);
+
+        // Assume the user always uses an appropriate battery size
+        if machine.upgrades.rec {
+            energy_modifier *= 0.95;
+        }
+
+        energy_modifier
     }
 
     fn speed_modifier(&self, machine: &MachineConfiguration, speed_modifier: f64) -> f64 {
