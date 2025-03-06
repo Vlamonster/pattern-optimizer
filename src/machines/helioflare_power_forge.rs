@@ -63,7 +63,7 @@ impl Overclock for HelioflarePowerForge {
 
         // Adjust energy consumption based on machine and recipe specifics
         let energy_modifier = self.energy_modifier(machine, recipe, 0, energy_modifier);
-        let energy_used = f64::ceil(energy_usage as f64 * energy_modifier) as u64;
+        let energy_used = f64::ceil(recipe.energy_usage as f64 * energy_modifier) as u64;
 
         // Determine overclock levels
         let overclocks = u64::ilog(energy_usage / energy_used, 4) as u64;
