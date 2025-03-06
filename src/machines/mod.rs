@@ -5,7 +5,7 @@ mod cryogenic_freezer;
 mod dissection_apparatus;
 mod electric_implosion_compressor;
 mod fluid_shaper;
-mod god_forge;
+mod helioflare_power_forge;
 mod high_current_industrial_arc_furnace;
 mod hyper_intensity_laser_engraver;
 mod industrial_autoclave;
@@ -34,20 +34,17 @@ mod vacuum_freezer;
 mod volcanus;
 mod zyngen;
 
-use crate::machines::circuit_assembly_line::CircuitAssemblyLine;
-use crate::machines::component_assembly_line::ComponentAssemblyLine;
-use crate::machines::high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
-use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
-use crate::machines::large_sifter_control_block::LargeSifterControlBlock;
-use crate::machines::mega_distillation_tower::MegaDistillationTower;
-use crate::machines::zyngen::Zyngen;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
+use circuit_assembly_line::CircuitAssemblyLine;
+use component_assembly_line::ComponentAssemblyLine;
 use cryogenic_freezer::CryogenicFreezer;
 use dissection_apparatus::DissectionApparatus;
 use electric_implosion_compressor::ElectricImplosionCompressor;
 use fluid_shaper::FluidShaper;
+use helioflare_power_forge::HelioflarePowerForge;
+use high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use hyper_intensity_laser_engraver::HyperIntensityLaserEngraver;
 use industrial_autoclave::IndustrialAutoclave;
 use industrial_centrifuge::IndustrialCentrifuge;
@@ -57,12 +54,15 @@ use industrial_extrusion_machine::IndustrialExtrusionMachine;
 use industrial_maceration_stack::IndustrialMacerationStack;
 use industrial_material_press::IndustrialMaterialPress;
 use industrial_mixing_machine::IndustrialMixingMachine;
+use industrial_precision_lathe::IndustrialPrecisionLathe;
 use industrial_sledgehammer::IndustrialSledgehammer;
 use industrial_wire_factory::IndustrialWireFactory;
 use large_fluid_extractor::LargeFluidExtractor;
+use large_sifter_control_block::LargeSifterControlBlock;
 use mega_alloy_blast_smelter::MegaAlloyBlastSmelter;
 use mega_blast_furnace::MegaBlastFurnace;
 use mega_chemical_reactor::MegaChemicalReactor;
+use mega_distillation_tower::MegaDistillationTower;
 use mega_vacuum_freezer::MegaVacuumFreezer;
 use ore_washing_plant::OreWashingPlant;
 use precise_auto_assembler_mt_3662::PreciseAutoAssemblerMT3662;
@@ -70,6 +70,7 @@ use pseudostable_black_hole_containment_field::PseudostableBlackHoleContainmentF
 use utupu_tanuri::UtupuTanuri;
 use vacuum_freezer::VacuumFreezer;
 use volcanus::Volcanus;
+use zyngen::Zyngen;
 
 macro_rules! machine_batch_match {
     ($machine:expr, $ticks:expr, $recipe:expr, { $($name:literal => $struct:ident),* $(,)? }) => {
@@ -116,6 +117,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Circuit Assembly Line" => CircuitAssemblyLine,
         "Component Assembly Line" => ComponentAssemblyLine,
         "Mega Distillation Tower" => MegaDistillationTower,
+        "Helioflare Power Forge" => HelioflarePowerForge,
     })
 }
 
