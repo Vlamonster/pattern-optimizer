@@ -14,10 +14,12 @@ impl HelioflarePowerForge {
     }
 
     fn effective_heat(machine: &MachineConfiguration) -> u64 {
-        u64::min(
-            Self::effective_heat_capacity(&machine.upgrades),
-            Self::heat(machine),
-        )
+        let heat = Self::heat(machine);
+        if machine.upgrades.ndpe && heat > 30_000 {
+            30_000 + f64::powf((heat - 30_000) as f64, 0.85) as u64
+        } else {
+            u64::min(Self::effective_heat_capacity(&machine.upgrades), heat)
+        }
     }
 
     fn effective_heat_capacity(upgrades: &GorgeUpgrades) -> u64 {
