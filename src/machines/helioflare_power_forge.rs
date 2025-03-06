@@ -31,6 +31,14 @@ impl HelioflarePowerForge {
             2_000_000_000
         }
     }
+
+    fn parallels(machine: &MachineConfiguration) -> u64 {
+        if machine.upgrades.sa {
+            (1024.0 * (1.0 + machine.dtr as f64 / 15.0)) as u64
+        } else {
+            1024
+        }
+    }
 }
 
 impl Overclock for HelioflarePowerForge {
@@ -73,6 +81,7 @@ impl Overclock for HelioflarePowerForge {
         if !machine.upgrades.start {
             panic!("Missing upgrade START");
         }
+        let parallels = Self::parallels(machine);
         let energy_usage = Self::energy_usage(machine);
         let speed_modifier = machine.speed_modifier.unwrap_or(Self::SPEED_MODIFIER);
         let energy_modifier = machine.energy_modifier.unwrap_or(Self::ENERGY_MODIFIER);
@@ -110,9 +119,9 @@ impl Overclock for HelioflarePowerForge {
             let duration = (corrected_processing_time as f64
                 * (advised_batch as f64 / effective_parallels as f64))
                 as u64;
-            (1024 * advised_batch, duration)
+            (parallels * advised_batch, duration)
         } else {
-            (1024 * effective_parallels, corrected_processing_time)
+            (parallels * effective_parallels, corrected_processing_time)
         }
     }
 }
