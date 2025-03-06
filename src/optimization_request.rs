@@ -161,12 +161,6 @@ pub struct GorgeUpgrades {
     /// Adds a `2×` multiplier to maximum parallel.
     #[serde(rename = "CTCDD", default)]
     pub ctcdd: bool,
-    /// Quark-Gluon Plasma Isolation Unit
-    ///
-    /// Unlocks the Heliofusion Exoticizer module and quark-gluon plasma creation.
-    /// This module is **not** affected by multipliers or bonuses from other upgrades.
-    #[serde(rename = "QGPIU", default)]
-    pub qgpiu: bool,
     /// Singularity Exposure Fuel Compression Process
     ///
     /// Improves the fuel consumption → heat conversion formula.
