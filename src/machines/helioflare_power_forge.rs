@@ -6,7 +6,7 @@ pub struct HelioflarePowerForge();
 
 impl HelioflarePowerForge {
     fn heat(dtr: u64) -> u64 {
-        (dtr as f64 * 300.0 * f64::powi(1.15, dtr as i32)) as u64
+        (f64::log2(dtr as f64) / f64::log2(1.5) * 1000.0) as u64 + 12_601
     }
 
     fn effective_heat_capacity(upgrades: &GorgeUpgrades) -> u64 {
