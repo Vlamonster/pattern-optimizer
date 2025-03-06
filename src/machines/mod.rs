@@ -24,6 +24,7 @@ mod large_sifter_control_block;
 mod mega_alloy_blast_smelter;
 mod mega_blast_furnace;
 mod mega_chemical_reactor;
+mod mega_distillation_tower;
 mod mega_vacuum_freezer;
 mod ore_washing_plant;
 mod precise_auto_assembler_mt_3662;
@@ -38,6 +39,7 @@ use crate::machines::component_assembly_line::ComponentAssemblyLine;
 use crate::machines::high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use crate::machines::industrial_precision_lathe::IndustrialPrecisionLathe;
 use crate::machines::large_sifter_control_block::LargeSifterControlBlock;
+use crate::machines::mega_distillation_tower::MegaDistillationTower;
 use crate::machines::zyngen::Zyngen;
 use crate::model::Recipe;
 use crate::optimization_request::MachineConfiguration;
@@ -113,6 +115,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Large Sifter Control Block" => LargeSifterControlBlock,
         "Circuit Assembly Line" => CircuitAssemblyLine,
         "Component Assembly Line" => ComponentAssemblyLine,
+        "Mega Distillation Tower" => MegaDistillationTower,
     })
 }
 

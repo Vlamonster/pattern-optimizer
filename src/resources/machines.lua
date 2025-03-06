@@ -228,6 +228,11 @@ local machines = {
         energyUsage = 65536 * UEV, -- 65_536
         tier = 12,
     },
+    ["mdt"] = {
+        id = "Mega Distillation Tower",
+        recipes = {"Distillation Tower"},
+        energyUsage = 64 * UMV,
+    },
     --["godforge"] = { id = "God Forge", energyUsage = 2 * G },
     --["compressor"] = { id = "Large Electric Compressor", recipes = { "Compressor" }, energyUsage = 1 * ULV },
     --["hipcompressor"] = { id = "Hot Isostatic Pressurization Unit", recipes = { "Compressor" }, energyUsage = 1 * ULV },
