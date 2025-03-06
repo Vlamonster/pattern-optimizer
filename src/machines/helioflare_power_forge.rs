@@ -40,7 +40,7 @@ impl Overclock for HelioflarePowerForge {
 
     fn speed_modifier(&self, machine: &MachineConfiguration, speed_modifier: f64) -> f64 {
         if machine.upgrades.igcc {
-            speed_modifier / f64::powf(Self::effective_heat(machine) as f64, 0.01)
+            speed_modifier * f64::powf(Self::effective_heat(machine) as f64, 0.01)
         } else {
             speed_modifier
         }
