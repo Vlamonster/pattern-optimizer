@@ -148,12 +148,6 @@ pub struct GorgeUpgrades {
     /// `Multiplier = 1 + (Stellar Fuel Units/sec) / 15`
     #[serde(rename = "SA", default)]
     pub sa: bool,
-    /// Gravitational Plasma Containment Inductor
-    ///
-    /// Unlocks the Heliothermal Plasma Fabricator module
-    /// and basic element → plasma processing (1-step plasmas, T3 fusion maximum).
-    #[serde(rename = "GPCI", default)]
-    pub gpci: bool,
     /// Relativistic Electron Capacitor
     ///
     /// - Unlocks a configuration window for maximum battery size and increases the limit to `max int`.
@@ -162,16 +156,11 @@ pub struct GorgeUpgrades {
     ///   `Discount = (1 - 1.05^(-0.05 * Max Battery Capacity)) / 20`
     #[serde(rename = "REC", default)]
     pub rec: bool,
-    /// Graviton Entanglement Modulator
-    ///
-    /// Increases maximum fuel consumption by `1 Stellar Fuel Unit/sec` for every purchased upgrade.
-    #[serde(rename = "GEM", default)]
-    pub gem: bool,
     /// Closed Timelike Curve Disruption Device
     ///
     /// Adds a `2×` multiplier to maximum parallel.
     #[serde(rename = "CTCDD", default)]
-    pub ctccdd: bool,
+    pub ctcdd: bool,
     /// Quark-Gluon Plasma Isolation Unit
     ///
     /// Unlocks the Heliofusion Exoticizer module and quark-gluon plasma creation.

@@ -33,11 +33,17 @@ impl HelioflarePowerForge {
     }
 
     fn parallels(machine: &MachineConfiguration) -> u64 {
+        let mut multiplier = 1.0;
+
         if machine.upgrades.sa {
-            (1024.0 * (1.0 + machine.dtr as f64 / 15.0)) as u64
-        } else {
-            1024
+            multiplier *= 1.0 + machine.dtr as f64 / 15.0;
         }
+
+        if machine.upgrades.ctcdd {
+            multiplier *= 2.0;
+        }
+
+        (1024.0 * multiplier) as u64
     }
 }
 
