@@ -21,7 +21,9 @@ impl HelioflarePowerForge {
     }
 
     fn effective_heat_capacity(upgrades: &GorgeUpgrades) -> u64 {
-        if upgrades.start {
+        if upgrades.cnti {
+            30_000
+        } else if upgrades.start {
             15_000
         } else {
             todo!("Case not handled yet!")
