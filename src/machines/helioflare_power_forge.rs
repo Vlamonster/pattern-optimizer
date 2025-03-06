@@ -33,11 +33,17 @@ impl HelioflarePowerForge {
     }
 
     fn energy_usage(machine: &MachineConfiguration) -> u64 {
+        let mut energy_usage = 2_000_000_000;
+
         if machine.upgrades.giss {
-            2_000_000_000 + 100_000_000 * machine.dtr
-        } else {
-            2_000_000_000
+            energy_usage += 100_000_000 * machine.dtr
         }
+
+        if machine.upgrades.ngms {
+            energy_usage <<= 2 * machine.rings;
+        }
+
+        energy_usage
     }
 
     fn parallels(machine: &MachineConfiguration) -> u64 {

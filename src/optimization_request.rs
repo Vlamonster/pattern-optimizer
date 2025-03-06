@@ -59,60 +59,42 @@ pub struct MachineConfiguration {
     pub energy_modifier: Option<f64>,
     #[serde(rename = "maximumOverclockTier", default = "maximum_overclock_tier")]
     pub maximum_overclock_tier: u64,
-    #[serde(rename = "tier", default = "tier")]
+    #[serde(rename = "tier", default = "one")]
     pub tier: u64,
     #[serde(rename = "width", default)]
     pub width: u64,
     #[serde(rename = "height", default)]
     pub height: u64,
-    #[serde(rename = "solenoidTier", default = "solenoid_tier")]
+    #[serde(rename = "solenoidTier", default = "one")]
     pub solenoid_tier: u64,
-    #[serde(rename = "coilTier", default = "coil_tier")]
+    #[serde(rename = "coilTier", default = "one")]
     pub coil_tier: u64,
     #[serde(rename = "laserAmperage", default = "laser_amperage")]
     pub laser_amperage: u64,
-    #[serde(rename = "pipeCasingTier", default = "pipe_casing_tier")]
+    #[serde(rename = "pipeCasingTier", default = "one")]
     pub pipe_casing_tier: u64,
-    #[serde(rename = "itemPipeCasingTier", default = "item_pipe_casing_tier")]
+    #[serde(rename = "itemPipeCasingTier", default = "one")]
     pub item_pipe_casing_tier: u64,
-    #[serde(rename = "glassTier", default = "glass_tier")]
+    #[serde(rename = "glassTier", default = "one")]
     pub glass_tier: u64,
     #[serde(rename = "upgrades", default)]
     pub upgrades: GorgeUpgrades,
     #[serde(rename = "dtr", default)]
     pub dtr: u64,
+    #[serde(rename = "rings", default = "one")]
+    pub rings: u64,
+}
+
+fn one() -> u64 {
+    1
 }
 
 fn maximum_overclock_tier() -> u64 {
     u64::MAX
 }
 
-fn coil_tier() -> u64 {
-    1
-}
-
-fn solenoid_tier() -> u64 {
-    2
-}
-
-fn tier() -> u64 {
-    1
-}
-
 fn laser_amperage() -> u64 {
     32
-}
-
-fn pipe_casing_tier() -> u64 {
-    1
-}
-
-fn item_pipe_casing_tier() -> u64 {
-    1
-}
-
-fn glass_tier() -> u64 {
-    1
 }
 
 #[derive(Deserialize, Debug, Default)]
