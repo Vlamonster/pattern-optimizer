@@ -57,7 +57,11 @@ impl Overclock for HelioflarePowerForge {
     ) -> f64 {
         // Heat discounts
         let heat = Self::effective_heat(machine);
-        let discounts = (heat - recipe.special as u64) / 900;
+        let recipe_heat = u64::min(
+            recipe.special as u64,
+            Self::effective_heat_capacity(&machine.upgrades),
+        );
+        let discounts = (heat - recipe_heat) / 900;
         energy_modifier *= f64::powi(0.95, discounts as i32);
 
         // Assume the user always uses an appropriate battery size
