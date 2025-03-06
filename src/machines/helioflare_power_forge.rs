@@ -9,6 +9,13 @@ impl HelioflarePowerForge {
         (f64::log2(dtr as f64) / f64::log2(1.5) * 1000.0) as u64 + 12_601
     }
 
+    fn effective_heat(machine: &MachineConfiguration) -> u64 {
+        u64::min(
+            Self::effective_heat_capacity(&machine.upgrades),
+            Self::heat(machine.dtr),
+        )
+    }
+
     fn effective_heat_capacity(upgrades: &GorgeUpgrades) -> u64 {
         if upgrades.start {
             15_000
@@ -26,12 +33,17 @@ impl Overclock for HelioflarePowerForge {
         _tier: u64,
         energy_modifier: f64,
     ) -> f64 {
-        let heat = u64::min(
-            Self::effective_heat_capacity(&machine.upgrades),
-            Self::heat(machine.dtr),
-        );
+        let heat = Self::effective_heat(machine);
         let discounts = (heat - recipe.special as u64) / 900;
         energy_modifier * f64::powi(0.95, discounts as i32)
+    }
+
+    fn speed_modifier(&self, machine: &MachineConfiguration, speed_modifier: f64) -> f64 {
+        if machine.upgrades.igcc {
+            speed_modifier / f64::powf(Self::effective_heat(machine) as f64, 0.01)
+        } else {
+            speed_modifier
+        }
     }
 
     fn perfect_overclocks(
@@ -40,10 +52,7 @@ impl Overclock for HelioflarePowerForge {
         recipe: &Recipe,
         _tier: u64,
     ) -> u64 {
-        let heat = u64::min(
-            Self::effective_heat_capacity(&machine.upgrades),
-            Self::heat(machine.dtr),
-        );
+        let heat = Self::effective_heat(machine);
         (heat - recipe.special as u64) / 1800
     }
 
