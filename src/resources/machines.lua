@@ -257,7 +257,6 @@ local machines = {
             PoS = false,
             DoR = false,
             NGMS = true,
-            SEDS = false,
             PA = false,
             CD = false,
             TSE = false,

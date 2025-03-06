@@ -223,11 +223,6 @@ pub struct GorgeUpgrades {
     /// *(Applies after other bonuses.)*
     #[serde(rename = "NGMS", default)]
     pub ngms: bool,
-    /// Synthetic Element Decay Stabilization
-    ///
-    /// Allows the Heliothermal Plasma Fabricator to process up to T5 plasmas.
-    #[serde(rename = "SEDS", default)]
-    pub seds: bool,
     /// Paradoxical Attainment
     ///
     /// Allows the Heliofusion Exoticizer to be affected by other upgrade benefits,
