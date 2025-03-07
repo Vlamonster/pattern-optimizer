@@ -27,6 +27,7 @@ mod mega_blast_furnace;
 mod mega_chemical_reactor;
 mod mega_distillation_tower;
 mod mega_vacuum_freezer;
+mod multi_smelter;
 mod ore_washing_plant;
 mod precise_auto_assembler_mt_3662;
 mod pseudostable_black_hole_containment_field;
@@ -66,6 +67,7 @@ use mega_blast_furnace::MegaBlastFurnace;
 use mega_chemical_reactor::MegaChemicalReactor;
 use mega_distillation_tower::MegaDistillationTower;
 use mega_vacuum_freezer::MegaVacuumFreezer;
+use multi_smelter::MultiSmelter;
 use ore_washing_plant::OreWashingPlant;
 use precise_auto_assembler_mt_3662::PreciseAutoAssemblerMT3662;
 use pseudostable_black_hole_containment_field::PseudostableBlackHoleContainmentField;
@@ -125,6 +127,7 @@ pub fn advised_batch(
         "Mega Distillation Tower" => MegaDistillationTower,
         "Helioflare Power Forge" => HelioflarePowerForge,
         "Helioflux Melting Core" => HeliofluxMeltingCore,
+        "Multi Smelter" => MultiSmelter,
     })
 }
 

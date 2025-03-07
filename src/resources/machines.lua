@@ -276,6 +276,12 @@ local machines = {
         rings = 1,
         upgrades = upgrades,
     },
+    ["smelter"] = {
+        id = "Multi Smelter",
+        recipes = {"Multi Smelter"},
+        energyUsage = 4 * UEV,
+        coilTier = 11,
+    },
 }
 
 return machines
