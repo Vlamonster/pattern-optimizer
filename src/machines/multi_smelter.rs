@@ -1,4 +1,5 @@
 use crate::machines::Overclock;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 
 pub struct MultiSmelter();
@@ -12,5 +13,14 @@ impl Overclock for MultiSmelter {
         machine: &MachineConfiguration,
     ) -> u64 {
         4 << machine.coil_tier
+    }
+
+    fn perfect_overclocks(
+        &self,
+        _machine: &MachineConfiguration,
+        _recipe: &GregTechRecipe,
+        _tier: u64,
+    ) -> u64 {
+        u64::MAX
     }
 }
