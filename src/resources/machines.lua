@@ -21,6 +21,35 @@ local T = 1000 * G
 
 local INF = (1 << 63) - 1
 
+-- Upgrades for Gorge
+local upgrades = {
+    START = true,
+    IGCC = true,
+    GISS = true,
+    SA = true,
+    REC = true,
+    CTCDD = true,
+    SEFCP = true,
+    TCT = false,
+    GGEBE = false,
+    TPTP = false,
+    CNTI = true,
+    EPEC = false,
+    IMKG = false,
+    DoP = false,
+    NDPE = true,
+    PoS = false,
+    DoR = false,
+    NGMS = true,
+    PA = false,
+    CD = false,
+    TSE = false,
+    TSE = false,
+    TBF = false,
+    EE = false,
+    END = false,
+}
+
 local machines = {
     ["bender"] = {
         id = "Industrial Material Press",
@@ -238,33 +267,14 @@ local machines = {
         recipes = {"Blast Furnace"},
         dtr = 18, -- Dimensionally Transcendent Residue Factor
         rings = 1,
-        upgrades = {
-            START = true,
-            IGCC = true,
-            GISS = true,
-            SA = true,
-            REC = true,
-            CTCDD = true,
-            SEFCP = true,
-            TCT = false,
-            GGEBE = false,
-            TPTP = false,
-            CNTI = true,
-            EPEC = false,
-            IMKG = false,
-            DoP = false,
-            NDPE = true,
-            PoS = false,
-            DoR = false,
-            NGMS = true,
-            PA = false,
-            CD = false,
-            TSE = false,
-            TSE = false,
-            TBF = false,
-            EE = false,
-            END = false,
-        },
+        upgrades = upgrades,
+    },
+    ["gorge2"] = {
+        id = "Helioflux Melting Core",
+        recipes = {"Blast Furnace"}, -- This should be changed in future so it returns fluids!
+        dtr = 18, -- Dimensionally Transcendent Residue Factor
+        rings = 1,
+        upgrades = upgrades,
     },
 }
 

@@ -6,6 +6,7 @@ mod dissection_apparatus;
 mod electric_implosion_compressor;
 mod fluid_shaper;
 mod helioflare_power_forge;
+mod helioflux_melting_core;
 mod high_current_industrial_arc_furnace;
 mod hyper_intensity_laser_engraver;
 mod industrial_autoclave;
@@ -44,6 +45,7 @@ use dissection_apparatus::DissectionApparatus;
 use electric_implosion_compressor::ElectricImplosionCompressor;
 use fluid_shaper::FluidShaper;
 use helioflare_power_forge::HelioflarePowerForge;
+use helioflux_melting_core::HeliofluxMeltingCore;
 use high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use hyper_intensity_laser_engraver::HyperIntensityLaserEngraver;
 use industrial_autoclave::IndustrialAutoclave;
@@ -118,6 +120,7 @@ pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe
         "Component Assembly Line" => ComponentAssemblyLine,
         "Mega Distillation Tower" => MegaDistillationTower,
         "Helioflare Power Forge" => HelioflarePowerForge,
+        "Helioflux Melting Core" => HeliofluxMeltingCore,
     })
 }
 
