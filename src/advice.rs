@@ -1,4 +1,4 @@
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use serde::Serialize;
 use std::collections::HashMap;
 use std::iter::once;
@@ -32,7 +32,7 @@ pub struct AdvisedItem {
 
 pub fn advise(
     meta_map: &HashMap<String, u64>,
-    recipe: &Recipe,
+    recipe: &GregTechRecipe,
     advised_batch: u64,
     duration: u64,
 ) -> OptimizedPattern {

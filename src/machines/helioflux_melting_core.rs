@@ -1,5 +1,5 @@
 use crate::machines::Overclock;
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::{GorgeUpgrades, MachineConfiguration};
 
 pub struct HeliofluxMeltingCore();
@@ -65,7 +65,7 @@ impl Overclock for HeliofluxMeltingCore {
     fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
         _tier: u64,
         mut energy_modifier: f64,
     ) -> f64 {
@@ -97,7 +97,7 @@ impl Overclock for HeliofluxMeltingCore {
     fn perfect_overclocks(
         &self,
         machine: &MachineConfiguration,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
         _tier: u64,
     ) -> u64 {
         let heat = Self::effective_heat(machine);
@@ -108,7 +108,7 @@ impl Overclock for HeliofluxMeltingCore {
         &self,
         machine: &MachineConfiguration,
         ticks: u64,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
     ) -> (u64, u64) {
         if !machine.upgrades.start {
             panic!("Missing upgrade START");

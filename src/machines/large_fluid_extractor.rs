@@ -1,5 +1,5 @@
 use crate::machines::Overclock;
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 
 pub struct LargeFluidExtractor();
@@ -25,7 +25,7 @@ impl Overclock for LargeFluidExtractor {
     fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
-        _recipe: &Recipe,
+        _recipe: &GregTechRecipe,
         _tier: u64,
         energy_modifier: f64,
     ) -> f64 {

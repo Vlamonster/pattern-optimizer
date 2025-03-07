@@ -1,6 +1,6 @@
 use crate::advice::{advise, OptimizedPattern};
 use crate::machines::advised_batch;
-use crate::model::RecipeDatabase;
+use crate::model::{FurnaceRecipe, GregTechRecipe, RecipeDatabase};
 use crate::optimization_request::OptimizationRequest;
 use serde_json::{json, Deserializer};
 use std::collections::HashMap;
@@ -66,41 +66,86 @@ pub fn process_request(
     recipes: &RecipeDatabase,
 ) -> RecipeLookupResult {
     let mut machine_present = false;
+
+    // Check Multi Smelter recipes
+    if request
+        .machine
+        .recipes
+        .contains(&"Multi Smelter".to_string())
+    {
+        machine_present = true;
+
+        if let Some(recipe) = recipes
+            .smelting
+            .iter()
+            .map(furnace_to_gregtech_recipe)
+            .find(|recipe| matches_request(recipe, request))
+        {
+            return optimize_recipe(request, &recipe);
+        }
+    }
+
+    // Check other GregTech machines
     for machine in &recipes.machines {
         if !request.machine.recipes.contains(&machine.name) {
             continue;
         }
         machine_present = true;
-        if let Some(recipe) = machine.recipes.iter().find(|recipe| {
-            request.inputs.iter().all(|request_item| {
-                if let Some(fluid_drop) = &request_item.fluid_drop {
-                    recipe
-                        .fluid_inputs
-                        .iter()
-                        .any(|recipe_fluid| recipe_fluid.id == fluid_drop.name)
-                } else {
-                    recipe.item_inputs.iter().any(|recipe_item| {
-                        recipe_item.id.as_ref() == Some(&request_item.name)
-                            && (recipe_item.meta == request_item.damage
-                                || recipe_item.meta == 32767)
-                    })
-                }
-            })
-        }) {
-            let meta_map = recipe
-                .item_inputs
-                .iter()
-                .filter(|input| input.meta == 32767)
-                .map(|input| (input.id.clone().unwrap(), input.meta))
-                .collect::<HashMap<String, u64>>();
-            let (advised_batch, duration) = advised_batch(&request.machine, request.ticks, recipe);
-            let optimized_pattern = advise(&meta_map, recipe, advised_batch, duration);
-            return RecipeLookupResult::Found(optimized_pattern);
+
+        if let Some(recipe) = machine
+            .recipes
+            .iter()
+            .find(|recipe| matches_request(recipe, request))
+        {
+            return optimize_recipe(request, recipe);
         }
     }
+
     if machine_present {
         RecipeLookupResult::RecipeNotFound
     } else {
         RecipeLookupResult::MachineNotFound
     }
+}
+
+fn furnace_to_gregtech_recipe(recipe: &FurnaceRecipe) -> GregTechRecipe {
+    GregTechRecipe {
+        enabled: true,
+        duration: 512,
+        energy_usage: 4,
+        special: 0,
+        item_inputs: vec![recipe.input.clone()],
+        item_outputs: vec![recipe.output.clone()],
+        fluid_inputs: vec![],
+        fluid_outputs: vec![],
+    }
+}
+
+fn matches_request(recipe: &GregTechRecipe, request: &OptimizationRequest) -> bool {
+    request.inputs.iter().all(|request_item| {
+        if let Some(fluid_drop) = &request_item.fluid_drop {
+            recipe
+                .fluid_inputs
+                .iter()
+                .any(|recipe_fluid| recipe_fluid.id == fluid_drop.name)
+        } else {
+            recipe.item_inputs.iter().any(|recipe_item| {
+                recipe_item.id.as_ref() == Some(&request_item.name)
+                    && (recipe_item.meta == request_item.damage || recipe_item.meta == 32767)
+            })
+        }
+    })
+}
+
+fn optimize_recipe(request: &OptimizationRequest, recipe: &GregTechRecipe) -> RecipeLookupResult {
+    let meta_variants = recipe
+        .item_inputs
+        .iter()
+        .filter(|input| input.meta == 32767)
+        .map(|input| (input.id.clone().unwrap(), input.meta))
+        .collect::<HashMap<String, u64>>();
+
+    let (batch_size, duration) = advised_batch(&request.machine, request.ticks, recipe);
+    let optimized_pattern = advise(&meta_variants, recipe, batch_size, duration);
+    RecipeLookupResult::Found(optimized_pattern)
 }

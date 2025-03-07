@@ -1,5 +1,5 @@
 use crate::machines::Overclock;
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 
 pub struct MegaAlloyBlastSmelter();
@@ -18,7 +18,7 @@ impl Overclock for MegaAlloyBlastSmelter {
     fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
         _tier: u64,
         energy_modifier: f64,
     ) -> f64 {

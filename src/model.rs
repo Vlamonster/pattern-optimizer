@@ -8,6 +8,7 @@ use serde::Deserialize;
 #[derive(Deserialize, Debug)]
 pub struct RecipeDatabase {
     pub machines: Vec<Machine>,
+    pub smelting: Vec<FurnaceRecipe>,
 }
 
 /// Represents a specific machine and its associated processing recipes.
@@ -20,7 +21,7 @@ pub struct Machine {
     #[serde(rename = "n")]
     pub name: String,
     #[serde(rename = "recs")]
-    pub recipes: Vec<Recipe>,
+    pub recipes: Vec<GregTechRecipe>,
 }
 
 /// Represents a machine processing recipe, including inputs, outputs, and processing details.
@@ -36,7 +37,7 @@ pub struct Machine {
 /// - `fluid_outputs`: A list of produced fluid outputs from the recipe.
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
-pub struct Recipe {
+pub struct GregTechRecipe {
     #[serde(rename = "en")]
     pub enabled: bool,
     #[serde(rename = "dur")]
@@ -53,6 +54,14 @@ pub struct Recipe {
     pub fluid_inputs: Vec<RecipeFluid>,
     #[serde(rename = "fO")]
     pub fluid_outputs: Vec<RecipeFluid>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct FurnaceRecipe {
+    #[serde(rename = "input")]
+    pub input: RecipeItem,
+    #[serde(rename = "output")]
+    pub output: RecipeItem,
 }
 
 /// Represents an item entry in the recipe database, including quantity, metadata, and NBT data.

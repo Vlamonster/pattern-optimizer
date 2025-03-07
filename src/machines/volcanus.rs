@@ -1,5 +1,5 @@
 use crate::machines::Overclock;
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 
 pub struct Volcanus();
@@ -12,7 +12,7 @@ impl Overclock for Volcanus {
     fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
         _tier: u64,
         energy_modifier: f64,
     ) -> f64 {
@@ -24,7 +24,7 @@ impl Overclock for Volcanus {
     fn perfect_overclocks(
         &self,
         machine: &MachineConfiguration,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
         _tier: u64,
     ) -> u64 {
         let heat = 901 + 900 * machine.coil_tier;

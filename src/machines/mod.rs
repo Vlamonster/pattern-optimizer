@@ -35,7 +35,7 @@ mod vacuum_freezer;
 mod volcanus;
 mod zyngen;
 
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
 use circuit_assembly_line::CircuitAssemblyLine;
@@ -83,7 +83,11 @@ macro_rules! machine_batch_match {
     };
 }
 
-pub fn advised_batch(machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> (u64, u64) {
+pub fn advised_batch(
+    machine: &MachineConfiguration,
+    ticks: u64,
+    recipe: &GregTechRecipe,
+) -> (u64, u64) {
     machine_batch_match!(machine, ticks, recipe, {
         "Industrial Material Press" => IndustrialMaterialPress,
         "Industrial Extrusion Machine" => IndustrialExtrusionMachine,
@@ -147,7 +151,7 @@ pub trait Overclock {
     fn energy_modifier(
         &self,
         _machine: &MachineConfiguration,
-        _recipe: &Recipe,
+        _recipe: &GregTechRecipe,
         _tier: u64,
         energy_modifier: f64,
     ) -> f64 {
@@ -157,14 +161,14 @@ pub trait Overclock {
     fn perfect_overclocks(
         &self,
         _machine: &MachineConfiguration,
-        _recipe: &Recipe,
+        _recipe: &GregTechRecipe,
         _tier: u64,
     ) -> u64 {
         0
     }
 
     #[rustfmt::skip]
-    fn advised_batch(&self, machine: &MachineConfiguration, ticks: u64, recipe: &Recipe) -> (u64, u64) {
+    fn advised_batch(&self, machine: &MachineConfiguration, ticks: u64, recipe: &GregTechRecipe) -> (u64, u64) {
         // Extract machine parameters or fallback to defaults
         let parallels_offset = machine.parallels_offset.unwrap_or(Self::PARALLELS_OFFSET);
         let parallels_per_tier = machine.parallels_per_tier.unwrap_or(Self::PARALLELS_PER_TIER);

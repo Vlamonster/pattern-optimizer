@@ -1,5 +1,5 @@
 use crate::machines::Overclock;
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 
 pub struct MegaVacuumFreezer();
@@ -10,7 +10,7 @@ impl Overclock for MegaVacuumFreezer {
     fn perfect_overclocks(
         &self,
         machine: &MachineConfiguration,
-        _recipe: &Recipe,
+        _recipe: &GregTechRecipe,
         _tier: u64,
     ) -> u64 {
         machine.tier

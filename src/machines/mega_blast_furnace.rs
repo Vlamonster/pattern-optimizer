@@ -1,5 +1,5 @@
 use crate::machines::Overclock;
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 
 pub struct MegaBlastFurnace();
@@ -10,7 +10,7 @@ impl Overclock for MegaBlastFurnace {
     fn energy_modifier(
         &self,
         machine: &MachineConfiguration,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
         tier: u64,
         energy_modifier: f64,
     ) -> f64 {
@@ -22,7 +22,7 @@ impl Overclock for MegaBlastFurnace {
     fn perfect_overclocks(
         &self,
         machine: &MachineConfiguration,
-        recipe: &Recipe,
+        recipe: &GregTechRecipe,
         tier: u64,
     ) -> u64 {
         let heat = 901 + 900 * machine.coil_tier + 100 * (u64::saturating_sub(tier, 2));

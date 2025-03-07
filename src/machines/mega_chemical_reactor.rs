@@ -1,5 +1,5 @@
 use crate::machines::Overclock;
-use crate::model::Recipe;
+use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 
 pub struct MegaChemicalReactor();
@@ -11,7 +11,7 @@ impl Overclock for MegaChemicalReactor {
     fn perfect_overclocks(
         &self,
         _machine: &MachineConfiguration,
-        _recipe: &Recipe,
+        _recipe: &GregTechRecipe,
         _tier: u64,
     ) -> u64 {
         u64::MAX
