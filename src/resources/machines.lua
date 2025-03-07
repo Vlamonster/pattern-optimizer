@@ -271,7 +271,7 @@ local machines = {
     },
     ["gorge2"] = {
         id = "Helioflux Melting Core",
-        recipes = {"Blast Furnace"}, -- This should be changed in future so it returns fluids!
+        recipes = {"Helioflux Melting Core"},
         dtr = 18, -- Dimensionally Transcendent Residue Factor
         rings = 1,
         upgrades = upgrades,
