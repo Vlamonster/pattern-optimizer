@@ -11,6 +11,7 @@ pub enum RecipeLookupResult {
     Found(OptimizedPattern),
     RecipeNotFound,
     MachineNotFound,
+    NotEnoughEnergy(u64, u64),
 }
 
 pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
@@ -50,6 +51,15 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
             }
             RecipeLookupResult::MachineNotFound => {
                 let error_message = json!({"error": "Machine not found"});
+                if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
+                {
+                    eprintln!("Failed to write to socket: {error}");
+                    break;
+                }
+                stream.flush().unwrap();
+            }
+            RecipeLookupResult::NotEnoughEnergy(provided, required) => {
+                let error_message = json!({"error": format!("Not enough energy. Provided: {provided}, Required: {required}")});
                 if let Err(error) = stream.write_all((error_message.to_string() + "\n").as_bytes())
                 {
                     eprintln!("Failed to write to socket: {error}");
@@ -138,6 +148,15 @@ fn matches_request(recipe: &GregTechRecipe, request: &OptimizationRequest) -> bo
 }
 
 fn optimize_recipe(request: &OptimizationRequest, recipe: &GregTechRecipe) -> RecipeLookupResult {
+    if request.machine.energy_usage < recipe.energy_usage
+        && !request.machine.id.starts_with("Helio")
+    {
+        return RecipeLookupResult::NotEnoughEnergy(
+            request.machine.energy_usage,
+            recipe.energy_usage,
+        );
+    }
+
     let meta_variants = recipe
         .item_inputs
         .iter()
