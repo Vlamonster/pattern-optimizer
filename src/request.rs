@@ -165,6 +165,6 @@ fn optimize_recipe(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Re
         .collect::<HashMap<String, u64>>();
 
     let (batch_size, duration) = advised_batch(&request.machine, request.ticks, recipe);
-    let optimized_pattern = advise(&meta_variants, recipe, batch_size, duration);
+    let optimized_pattern = advise(&meta_variants, recipe, batch_size, duration, request.skip);
     RecipeLookupResult::Found(optimized_pattern)
 }

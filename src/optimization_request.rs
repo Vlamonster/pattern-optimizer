@@ -5,7 +5,8 @@ use std::fmt::{Display, Formatter};
 ///
 /// # Fields
 /// - `machine`: The name of the machine that should process the pattern.
-/// - `ticks`: The number of ticks to run the machine for at least
+/// - `ticks`: The number of ticks to run the machine for at least.
+/// - `skip`: Indicates whether patterning non-consumed items should be skipped.
 /// - `inputs`: A list of input `Item`s required for the recipe.
 /// - `outputs`: A list of expected output `Item`s.
 #[derive(Deserialize, Debug)]
@@ -15,6 +16,8 @@ pub struct OptimizationRequest {
     pub machine: MachineConfiguration,
     #[serde(rename = "ticks")]
     pub ticks: u64,
+    #[serde(rename = "skip", default)]
+    pub skip: bool,
     #[serde(rename = "inputs")]
     pub inputs: Vec<RequestItem>,
     #[serde(rename = "outputs")]

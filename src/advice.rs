@@ -35,6 +35,7 @@ pub fn advise(
     recipe: &GregTechRecipe,
     advised_batch: u64,
     duration: u64,
+    skip: bool,
 ) -> OptimizedPattern {
     let max_factor = recipe
         .item_inputs
@@ -53,14 +54,18 @@ pub fn advise(
         .min()
         .unwrap();
 
-    let item_inputs = recipe.item_inputs.iter().map(|item| AdvisedItem {
-        id: item.id.clone().unwrap(),
-        amount: u64::max(item.amount * max_factor, 1),
-        meta: *meta_map
-            .get(&item.id.clone().unwrap())
-            .unwrap_or(&item.meta),
-        nbt: item.nbt.clone().unwrap_or_default(),
-    });
+    let item_inputs = recipe
+        .item_inputs
+        .iter()
+        .filter(|item| !skip || item.amount > 0)
+        .map(|item| AdvisedItem {
+            id: item.id.clone().unwrap(),
+            amount: u64::max(item.amount * max_factor, 1),
+            meta: *meta_map
+                .get(&item.id.clone().unwrap())
+                .unwrap_or(&item.meta),
+            nbt: item.nbt.clone().unwrap_or_default(),
+        });
 
     let fluid_inputs = recipe.fluid_inputs.iter().map(|fluid| AdvisedItem {
         id: "ae2fc:fluid_drop".to_string(),
