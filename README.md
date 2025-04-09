@@ -15,9 +15,8 @@
      - `-q, --quiet` → Suppress all output except for errors.
      - `-b, --batch` → Run for approximately 127 ticks, unless the recipe requires more time.
      - `-t, --ticks` → Run for approximately <ticks> ticks, unless the recipe requires more time.
+     - `-s, --skip`  → Skip patterning non-consumed items.
      - `-h, --help`  → Show help information.
-# Future Work
-The optimizer currently only works when non-consumed items are patterned in. A future update will add a flag to ignore these.
 
 # Example Setup
 <img src="src/resources/setup.png" width="600">
