@@ -1,7 +1,7 @@
 use crate::advice::{advise, OptimizedPattern};
 use crate::machines::advised_batch;
-use crate::model::{FurnaceRecipe, GregTechRecipe, RecipeDatabase};
-use crate::optimization_request::OptimizationRequest;
+use crate::model::{FurnaceRecipe, GregTechRecipe, RecipeDatabase, RecipeFluid, RecipeItem};
+use crate::optimization_request::{OptimizationRequest, RequestItem};
 use serde_json::{json, Deserializer};
 use std::collections::HashMap;
 use std::io::Write;
@@ -107,6 +107,7 @@ pub fn process_request(
             .iter()
             .find(|recipe| matches_request(recipe, request))
         {
+            println!("{recipe:?}\n{request:?}");
             return optimize_recipe(request, recipe);
         }
     }
@@ -131,20 +132,31 @@ fn furnace_to_gregtech_recipe(recipe: &FurnaceRecipe) -> GregTechRecipe {
     }
 }
 
-fn matches_request(recipe: &GregTechRecipe, request: &OptimizationRequest) -> bool {
-    request.inputs.iter().all(|request_item| {
-        if let Some(fluid_drop) = &request_item.fluid_drop {
-            recipe
-                .fluid_inputs
-                .iter()
-                .any(|recipe_fluid| recipe_fluid.id == fluid_drop.name)
-        } else {
-            recipe.item_inputs.iter().any(|recipe_item| {
-                recipe_item.id.as_ref() == Some(&request_item.name)
-                    && (recipe_item.meta == request_item.damage || recipe_item.meta == 32767)
-            })
-        }
+fn matches_item(request_item: &RequestItem, recipe_items: &[RecipeItem]) -> bool {
+    recipe_items.iter().any(|recipe_item| {
+        recipe_item.id.as_ref() == Some(&request_item.name)
+            && (recipe_item.meta == request_item.damage || recipe_item.meta == 32767)
     })
+}
+
+fn matches_fluid(request_item: &RequestItem, recipe_fluids: &[RecipeFluid]) -> bool {
+    request_item.fluid_drop.as_ref().is_some_and(|fluid| {
+        recipe_fluids
+            .iter()
+            .any(|recipe_fluid| recipe_fluid.id == fluid.name)
+    })
+}
+
+fn matches_request(recipe: &GregTechRecipe, request: &OptimizationRequest) -> bool {
+    let inputs_match = request.inputs.iter().all(|item| {
+        matches_item(item, &recipe.item_inputs) || matches_fluid(item, &recipe.fluid_inputs)
+    });
+
+    let outputs_match = request.outputs.iter().all(|item| {
+        matches_item(item, &recipe.item_outputs) || matches_fluid(item, &recipe.fluid_outputs)
+    });
+
+    inputs_match && outputs_match
 }
 
 fn optimize_recipe(request: &OptimizationRequest, recipe: &GregTechRecipe) -> RecipeLookupResult {
