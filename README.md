@@ -11,12 +11,13 @@
 4. Configure machines.lua as needed.
 5. Start Optimizing:
    - `optimize list` to show available machines
-   - `optimize run [-q] [-b] [-t <ticks>] [-h] <machine>`
-     - `-q, --quiet` → Suppress all output except for errors.
-     - `-b, --batch` → Run for approximately 127 ticks, unless the recipe requires more time.
-     - `-t, --ticks` → Run for approximately <ticks> ticks, unless the recipe requires more time.
-     - `-s, --skip`  → Skip patterning non-consumed items.
-     - `-h, --help`  → Show help information.
+   - `optimize run [-q] [-b] [-s] [-r] [-t <ticks>] [-h] <machine>`
+     - `-q, --quiet`   → Suppress all output except for errors.
+     - `-b, --batch`   → Run for approximately 127 ticks, unless the recipe requires more time.
+     - `-t, --ticks`   → Run for approximately <ticks> ticks, unless the recipe requires more time.
+     - `-s, --skip`    → Skip patterning non-consumed items.
+     - `-r, --restore` → Restores missing outputs.
+     - `-h, --help`    → Show help information.
 
 # Example Setup
 <img src="src/resources/setup.png" width="600">

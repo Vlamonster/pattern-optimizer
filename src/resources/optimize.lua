@@ -88,7 +88,14 @@ local function openSocket()
 end
 
 local function prepareMessage(slot)
-    local message = { machine = machines[args.machine], ticks = tonumber(args.ticks), skip = args.skip, inputs = {}, outputs = {} }
+    local message = {
+        machine = machines[args.machine],
+        ticks = tonumber(args.ticks),
+        skip = args.skip,
+        restore = args.restore,
+        inputs = {},
+        outputs = {}
+    }
     for i = 1, MAX_ITEMS do
         interface.storeInterfacePatternInput(slot, i, database.address, i)
         local input = database.get(i)
@@ -172,6 +179,7 @@ run:argument("machine", "The target machine to use for optimization.")
 run:flag("-q --quiet", "Suppress all output except for errors.")
 run:flag("-b --batch", "Run for approximately 127 ticks, unless the recipe requires more time.")
 run:flag("-s --skip", "Skip patterning non-consumed items.")
+run:flag("-r --restore", "Restores missing outputs.")
 run:option("-t --ticks", "Run for approximately <ticks> ticks, unless the recipe requires more time.", "20")
 parser:command("list", "Display a list of available machines."):action(listMachines)
 args = parser:parse(args)

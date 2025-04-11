@@ -3,7 +3,6 @@ use crate::machines::advised_batch;
 use crate::model::{FurnaceRecipe, GregTechRecipe, RecipeDatabase, RecipeFluid, RecipeItem};
 use crate::optimization_request::{OptimizationRequest, RequestItem};
 use serde_json::{json, Deserializer};
-use std::collections::HashMap;
 use std::io::Write;
 use std::net::TcpStream;
 
@@ -169,14 +168,7 @@ fn optimize_recipe(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Re
         );
     }
 
-    let meta_variants = recipe
-        .item_inputs
-        .iter()
-        .filter(|input| input.meta == 32767)
-        .map(|input| (input.id.clone().unwrap(), input.meta))
-        .collect::<HashMap<String, u64>>();
-
     let (batch_size, duration) = advised_batch(&request.machine, request.ticks, recipe);
-    let optimized_pattern = advise(&meta_variants, recipe, batch_size, duration, request.skip);
+    let optimized_pattern = advise(recipe, batch_size, duration, request);
     RecipeLookupResult::Found(optimized_pattern)
 }
