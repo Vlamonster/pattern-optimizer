@@ -183,6 +183,11 @@ local machines = {
         energyUsage = 64 * UMV,
         maximumOverclockTier = 12,
     },
+    ["compressor"] = {
+        id = "Large Electric Compressor",
+        recipes = {"Compressor"},
+        energyUsage = 1 * UMV,
+    },
     ["electrolyzer"] = {
         id = "Industrial Electrolyzer",
         recipes = {"Multiblock Electrolyzer"},
