@@ -168,7 +168,11 @@ fn optimize_recipe(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Re
         );
     }
 
-    let (batch_size, duration) = advised_batch(&request.machine, request.ticks, recipe);
+    let (batch_size, duration) = match request.multiplier {
+        None => advised_batch(&request.machine, request.ticks, recipe),
+        // The duration when using a multiplier is set to 0 because I am too lazy to do the math.
+        Some(multiplier) => (multiplier, 0),
+    };
     let optimized_pattern = advise(recipe, batch_size, duration, request);
     RecipeLookupResult::Found(optimized_pattern)
 }

@@ -93,6 +93,7 @@ local function prepareMessage(slot)
         ticks = tonumber(args.ticks),
         skip = args.skip,
         restore = args.restore,
+        multiplier = tonumber(args.multiplier),
         inputs = {},
         outputs = {}
     }
@@ -181,6 +182,7 @@ run:flag("-b --batch", "Run for approximately 127 ticks, unless the recipe requi
 run:flag("-s --skip", "Skip patterning non-consumed items.")
 run:flag("-r --restore", "Restores missing outputs.")
 run:option("-t --ticks", "Run for approximately <ticks> ticks, unless the recipe requires more time.", "20")
+run:option("-m --multiplier", "Generate a pattern for <multiplier> times the base recipe without optimizing.")
 parser:command("list", "Display a list of available machines."):action(listMachines)
 args = parser:parse(args)
 

@@ -21,6 +21,10 @@ pub struct OptimizationRequest {
     #[serde(rename = "restore", default)]
     pub restore: bool,
 
+    /// If present, skips optimization and patterns `multiplier` times the base recipe.
+    #[serde(rename = "multiplier")]
+    pub multiplier: Option<u64>,
+
     /// A list of input `Item`s required for the recipe.
     #[serde(rename = "inputs")]
     pub inputs: Vec<RequestItem>,
