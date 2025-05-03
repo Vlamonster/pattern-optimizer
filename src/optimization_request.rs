@@ -5,6 +5,10 @@ use std::fmt::{Display, Formatter};
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct OptimizationRequest {
+    /// The version to use for recipes.
+    #[serde(rename = "version", default = "default_version")]
+    pub version: String,
+
     /// The name of the machine that should process the pattern.
     #[serde(rename = "machine")]
     pub machine: MachineConfiguration,
@@ -32,6 +36,10 @@ pub struct OptimizationRequest {
     /// A list of expected output `Item`s.
     #[serde(rename = "outputs")]
     pub outputs: Vec<RequestItem>,
+}
+
+fn default_version() -> String {
+    "2.7.3".to_string()
 }
 
 /// Represents the configuration of a machine.

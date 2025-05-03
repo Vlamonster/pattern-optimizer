@@ -3,6 +3,7 @@ use crate::machines::advised_batch;
 use crate::model::{FurnaceRecipe, GregTechRecipe, RecipeDatabase, RecipeFluid, RecipeItem};
 use crate::optimization_request::{OptimizationRequest, RequestItem};
 use serde_json::{json, Deserializer};
+use std::collections::HashMap;
 use std::io::Write;
 use std::net::TcpStream;
 
@@ -13,7 +14,7 @@ pub enum RecipeLookupResult {
     NotEnoughEnergy(u64, u64),
 }
 
-pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
+pub fn handle_client(mut stream: TcpStream, recipes: &HashMap<String, RecipeDatabase>) {
     let peer_addr = stream.peer_addr().unwrap();
     println!("Client connected: {peer_addr}");
 
@@ -29,7 +30,7 @@ pub fn handle_client(mut stream: TcpStream, recipes: &RecipeDatabase) {
         println!("Received a request from {peer_addr}:");
         println!("{request}");
 
-        match process_request(&request, recipes) {
+        match process_request(&request, &recipes[&request.version]) {
             RecipeLookupResult::Found(response) => {
                 if let Err(error) =
                     stream.write_all((serde_json::to_string(&response).unwrap() + "\n").as_bytes())

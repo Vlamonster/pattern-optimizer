@@ -6,6 +6,10 @@ local PORT = 3939
 local RETRY_DELAY = 5
 local TIMEOUT = 30
 
+-- Uncomment exactly one
+local VERSION = "2.7.3"
+--local VERSION = "n987"
+
 -- Interface and pattern parameters
 local MAX_SLOT = 36
 local MAX_ITEMS = 9
@@ -89,6 +93,7 @@ end
 
 local function prepareMessage(slot)
     local message = {
+        version = VERSION,
         machine = machines[args.machine],
         ticks = tonumber(args.ticks),
         skip = args.skip,
