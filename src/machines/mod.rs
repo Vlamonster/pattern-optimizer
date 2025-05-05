@@ -20,6 +20,7 @@ mod industrial_mixing_machine;
 mod industrial_precision_lathe;
 mod industrial_sledgehammer;
 mod industrial_wire_factory;
+mod large_electric_compressor;
 mod large_fluid_extractor;
 mod large_sifter_control_block;
 mod mega_alloy_blast_smelter;
@@ -44,6 +45,7 @@ use component_assembly_line::ComponentAssemblyLine;
 use cryogenic_freezer::CryogenicFreezer;
 use dissection_apparatus::DissectionApparatus;
 use electric_implosion_compressor::ElectricImplosionCompressor;
+use large_electric_compressor::LargeElectricCompressor;
 use fluid_shaper::FluidShaper;
 use helioflare_power_forge::HelioflarePowerForge;
 use helioflux_melting_core::HeliofluxMeltingCore;
@@ -112,6 +114,7 @@ pub fn advised_batch(
         "Industrial Centrifuge" => IndustrialCentrifuge,
         "Industrial Autoclave" => IndustrialAutoclave,
         "Precise Auto-Assembler MT-3662" => PreciseAutoAssemblerMT3662,
+        "Large Electric Compressor" => LargeElectricCompressor,
         "Pseudostable Black Hole Containment Field" => PseudostableBlackHoleContainmentField,
         "Industrial Electrolyzer" => IndustrialElectrolyzer,
         "Utupu-Tanuri" => UtupuTanuri,
