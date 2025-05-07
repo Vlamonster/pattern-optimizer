@@ -177,6 +177,11 @@ local machines = {
         energyUsage = 64 * UMV,
         tier = 5, -- Mk4 is tier 5
     },
+    ["compressor"] = {
+        id = "Large Electric Compressor",
+        recipes = {"Compressor"},
+        energyUsage = 4 * UMV,
+    },
     ["blackhole"] = {
         id = "Pseudostable Black Hole Containment Field",
         recipes = {"Neutronium Compressor", "Compressor"},

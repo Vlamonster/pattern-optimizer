@@ -410,16 +410,16 @@ impl Display for OptimizationRequest {
         writeln!(f, "- Energy usage: {} EU/t", self.machine.energy_usage)?;
 
         if let Some(parallels_offset) = self.machine.parallels_offset {
-            writeln!(f, "- Parallels offset: {}", parallels_offset)?;
+            writeln!(f, "- Parallels offset: {parallels_offset}")?;
         }
         if let Some(parallels_per_tier) = self.machine.parallels_per_tier {
-            writeln!(f, "- Parallels per tier: {}", parallels_per_tier)?;
+            writeln!(f, "- Parallels per tier: {parallels_per_tier}")?;
         }
         if let Some(speed_modifier) = self.machine.speed_modifier {
-            writeln!(f, "- Speed modifier: {:.2}", speed_modifier)?;
+            writeln!(f, "- Speed modifier: {speed_modifier:.2}")?;
         }
         if let Some(energy_modifier) = self.machine.energy_modifier {
-            writeln!(f, "- Energy modifier: {:.2}", energy_modifier)?;
+            writeln!(f, "- Energy modifier: {energy_modifier:.2}")?;
         }
 
         writeln!(f, "- Maximum overclock tier: {}", self.machine.maximum_overclock_tier)?;

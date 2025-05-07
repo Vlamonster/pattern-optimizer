@@ -20,6 +20,7 @@ mod industrial_mixing_machine;
 mod industrial_precision_lathe;
 mod industrial_sledgehammer;
 mod industrial_wire_factory;
+mod large_electric_compressor;
 mod large_fluid_extractor;
 mod large_sifter_control_block;
 mod mega_alloy_blast_smelter;
@@ -60,6 +61,7 @@ use industrial_mixing_machine::IndustrialMixingMachine;
 use industrial_precision_lathe::IndustrialPrecisionLathe;
 use industrial_sledgehammer::IndustrialSledgehammer;
 use industrial_wire_factory::IndustrialWireFactory;
+use large_electric_compressor::LargeElectricCompressor;
 use large_fluid_extractor::LargeFluidExtractor;
 use large_sifter_control_block::LargeSifterControlBlock;
 use mega_alloy_blast_smelter::MegaAlloyBlastSmelter;
@@ -128,6 +130,7 @@ pub fn advised_batch(
         "Helioflare Power Forge" => HelioflarePowerForge,
         "Helioflux Melting Core" => HeliofluxMeltingCore,
         "Multi Smelter" => MultiSmelter,
+        "Large Electric Compressor" => LargeElectricCompressor,
     })
 }
 
