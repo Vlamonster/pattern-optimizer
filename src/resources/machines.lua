@@ -326,7 +326,6 @@ local machines = {
         id = "Circuit Assembly Line",
         recipes = {"Circuit Assembly Line", "Circuit Assembler"},
         energyUsage = EU[LV],
-        tier = ULV,
     },
     ["coal"] = {
         id = "Component Assembly Line",
