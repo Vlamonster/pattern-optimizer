@@ -1,3 +1,4 @@
+mod big_barrel_brewery;
 mod blast_furnace;
 mod circuit_assembly_line;
 mod component_assembly_line;
@@ -39,6 +40,7 @@ mod vacuum_freezer;
 mod volcanus;
 mod zyngen;
 
+use crate::machines::big_barrel_brewery::BigBarrelBrewery;
 use crate::machines::industrial_coke_oven::IndustrialCokeOven;
 use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
@@ -137,6 +139,7 @@ pub fn advised_batch(
         "Large Electric Compressor" => LargeElectricCompressor,
         "Magnetic Flux Exhibitor" => MagneticFluxExhibitor,
         "Industrial Coke Oven" => IndustrialCokeOven,
+        "Big Barrel Brewery" => BigBarrelBrewery,
     })
 }
 

@@ -299,6 +299,11 @@ local machines = {
         energyUsage = 4 * LV,
         tier = 2, -- Tier of the casings, heat resistant = 1, heat proof = 2
     },
+    ["brewery"] = {
+        id = "Big Barrel Brewery",
+        recipes = {"Brewery"},
+        energyUsage = 4 * LV,
+    },
 }
 
 return machines
