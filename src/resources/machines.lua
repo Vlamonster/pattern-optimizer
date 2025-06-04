@@ -275,7 +275,7 @@ local machines = {
         recipes = {"Chemical Bath"},
         energyUsage = EU[ULV],
     },
-    ["megachem"] = {
+    ["mcr"] = {
         id = "Mega Chemical Reactor",
         recipes = {"Large Chemical Reactor"},
         energyUsage = EU[ULV],
