@@ -139,7 +139,7 @@ local machines = {
         id = "Fluid Shaper",
         recipes = {"Fluid Solidifier", "Tool Casting Machine"},
         energyUsage = EU[ULV],
-        width = 6, -- width equals the expansion width
+        width = 0, -- The number of width expansions, min = 0, max = 6
     },
     ["cutter"] = {
         id = "Industrial Cutting Factory",
@@ -157,7 +157,7 @@ local machines = {
         id = "Industrial Maceration Stack",
         recipes = {"Macerator"},
         energyUsage = EU[ULV],
-        tier = 1,
+        tier = 1, -- No upgrade = 0, Upgrade = 2
     },
     ["ebf"] = {
         id = "Blast Furnace",
@@ -186,7 +186,7 @@ local machines = {
         id = "Mega Vacuum Freezer",
         recipes = {"Vacuum Freezer"},
         energyUsage = EU[ULV],
-        tier = 0, -- tier equals perfect overclocks from subspace cooling
+        tier = 0, -- No Subspace Cooling = 0, SpaceTime = 1, Spatially Enlarged = 2, Eternity = 3
     },
     ["cryo"] = {
         id = "Cryogenic Freezer",
@@ -350,7 +350,7 @@ local machines = {
         id = "Industrial Coke Oven",
         recipes = {"Coke Oven"},
         energyUsage = EU[ULV],
-        tier = 2, -- Tier of the casings, heat resistant = 1, heat proof = 2
+        tier = 1, -- Tier of the casings, heat resistant = 1, heat proof = 2
     },
     ["brewery"] = {
         id = "Big Barrel Brewery",
