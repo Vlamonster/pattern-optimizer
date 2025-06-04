@@ -247,7 +247,7 @@ local machines = {
         id = "Precise Auto-Assembler MT-3662",
         recipes = {"Assembler"},
         energyUsage = 1 * EU[ULV],
-        tier = 1, -- Mk-0 = 1, Mk-I = 2, Mk-II = 3, Mk-III = 4, Mk-IV = 5
+        tier = 0, -- Mk-0 = 0, Mk-I = 1, Mk-II = 2, Mk-III = 3, Mk-IV = 4
     },
     ["compressor"] = {
         id = "Large Electric Compressor",

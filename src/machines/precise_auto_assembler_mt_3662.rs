@@ -13,6 +13,6 @@ impl Overclock for PreciseAutoAssemblerMT3662 {
         _tier: u64,
         machine: &MachineConfiguration,
     ) -> u64 {
-        8 << machine.tier
+        16 << machine.tier
     }
 }
