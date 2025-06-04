@@ -1,18 +1,70 @@
-local ULV = 8       -- tier  0
-local  LV = 4 * ULV -- tier  1
-local  MV = 4 *  LV -- tier  2
-local  HV = 4 *  MV -- tier  3
-local  EV = 4 *  HV -- tier  4
-local  IV = 4 *  EV -- tier  5
-local LuV = 4 *  IV -- tier  6
-local ZPM = 4 * LuV -- tier  7
-local  UV = 4 * ZPM -- tier  8
-local UHV = 4 *  UV -- tier  9
-local UEV = 4 * UHV -- tier 10
-local UIV = 4 * UEV -- tier 11
-local UMV = 4 * UIV -- tier 12
-local UXV = 4 * UMV -- tier 13
-local MAX = 4 * UXV -- tier 14
+-- Tier constants
+local ULV =  0
+local  LV =  1
+local  MV =  2
+local  HV =  3
+local  EV =  4
+local  IV =  5
+local LuV =  6
+local ZPM =  7
+local  UV =  8
+local UHV =  9
+local UEV = 10
+local UIV = 11
+local UMV = 12
+local UXV = 13
+local MAX = 14
+
+-- Coil constants
+local Cupronickel       =  1
+local Kanthal           =  2
+local Nichrome          =  3
+local TPVAlloy          =  4
+local HSSG              =  5
+local HSSS              =  6
+local Naquadah          =  7
+local NaquadahAlloy     =  8
+local Trinium           =  9
+local ElectrumFlux      = 10 -- Do not confuse with FluxedElectum Item Pipe Casing
+local AwakenedDraconium = 11
+local Infinity          = 12
+local Hypogen           = 13
+local Eternal           = 14
+
+-- Pipe Casing constants
+local Bronze        = 1
+local Steel         = 2
+local Titanium      = 3
+local TungstenSteel = 4
+
+-- Item Pipe Casing constants
+local Tin            = 1
+local Brass          = 2
+local Electrum       = 3
+local Platinum       = 4
+local Osmium         = 5
+local Quantium       = 6
+local FluxedElectrum = 7 -- Do not confuse with ElectrumFlux Coil
+local BlackPlutonium = 8
+
+-- Voltage constants indexed by tier
+local EU = {
+    [ULV] =          8, --             8
+    [LV]  =         32, --            32
+    [MV]  =        128, --           128
+    [HV]  =        512, --           512
+    [EV]  =       2048, --         2_048
+    [IV]  =       8192, --         8_192
+    [LuV] =      32768, --        32_768
+    [ZPM] =     131072, --       131_072
+    [UV]  =     524288, --       524_288
+    [UHV] =    2097152, --     2_097_152
+    [UEV] =    8388608, --     8_388_608
+    [UIV] =   33554432, --    33_554_432
+    [UMV] =  134217728, --   134_217_728
+    [UXV] =  536870912, --   536_870_912
+    [MAX] = 2147483648, -- 2_147_483_648
+}
 
 local K = 1000
 local M = 1000 * K
@@ -54,183 +106,184 @@ local machines = {
     ["bender"] = {
         id = "Industrial Material Press",
         recipes = {"Bending Machine"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
     },
     ["press"] = {
         id = "Industrial Material Press",
         recipes = {"Forming Press"},
-        energyUsage = 16 * UMV,
+        energyUsage = EU[ULV],
     },
     ["extruder"] = {
         id = "Industrial Extrusion Machine",
         recipes = {"Extruder"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
     },
     ["wiremill"] = {
         id = "Industrial Wire Factory",
         recipes = {"Wiremill"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
     },
     ["hammer"] = {
         id = "Industrial Sledgehammer",
         recipes = {"Forge Hammer"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
         tier = 4,
     },
     ["extractor"] = {
         id = "Dissection Apparatus",
         recipes = {"Extractor"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
+        itemPipeCasingTier = Tin,
     },
     ["solidifier"] = {
         id = "Fluid Shaper",
         recipes = {"Fluid Solidifier", "Tool Casting Machine"},
-        energyUsage = 64 * UMV,
+        energyUsage = EU[ULV],
         width = 6, -- width equals the expansion width
     },
     ["cutter"] = {
         id = "Industrial Cutting Factory",
         recipes = {"Cutting Machine"},
-        energyUsage = 16 * UMV,
+        energyUsage = EU[ULV],
     },
     ["fextractor"] = {
         id = "Large Fluid Extractor",
         recipes = {"Fluid Extractor"},
-        energyUsage = 4 * UMV,
-        solenoidTier = 12,
-        coilTier = 14,
+        energyUsage = EU[ULV],
+        solenoidTier = MV,
+        coilTier = Cupronickel,
     },
     ["macerator"] = {
         id = "Industrial Maceration Stack",
         recipes = {"Macerator"},
-        energyUsage = 4 * UMV,
-        tier = 2,
+        energyUsage = EU[ULV],
+        tier = 1,
     },
     ["ebf"] = {
         id = "Blast Furnace",
         recipes = {"Blast Furnace"},
-        energyUsage = 1 * ULV,
-        coilTier = 1,
+        energyUsage = EU[ULV],
+        coilTier = Cupronickel,
     },
     ["mebf"] = {
         id = "Mega Blast Furnace",
         recipes = {"Blast Furnace"},
-        energyUsage = 1 * ULV,
-        coilTier = 1,
+        energyUsage = EU[ULV],
+        coilTier = Cupronickel,
     },
     ["volcanus"] = {
         id = "Volcanus",
         recipes = {"Blast Furnace"},
-        energyUsage = 4 * UMV,
-        coilTier = 14,
+        energyUsage = EU[ULV],
+        coilTier = Cupronickel,
     },
     ["freezer"] = {
         id = "Vacuum Freezer",
         recipes = {"Vacuum Freezer"},
-        energyUsage = 1 * ULV,
+        energyUsage = EU[ULV],
     },
     ["mvf"] = {
         id = "Mega Vacuum Freezer",
         recipes = {"Vacuum Freezer"},
-        energyUsage = 64 * UMV,
+        energyUsage = EU[ULV],
         tier = 0, -- tier equals perfect overclocks from subspace cooling
     },
     ["cryo"] = {
         id = "Cryogenic Freezer",
         recipes = {"Vacuum Freezer"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
     },
     ["mixer"] = {
         id = "Industrial Mixing Machine",
         recipes = {"Multiblock Mixer"},
-        energyUsage = 16 * UMV,
+        energyUsage = EU[ULV],
     },
     ["engraver"] = {
         id = "Hyper-Intensity Laser Engraver",
         recipes = {"Laser Engraver"},
-        energyUsage = 16 * UMV,
-        laserAmperage = 4194304, -- 4_194_304
+        energyUsage = EU[ULV],
+        laserAmperage = 256,
     },
     ["centrifuge"] = {
         id = "Industrial Centrifuge",
         recipes = {"Multiblock Centrifuge"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
     },
     ["autoclave"] = {
         id = "Industrial Autoclave",
         recipes = {"Autoclave"},
-        energyUsage = 16 * UMV,
-        coilTier = 14,
-        pipeCasingTier = 4,
-        itemPipeCasingTier = 8,
+        energyUsage = EU[ULV],
+        coilTier = Cupronickel,
+        pipeCasingTier = Bronze,
+        itemPipeCasingTier = Tin,
     },
     ["mabs"] = {
         id = "Mega Alloy Blast Smelter",
         recipes = {"Alloy Blast Smelter"},
-        energyUsage = 64 * UMV,
-        coilTier = 14,
-        glassTier = 10,
+        energyUsage = EU[ULV],
+        coilTier = Cupronickel,
+        glassTier = HV,
     },
     ["assembler"] = {
         id = "Precise Auto-Assembler MT-3662",
         recipes = {"Assembler"},
-        energyUsage = 64 * UMV,
+        energyUsage = EU[ULV],
         tier = 5, -- Mk4 is tier 5
     },
     ["compressor"] = {
         id = "Large Electric Compressor",
         recipes = {"Compressor"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
     },
     ["blackhole"] = {
         id = "Pseudostable Black Hole Containment Field",
         recipes = {"Neutronium Compressor", "Compressor"},
-        energyUsage = 64 * UMV,
-        maximumOverclockTier = 12,
+        energyUsage = EU[ULV],
+        maximumOverclockTier = ULV,
     },
     ["electrolyzer"] = {
         id = "Industrial Electrolyzer",
         recipes = {"Multiblock Electrolyzer"},
-        energyUsage = 4 * UMV,
+        energyUsage = EU[ULV],
     },
     ["dehydrator"] = {
         id = "Utupu-Tanuri",
         recipes = {"Multiblock Dehydrator"},
-        energyUsage = 4 * UEV,
+        energyUsage = EU[ULV],
     },
     ["chembath"] = {
         id = "Ore Washing Plant",
         recipes = {"Chemical Bath"},
-        energyUsage = 16 * UMV,
+        energyUsage = EU[ULV],
     },
     ["megachem"] = {
         id = "Mega Chemical Reactor",
         recipes = {"Large Chemical Reactor"},
-        energyUsage = 64 * UMV,
+        energyUsage = EU[ULV],
     },
     ["lathe"] = {
         id = "Industrial Precision Lathe",
         recipes = {"Lathe"},
-        energyUsage = 4 * UEV,
-        itemPipeCasingTier = 8,
+        energyUsage = EU[ULV],
+        itemPipeCasingTier = Tin,
     },
     ["alloysmelter"] = {
         id = "Zyngen",
         recipes = {"Alloy Smelter"},
-        energyUsage = 4 * UEV,
-        coilTier = 14,
+        energyUsage = EU[ULV],
+        coilTier = Cupronickel,
     },
     ["arcfurnace"] = {
         id = "High Current Industrial Arc Furnace",
         recipes = {"Arc Furnace"},
-        energyUsage = 4 * UEV,
+        energyUsage = EU[ULV],
         tier = 1,
         width = 7,
     },
     ["plasmafurnace"] = {
         id = "High Current Industrial Arc Furnace",
         recipes = {"Plasma Arc Furnace"},
-        energyUsage = 4 * UEV,
+        energyUsage = EU[ULV],
         tier = 2,
         width = 7,
     },
@@ -242,30 +295,30 @@ local machines = {
     ["implosion"] = {
         id = "Electric Implosion Compressor",
         recipes = {"Electric Implosion Compressor"},
-        energyUsage = 64 * UMV,
+        energyUsage = EU[ULV],
         tier = 4,
     },
     ["sifter"] = {
         id = "Large Sifter Control Block",
         recipes = {"Sifter"},
-        energyUsage = 16 * UMV,
+        energyUsage = EU[ULV],
     },
     ["cal"] = {
         id = "Circuit Assembly Line",
         recipes = {"Circuit Assembly Line", "Circuit Assembler"},
-        energyUsage = 1 * UMV,
-        tier = 12,
+        energyUsage = EU[LV],
+        tier = ULV,
     },
     ["coal"] = {
         id = "Component Assembly Line",
         recipes = {"Component Assembly Line"},
-        energyUsage = 65536 * UEV, -- 65_536
-        tier = 12,
+        energyUsage = EU[ULV],
+        tier = LV,
     },
     ["mdt"] = {
         id = "Mega Distillation Tower",
         recipes = {"Distillation Tower"},
-        energyUsage = 64 * UMV,
+        energyUsage = EU[ULV],
     },
     ["gorge1"] = {
         id = "Helioflare Power Forge",
@@ -284,25 +337,25 @@ local machines = {
     ["smelter"] = {
         id = "Multi Smelter",
         recipes = {"Multi Smelter"},
-        energyUsage = 4 * UEV,
-        coilTier = 11,
+        energyUsage = EU[ULV],
+        coilTier = Cupronickel,
     },
     ["magnet"] = {
         id = "Magnetic Flux Exhibitor",
         recipes = {"Electromagnetic Polarizer", "Electromagnetic Separator"},
-        energyUsage = 4 * LV,
+        energyUsage = EU[ULV],
         tier = 1, -- Tier of the electromagnet, iron = 1, .., tengam = 5
     },
     ["coke"] = {
         id = "Industrial Coke Oven",
         recipes = {"Coke Oven"},
-        energyUsage = 4 * LV,
+        energyUsage = EU[ULV],
         tier = 2, -- Tier of the casings, heat resistant = 1, heat proof = 2
     },
     ["brewery"] = {
         id = "Big Barrel Brewery",
         recipes = {"Brewery"},
-        energyUsage = 4 * LV,
+        energyUsage = EU[ULV],
     },
 }
 
