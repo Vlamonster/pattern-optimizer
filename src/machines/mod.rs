@@ -32,6 +32,7 @@ mod mega_chemical_reactor;
 mod mega_distillation_tower;
 mod mega_vacuum_freezer;
 mod multi_smelter;
+mod neutron_activator;
 mod ore_washing_plant;
 mod precise_auto_assembler_mt_3662;
 mod pseudostable_black_hole_containment_field;
@@ -40,10 +41,10 @@ mod vacuum_freezer;
 mod volcanus;
 mod zyngen;
 
-use crate::machines::big_barrel_brewery::BigBarrelBrewery;
-use crate::machines::industrial_coke_oven::IndustrialCokeOven;
+use crate::machines::neutron_activator::NeutronActivator;
 use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
+use big_barrel_brewery::BigBarrelBrewery;
 use blast_furnace::BlastFurnace;
 use circuit_assembly_line::CircuitAssemblyLine;
 use component_assembly_line::ComponentAssemblyLine;
@@ -57,6 +58,7 @@ use high_current_industrial_arc_furnace::HighCurrentIndustrialArcFurnace;
 use hyper_intensity_laser_engraver::HyperIntensityLaserEngraver;
 use industrial_autoclave::IndustrialAutoclave;
 use industrial_centrifuge::IndustrialCentrifuge;
+use industrial_coke_oven::IndustrialCokeOven;
 use industrial_cutting_factory::IndustrialCuttingFactory;
 use industrial_electrolyzer::IndustrialElectrolyzer;
 use industrial_extrusion_machine::IndustrialExtrusionMachine;
@@ -140,6 +142,7 @@ pub fn advised_batch(
         "Magnetic Flux Exhibitor" => MagneticFluxExhibitor,
         "Industrial Coke Oven" => IndustrialCokeOven,
         "Big Barrel Brewery" => BigBarrelBrewery,
+        "Neutron Activator" => NeutronActivator,
     })
 }
 

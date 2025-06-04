@@ -236,8 +236,8 @@ local machines = {
     },
     ["nactivator"] = {
         id = "Neutron Activator",
-        recipes = {}, -- recipes not yet extracted
-        height = 64,
+        recipes = {"Neutron Activator"},
+        height = 4, -- Height is the number of Speeding Pipe Casings
     },
     ["implosion"] = {
         id = "Electric Implosion Compressor",
