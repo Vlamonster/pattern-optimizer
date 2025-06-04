@@ -287,6 +287,12 @@ local machines = {
         energyUsage = 4 * UEV,
         coilTier = 11,
     },
+    ["magnet"] = {
+        id = "Magnetic Flux Exhibitor",
+        recipes = {"Electromagnetic Polarizer", "Electromagnetic Separator"},
+        energyUsage = 4 * LV,
+        tier = 1, -- Tier of the electromagnet, iron = 1, .., tengam = 5
+    },
 }
 
 return machines

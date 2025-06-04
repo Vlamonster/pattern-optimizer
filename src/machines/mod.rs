@@ -23,6 +23,7 @@ mod industrial_wire_factory;
 mod large_electric_compressor;
 mod large_fluid_extractor;
 mod large_sifter_control_block;
+mod magnetic_flux_exhibitor;
 mod mega_alloy_blast_smelter;
 mod mega_blast_furnace;
 mod mega_chemical_reactor;
@@ -64,6 +65,7 @@ use industrial_wire_factory::IndustrialWireFactory;
 use large_electric_compressor::LargeElectricCompressor;
 use large_fluid_extractor::LargeFluidExtractor;
 use large_sifter_control_block::LargeSifterControlBlock;
+use magnetic_flux_exhibitor::MagneticFluxExhibitor;
 use mega_alloy_blast_smelter::MegaAlloyBlastSmelter;
 use mega_blast_furnace::MegaBlastFurnace;
 use mega_chemical_reactor::MegaChemicalReactor;
@@ -131,6 +133,7 @@ pub fn advised_batch(
         "Helioflux Melting Core" => HeliofluxMeltingCore,
         "Multi Smelter" => MultiSmelter,
         "Large Electric Compressor" => LargeElectricCompressor,
+        "Magnetic Flux Exhibitor" => MagneticFluxExhibitor,
     })
 }
 
