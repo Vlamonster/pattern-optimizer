@@ -11,6 +11,7 @@ mod high_current_industrial_arc_furnace;
 mod hyper_intensity_laser_engraver;
 mod industrial_autoclave;
 mod industrial_centrifuge;
+mod industrial_coke_oven;
 mod industrial_cutting_factory;
 mod industrial_electrolyzer;
 mod industrial_extrusion_machine;
@@ -38,6 +39,7 @@ mod vacuum_freezer;
 mod volcanus;
 mod zyngen;
 
+use crate::machines::industrial_coke_oven::IndustrialCokeOven;
 use crate::model::GregTechRecipe;
 use crate::optimization_request::MachineConfiguration;
 use blast_furnace::BlastFurnace;
@@ -134,6 +136,7 @@ pub fn advised_batch(
         "Multi Smelter" => MultiSmelter,
         "Large Electric Compressor" => LargeElectricCompressor,
         "Magnetic Flux Exhibitor" => MagneticFluxExhibitor,
+        "Industrial Coke Oven" => IndustrialCokeOven,
     })
 }
 

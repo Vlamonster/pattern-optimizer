@@ -293,6 +293,12 @@ local machines = {
         energyUsage = 4 * LV,
         tier = 1, -- Tier of the electromagnet, iron = 1, .., tengam = 5
     },
+    ["coke"] = {
+        id = "Industrial Coke Oven",
+        recipes = {"Coke Oven"},
+        energyUsage = 4 * LV,
+        tier = 2, -- Tier of the casings, heat resistant = 1, heat proof = 2
+    },
 }
 
 return machines
