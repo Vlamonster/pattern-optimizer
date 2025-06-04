@@ -106,7 +106,7 @@ local machines = {
         energyUsage = 4 * UMV,
         tier = 2,
     },
-    ["bfurnace"] = {
+    ["ebf"] = {
         id = "Blast Furnace",
         recipes = {"Blast Furnace"},
         energyUsage = 1 * ULV,
