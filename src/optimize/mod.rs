@@ -1,39 +1,17 @@
+pub mod optimized_item;
+pub mod optimized_pattern;
+
 use crate::model::GregTechRecipe;
 use crate::optimization_request::OptimizationRequest;
-use serde::Serialize;
+pub use optimized_item::OptimizedItem;
+pub use optimized_pattern::OptimizedPattern;
 use std::collections::HashMap;
 use std::iter::once;
 
-/// Represents the optimized processing plan returned by the server.
-#[derive(Serialize, Debug)]
-pub struct OptimizedPattern {
-    /// A list of `AdvisedItem`s representing the adjusted input materials.
-    pub inputs: Vec<AdvisedItem>,
+/// Wildcard value for item metadata (matches any damage/meta).
+pub const WILDCARD: u64 = (1 << 15) - 1;
 
-    /// A list of `AdvisedItem`s representing the expected output materials.
-    pub outputs: Vec<AdvisedItem>,
-
-    /// The number of ticks the optimized process is expected to take.
-    pub duration: u64,
-}
-
-/// Represents an optimized item with adjusted batch size and metadata.
-#[derive(Serialize, Debug)]
-pub struct AdvisedItem {
-    /// The unique identifier of the item (typically the registry name).
-    pub id: String,
-
-    /// The advised quantity of this item for the optimized batch.
-    pub amount: u64,
-
-    /// The metadata or durability value of the item.
-    pub meta: u64,
-
-    /// The item's associated NBT (if any), represented as a string.
-    pub nbt: String,
-}
-
-pub fn advise(
+pub fn optimize(
     recipe: &GregTechRecipe,
     advised_batch: u64,
     duration: u64,
@@ -42,7 +20,7 @@ pub fn advise(
     let meta_map = recipe
         .item_inputs
         .iter()
-        .filter(|input| input.meta == 32767)
+        .filter(|input| input.meta == WILDCARD)
         .map(|input| (input.id.clone().unwrap(), input.meta))
         .collect::<HashMap<String, u64>>();
 
@@ -67,7 +45,7 @@ pub fn advise(
         .item_inputs
         .iter()
         .filter(|item| !request.skip || item.amount > 0)
-        .map(|item| AdvisedItem {
+        .map(|item| OptimizedItem {
             id: item.id.clone().unwrap(),
             amount: u64::max(item.amount * max_factor, 1),
             meta: *meta_map
@@ -76,7 +54,7 @@ pub fn advise(
             nbt: item.nbt.clone().unwrap_or_default(),
         });
 
-    let fluid_inputs = recipe.fluid_inputs.iter().map(|fluid| AdvisedItem {
+    let fluid_inputs = recipe.fluid_inputs.iter().map(|fluid| OptimizedItem {
         id: "ae2fc:fluid_drop".to_string(),
         amount: fluid.amount * max_factor,
         meta: 0,
@@ -90,10 +68,10 @@ pub fn advise(
             request.restore
                 || request.outputs.iter().any(|request_item| {
                     recipe_item.id.as_ref() == Some(&request_item.name)
-                        && (recipe_item.meta == request_item.damage || recipe_item.meta == 32767)
+                        && (recipe_item.meta == request_item.meta || recipe_item.meta == WILDCARD)
                 })
         })
-        .map(|item| AdvisedItem {
+        .map(|item| OptimizedItem {
             id: item.id.clone().unwrap(),
             amount: u64::max(item.amount * max_factor, 1),
             meta: item.meta,
@@ -112,7 +90,7 @@ pub fn advise(
                         .is_some_and(|fluid| fluid.name == recipe_fluid.id)
                 })
         })
-        .map(|fluid| AdvisedItem {
+        .map(|fluid| OptimizedItem {
             id: "ae2fc:fluid_drop".to_string(),
             amount: fluid.amount * max_factor,
             meta: 0,

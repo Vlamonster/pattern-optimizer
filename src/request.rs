@@ -1,7 +1,7 @@
-use crate::advice::{advise, OptimizedPattern};
 use crate::machines::advised_batch;
 use crate::model::{FurnaceRecipe, GregTechRecipe, RecipeDatabase, RecipeFluid, RecipeItem};
 use crate::optimization_request::{OptimizationRequest, RequestItem};
+use crate::optimize::{optimize, OptimizedPattern, WILDCARD};
 use serde_json::{json, Deserializer};
 use std::collections::HashMap;
 use std::io::Write;
@@ -135,7 +135,7 @@ fn furnace_to_gregtech_recipe(recipe: &FurnaceRecipe) -> GregTechRecipe {
 fn matches_item(request_item: &RequestItem, recipe_items: &[RecipeItem]) -> bool {
     recipe_items.iter().any(|recipe_item| {
         recipe_item.id.as_ref() == Some(&request_item.name)
-            && (recipe_item.meta == request_item.damage || recipe_item.meta == 32767)
+            && (recipe_item.meta == request_item.meta || recipe_item.meta == WILDCARD)
     })
 }
 
@@ -174,6 +174,6 @@ fn optimize_recipe(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Re
         // The duration when using a multiplier is set to 0 because I am too lazy to do the math.
         Some(multiplier) => (multiplier, 0),
     };
-    let optimized_pattern = advise(recipe, batch_size, duration, request);
+    let optimized_pattern = optimize(recipe, batch_size, duration, request);
     RecipeLookupResult::Found(optimized_pattern)
 }

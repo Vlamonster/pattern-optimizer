@@ -347,9 +347,9 @@ pub struct RequestItem {
     #[serde(rename = "maxSize")]
     pub max_size: u64,
 
-    /// The item's current damage or metadata value.
+    /// Metadata (e.g. damage value).
     #[serde(rename = "damage")]
-    pub damage: u64,
+    pub meta: u64,
 
     /// The maximum possible damage value (durability).
     #[serde(rename = "maxDamage")]

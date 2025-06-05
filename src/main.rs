@@ -1,7 +1,7 @@
-mod advice;
 mod machines;
 mod model;
 mod optimization_request;
+mod optimize;
 mod request;
 
 use crate::model::RecipeDatabase;
@@ -13,7 +13,7 @@ use std::thread;
 
 fn main() -> Result<(), std::io::Error> {
     let listener = TcpListener::bind("0.0.0.0:3939")?;
-    println!("Server listening on port 3939");
+    println!("Server listening on port 3939.");
 
     let recipes = Arc::new(HashMap::from([
         (

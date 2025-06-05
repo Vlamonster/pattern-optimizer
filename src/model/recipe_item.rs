@@ -17,7 +17,7 @@ pub struct RecipeItem {
     #[serde(rename = "a")]
     pub amount: u64,
 
-    /// Metadata or damage value.
+    /// Metadata (e.g. damage value).
     #[serde(rename = "m")]
     pub meta: u64,
 
