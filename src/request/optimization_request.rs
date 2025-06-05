@@ -129,7 +129,7 @@ impl Display for OptimizationRequest {
         writeln!(f, "Skip NCs:        {}", self.skip)?;
         writeln!(f, "Restore Missing: {}", self.restore)?;
         writeln!(f, "Multiplier:      {}", self.multiplier.as_ref().map_or("None".into(), u64::to_string))?;
-        writeln!(f, "Inputs:        \n{}", self.inputs.iter().map(|item| format!("-{item}")).join("\n"))?;
-        writeln!(f, "Outputs:       \n{}", self.inputs.iter().map(|item| format!("-{item}")).join("\n"))
+        writeln!(f, "Inputs:        \n{}", self.inputs.iter().join("\n"))?;
+        writeln!(f, "Outputs:       \n{}", self.inputs.iter().join("\n"))
     }
 }

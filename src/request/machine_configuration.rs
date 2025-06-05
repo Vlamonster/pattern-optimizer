@@ -1,5 +1,6 @@
 use {
     crate::request::GorgeUpgrades,
+    itertools::Itertools,
     serde::Deserialize,
     std::fmt::{
         Display,
@@ -107,25 +108,25 @@ fn laser_amperage() -> u64 {
 impl Display for MachineConfiguration {
     #[rustfmt::skip]
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "ID:                     {}", self.id)?;
-        writeln!(f, "Recipes:              \n{}", self.recipes.iter().map(|r| format!("- {r}")).collect::<Vec<_>>().join("\n"))?;
-        writeln!(f, "Energy Usage:           {} EU/t", self.energy_usage)?;
-        writeln!(f, "Parallels Offset:       {}", self.parallels_offset.as_ref().map_or("None".into(), u64::to_string))?;
-        writeln!(f, "Parallels Per Tier:     {}", self.parallels_per_tier.as_ref().map_or("None".into(), u64::to_string))?;
-        writeln!(f, "Speed Modifier:         {}", self.speed_modifier.as_ref().map_or("None".into(), f64::to_string))?;
-        writeln!(f, "Energy Modifier:        {}", self.energy_modifier.as_ref().map_or("None".into(), f64::to_string))?;
-        writeln!(f, "Maximum Overclock Tier: {}", self.maximum_overclock_tier)?;
-        writeln!(f, "Tier:                   {}", self.tier)?;
-        writeln!(f, "Width:                  {}", self.width)?;
-        writeln!(f, "Height:                 {}", self.height)?;
-        writeln!(f, "Solenoid Tier:          {}", self.solenoid_tier)?;
-        writeln!(f, "Coil Tier:              {}", self.coil_tier)?;
-        writeln!(f, "Laser Amperage:         {}", self.laser_amperage)?;
-        writeln!(f, "Pipe Casing Tier:       {}", self.pipe_casing_tier)?;
-        writeln!(f, "Item Pipe Casing Tier:  {}", self.item_pipe_casing_tier)?;
-        writeln!(f, "Glass Tier:             {}", self.glass_tier)?;
+        writeln!(f, "  ID:                     {}", self.id)?;
+        writeln!(f, "  Recipes:              \n{}", self.recipes.iter().join(", "))?;
+        writeln!(f, "  Energy Usage:           {} EU/t", self.energy_usage)?;
+        writeln!(f, "  Parallels Offset:       {}", self.parallels_offset.as_ref().map_or("None".into(), u64::to_string))?;
+        writeln!(f, "  Parallels Per Tier:     {}", self.parallels_per_tier.as_ref().map_or("None".into(), u64::to_string))?;
+        writeln!(f, "  Speed Modifier:         {}", self.speed_modifier.as_ref().map_or("None".into(), f64::to_string))?;
+        writeln!(f, "  Energy Modifier:        {}", self.energy_modifier.as_ref().map_or("None".into(), f64::to_string))?;
+        writeln!(f, "  Maximum Overclock Tier: {}", self.maximum_overclock_tier)?;
+        writeln!(f, "  Tier:                   {}", self.tier)?;
+        writeln!(f, "  Width:                  {}", self.width)?;
+        writeln!(f, "  Height:                 {}", self.height)?;
+        writeln!(f, "  Solenoid Tier:          {}", self.solenoid_tier)?;
+        writeln!(f, "  Coil Tier:              {}", self.coil_tier)?;
+        writeln!(f, "  Laser Amperage:         {}", self.laser_amperage)?;
+        writeln!(f, "  Pipe Casing Tier:       {}", self.pipe_casing_tier)?;
+        writeln!(f, "  Item Pipe Casing Tier:  {}", self.item_pipe_casing_tier)?;
+        writeln!(f, "  Glass Tier:             {}", self.glass_tier)?;
         // writeln!(f, "Upgrades:               {}", self.upgrades)?;
-        writeln!(f, "DTR:                    {}", self.dtr)?;
-        writeln!(f, "Rings:                  {}", self.rings)
+        writeln!(f, "  DTR:                    {}", self.dtr)?;
+        writeln!(f, "  Rings:                  {}", self.rings)
     }
 }
