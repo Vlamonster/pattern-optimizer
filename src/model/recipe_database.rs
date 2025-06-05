@@ -1,5 +1,6 @@
 use crate::model::{FurnaceRecipe, GregTechMachine};
 use serde::Deserialize;
+use std::fmt::{Display, Formatter};
 
 /// Represents a database of crafting recipes categorized by source.
 #[derive(Deserialize, Debug)]
@@ -9,4 +10,12 @@ pub struct RecipeDatabase {
 
     /// Smelting recipes.
     pub smelting: Vec<FurnaceRecipe>,
+}
+
+impl Display for RecipeDatabase {
+    #[rustfmt::skip]
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Machines:       {}", self.machines.len())?;
+        writeln!(f, "Smelting:       {}", self.smelting.len())
+    }
 }

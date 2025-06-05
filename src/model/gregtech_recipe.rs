@@ -1,5 +1,7 @@
 use crate::model::{RecipeFluid, RecipeItem};
+use itertools::Itertools;
 use serde::Deserialize;
+use std::fmt::{Display, Formatter};
 
 /// A machine processing recipe, including inputs, outputs, and processing details.
 #[derive(Deserialize, Debug)]
@@ -36,4 +38,18 @@ pub struct GregTechRecipe {
     /// Produced fluid outputs.
     #[serde(rename = "fO")]
     pub fluid_outputs: Vec<RecipeFluid>,
+}
+
+impl Display for GregTechRecipe {
+    #[rustfmt::skip]
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Enabled:        {}", self.enabled)?;
+        writeln!(f, "Duration:       {} ticks", self.duration)?;
+        writeln!(f, "Energy Usage:   {} EU/t", self.energy_usage)?;
+        writeln!(f, "Special:        {}", self.special)?;
+        writeln!(f, "Item Inputs:  \n{}", self.item_inputs.iter().map(|item| format!("-{item}")).join("\n"))?;
+        writeln!(f, "Fluid Inputs: \n{}", self.fluid_inputs.iter().map(|fluid| format!("-{fluid}")).join("\n"))?;
+        writeln!(f, "Item Outputs: \n{}", self.item_outputs.iter().map(|item| format!("-{item}")).join("\n"))?;
+        writeln!(f, "Fluid Outputs:\n{}", self.fluid_outputs.iter().map(|fluid| format!("-{fluid}")).join("\n"))
+    }
 }

@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use std::fmt::{Display, Formatter};
 
 /// An item in a recipe, including amount, metadata, and optional NBT.
 #[derive(Deserialize, Debug, Clone)]
@@ -23,4 +24,15 @@ pub struct RecipeItem {
     /// Optional NBT data.
     #[serde(rename = "nbt")]
     pub nbt: Option<String>,
+}
+
+impl Display for RecipeItem {
+    #[rustfmt::skip]
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "ID:            {}", self.id.as_deref().unwrap_or("None"))?;
+        writeln!(f, "Name:          {}", self.localized_name.as_deref().unwrap_or("None"))?;
+        writeln!(f, "Amount:        {}", self.amount)?;
+        writeln!(f, "Meta:          {}", self.meta)?;
+        writeln!(f, "NBT:           {}", self.nbt.as_deref().unwrap_or("None"))
+    }
 }

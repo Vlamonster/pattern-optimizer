@@ -1,5 +1,6 @@
 use crate::model::RecipeItem;
 use serde::Deserialize;
+use std::fmt::{Display, Formatter};
 
 /// A smelting recipe with one input and one output item.
 #[derive(Deserialize, Debug)]
@@ -11,4 +12,12 @@ pub struct FurnaceRecipe {
     /// Produced item output.
     #[serde(rename = "output")]
     pub output: RecipeItem,
+}
+
+impl Display for FurnaceRecipe {
+    #[rustfmt::skip]
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "Input:          {}", self.input)?;
+        writeln!(f, "Output:         {}", self.output)
+    }
 }
