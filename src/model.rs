@@ -1,105 +1,114 @@
 use serde::Deserialize;
 
-/// Represents a database of crafting recipes, categorized by different sources.
-///
-/// # Fields
-/// - `sources`: A list of `Source` structures, each representing a crafting method
-///   and its associated recipes.
+/// Represents a database of crafting recipes categorized by source.
 #[derive(Deserialize, Debug)]
 pub struct RecipeDatabase {
+    /// Machine crafting recipes.
     pub machines: Vec<Machine>,
+
+    /// Smelting recipes.
     pub smelting: Vec<FurnaceRecipe>,
 }
 
-/// Represents a specific machine and its associated processing recipes.
-///
-/// # Fields
-/// - `name`: The name or identifier of the machine.
-/// - `recipes`: A list of `Recipe` structures defining the machine's possible operations.
+/// A machine and its processing recipes.
 #[derive(Deserialize, Debug)]
 pub struct Machine {
+    /// Machine name or identifier.
     #[serde(rename = "n")]
     pub name: String,
+
+    /// Recipes this machine can perform.
     #[serde(rename = "recs")]
     pub recipes: Vec<GregTechRecipe>,
 }
 
-/// Represents a machine processing recipe, including inputs, outputs, and processing details.
-///
-/// # Fields
-/// - `enabled`: Whether the recipe is enabled (`true`) or disabled (`false`).
-/// - `duration`: The time required to process the recipe (typically in ticks).
-/// - `energy_usage`: The energy consumption per tick (measured in EU/t).
-/// - `special`: A special processing parameter (used for custom behaviors or tiering).
-/// - `item_inputs`: A list of required item inputs for the recipe.
-/// - `item_outputs`: A list of produced item outputs from the recipe.
-/// - `fluid_inputs`: A list of required fluid inputs for the recipe.
-/// - `fluid_outputs`: A list of produced fluid outputs from the recipe.
+/// A machine processing recipe, including inputs, outputs, and processing details.
 #[derive(Deserialize, Debug)]
 #[allow(unused)]
 pub struct GregTechRecipe {
+    /// Whether the recipe is enabled.
     #[serde(rename = "en")]
     pub enabled: bool,
+
+    /// Duration in ticks.
     #[serde(rename = "dur")]
     pub duration: u64,
+
+    /// Energy usage per tick (EU/t).
     #[serde(rename = "eut")]
     pub energy_usage: u64,
+
+    /// Special parameter for custom logic.
     #[serde(rename = "sp")]
     pub special: isize,
+
+    /// Required item inputs.
     #[serde(rename = "iI")]
     pub item_inputs: Vec<RecipeItem>,
-    #[serde(rename = "iO")]
-    pub item_outputs: Vec<RecipeItem>,
+
+    /// Required fluid inputs.
     #[serde(rename = "fI")]
     pub fluid_inputs: Vec<RecipeFluid>,
+
+    /// Produced item outputs.
+    #[serde(rename = "iO")]
+    pub item_outputs: Vec<RecipeItem>,
+
+    /// Produced fluid outputs.
     #[serde(rename = "fO")]
     pub fluid_outputs: Vec<RecipeFluid>,
 }
 
+/// A smelting recipe with one input and one output item.
 #[derive(Deserialize, Debug)]
 pub struct FurnaceRecipe {
+    /// Required item input.
     #[serde(rename = "input")]
     pub input: RecipeItem,
+
+    /// Produced item output.
     #[serde(rename = "output")]
     pub output: RecipeItem,
 }
 
-/// Represents an item entry in the recipe database, including quantity, metadata, and NBT data.
-///
-/// # Fields
-/// - `id`: The optional registry identifier of the item.
-/// - `localized_name`: The optional human-readable name of the item.
-/// - `amount`: The number of items required or produced.
-/// - `meta`: The item's metadata or damage value.
-/// - `nbt`: Optional NBT data associated with the item.
+/// An item in a recipe, including amount, metadata, and optional NBT.
 #[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct RecipeItem {
+    /// Optional item registry ID.
     #[serde(rename = "id")]
     pub id: Option<String>,
+
+    /// Optional human-readable name.
     #[serde(rename = "lN")]
     pub localized_name: Option<String>,
+
+    /// Item quantity.
     #[serde(rename = "a")]
     pub amount: u64,
+
+    /// Metadata or damage value.
     #[serde(rename = "m")]
     pub meta: u64,
+
+    /// Optional NBT data.
     #[serde(rename = "nbt")]
     pub nbt: Option<String>,
 }
 
-/// Represents a fluid entry in the recipe database, including quantity and identifiers.
-///
-/// # Fields
-/// - `id`: The registry identifier of the fluid.
-/// - `localized_name`: The human-readable name of the fluid.
-/// - `amount`: The quantity of fluid required or produced in millibuckets.
+/// A fluid in a recipe, including amount and identifiers.
 #[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct RecipeFluid {
+    /// Fluid registry ID.
     #[serde(rename = "id")]
     pub id: String,
+
+    /// Human-readable name.
     #[serde(rename = "lN")]
     pub localized_name: String,
+
+    /// Fluid amount in liters.
     #[serde(rename = "a")]
     pub amount: u64,
 }
