@@ -48,10 +48,10 @@ local function ensureFile(filename, url)
 end
 
 -- Ensure external dependencies are loaded
-local json = ensureFile("dkjson.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/dkjson.lua")
-local argparse = ensureFile("argparse.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/argparse.lua")
+local json = ensureFile("dkjson.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/lua/dkjson.lua")
+local argparse = ensureFile("argparse.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/lua/argparse.lua")
 package.loaded.machines = nil -- Do not use cached version since user likely changes settings frequently
-local machines = ensureFile("machines.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/machines.lua")
+local machines = ensureFile("machines.lua", "https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/lua/machines.lua")
 
 local function log(...)
   if not args.quiet then print(...) end

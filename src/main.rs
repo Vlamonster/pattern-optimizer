@@ -39,11 +39,11 @@ fn main() -> Result<(), std::io::Error> {
     let recipes = Arc::new(HashMap::from([
         (
             "2.7.3".to_string(),
-            serde_json::from_str::<RecipeDatabase>(include_str!("resources/recipes-2.7.3.json"))?,
+            serde_json::from_str::<RecipeDatabase>(include_str!("recipes/recipes-2.7.3.json"))?,
         ),
         (
             "n987".to_string(),
-            serde_json::from_str::<RecipeDatabase>(include_str!("resources/recipes-n987.json"))?,
+            serde_json::from_str::<RecipeDatabase>(include_str!("recipes/recipes-n987.json"))?,
         ),
     ]));
 
