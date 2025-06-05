@@ -1,10 +1,19 @@
-use crate::model::{RecipeFluid, RecipeItem};
-use itertools::Itertools;
-use serde::Deserialize;
-use std::fmt::{Display, Formatter};
+use {
+    crate::model::{
+        FurnaceRecipe,
+        RecipeFluid,
+        RecipeItem,
+    },
+    itertools::Itertools,
+    serde::Deserialize,
+    std::fmt::{
+        Display,
+        Formatter,
+    },
+};
 
 /// A machine processing recipe, including inputs, outputs, and processing details.
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(unused)]
 pub struct GregTechRecipe {
     /// Whether the recipe is enabled.
@@ -43,13 +52,28 @@ pub struct GregTechRecipe {
 impl Display for GregTechRecipe {
     #[rustfmt::skip]
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Enabled:        {}", self.enabled)?;
-        writeln!(f, "Duration:       {} ticks", self.duration)?;
-        writeln!(f, "Energy Usage:   {} EU/t", self.energy_usage)?;
-        writeln!(f, "Special:        {}", self.special)?;
-        writeln!(f, "Item Inputs:  \n{}", self.item_inputs.iter().map(|item| format!("-{item}")).join("\n"))?;
-        writeln!(f, "Fluid Inputs: \n{}", self.fluid_inputs.iter().map(|fluid| format!("-{fluid}")).join("\n"))?;
-        writeln!(f, "Item Outputs: \n{}", self.item_outputs.iter().map(|item| format!("-{item}")).join("\n"))?;
-        writeln!(f, "Fluid Outputs:\n{}", self.fluid_outputs.iter().map(|fluid| format!("-{fluid}")).join("\n"))
+        writeln!(f, "Enabled:         {}", self.enabled)?;
+        writeln!(f, "Duration:        {} ticks", self.duration)?;
+        writeln!(f, "Energy Usage:    {} EU/t", self.energy_usage)?;
+        writeln!(f, "Special:         {}", self.special)?;
+        writeln!(f, "Item Inputs:   \n{}", self.item_inputs.iter().map(|item| format!("-{item}")).join("\n"))?;
+        writeln!(f, "Fluid Inputs:  \n{}", self.fluid_inputs.iter().map(|fluid| format!("-{fluid}")).join("\n"))?;
+        writeln!(f, "Item Outputs:  \n{}", self.item_outputs.iter().map(|item| format!("-{item}")).join("\n"))?;
+        writeln!(f, "Fluid Outputs: \n{}", self.fluid_outputs.iter().map(|fluid| format!("-{fluid}")).join("\n"))
+    }
+}
+
+impl From<&FurnaceRecipe> for GregTechRecipe {
+    fn from(recipe: &FurnaceRecipe) -> Self {
+        GregTechRecipe {
+            enabled: true,
+            duration: 512,
+            energy_usage: 4,
+            special: 0,
+            item_inputs: vec![recipe.input.clone()],
+            item_outputs: vec![recipe.output.clone()],
+            fluid_inputs: vec![],
+            fluid_outputs: vec![],
+        }
     }
 }

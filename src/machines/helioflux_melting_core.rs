@@ -1,6 +1,12 @@
-use crate::machines::Overclock;
-use crate::model::GregTechRecipe;
-use crate::optimization_request::{GorgeUpgrades, MachineConfiguration};
+use crate::{
+    model::GregTechRecipe,
+    optimize::Overclock,
+    request::{
+        GorgeUpgrades,
+        MachineConfiguration,
+        OptimizationRequest,
+    },
+};
 
 pub struct HeliofluxMeltingCore();
 
@@ -62,19 +68,10 @@ impl HeliofluxMeltingCore {
 }
 
 impl Overclock for HeliofluxMeltingCore {
-    fn energy_modifier(
-        &self,
-        machine: &MachineConfiguration,
-        recipe: &GregTechRecipe,
-        _tier: u64,
-        mut energy_modifier: f64,
-    ) -> f64 {
+    fn energy_modifier(&self, machine: &MachineConfiguration, recipe: &GregTechRecipe, _tier: u64, mut energy_modifier: f64) -> f64 {
         // Heat discounts
         let heat = Self::effective_heat(machine);
-        let recipe_heat = u64::min(
-            recipe.special as u64,
-            Self::effective_heat_capacity(&machine.upgrades),
-        );
+        let recipe_heat = u64::min(recipe.special as u64, Self::effective_heat_capacity(&machine.upgrades));
         let discounts = (heat - recipe_heat) / 900;
         energy_modifier *= f64::powi(0.95, discounts as i32);
 
@@ -94,22 +91,14 @@ impl Overclock for HeliofluxMeltingCore {
         }
     }
 
-    fn perfect_overclocks(
-        &self,
-        machine: &MachineConfiguration,
-        recipe: &GregTechRecipe,
-        _tier: u64,
-    ) -> u64 {
+    fn perfect_overclocks(&self, machine: &MachineConfiguration, recipe: &GregTechRecipe, _tier: u64) -> u64 {
         let heat = Self::effective_heat(machine);
         (heat - recipe.special as u64) / 1800
     }
 
-    fn advised_batch(
-        &self,
-        machine: &MachineConfiguration,
-        ticks: u64,
-        recipe: &GregTechRecipe,
-    ) -> (u64, u64) {
+    fn optimize_batch_size(&self, request: &OptimizationRequest, recipe: &GregTechRecipe) -> (u64, u64) {
+        let machine = &request.machine;
+
         if !machine.upgrades.start {
             panic!("Missing upgrade START");
         }
@@ -145,13 +134,11 @@ impl Overclock for HeliofluxMeltingCore {
         };
 
         // Compute the advised batch size
-        if corrected_processing_time <= ticks {
-            let advised_batch = (effective_parallels as f64 * (ticks as f64 + 0.99)
-                / corrected_processing_time as f64) as u64;
-            let duration = (corrected_processing_time as f64
-                * (advised_batch as f64 / effective_parallels as f64))
-                as u64;
-            (parallels * advised_batch, duration)
+        if corrected_processing_time <= request.ticks {
+            let optimize_batch_size =
+                (effective_parallels as f64 * (request.ticks as f64 + 0.99) / corrected_processing_time as f64) as u64;
+            let duration = (corrected_processing_time as f64 * (optimize_batch_size as f64 / effective_parallels as f64)) as u64;
+            (parallels * optimize_batch_size, duration)
         } else {
             (parallels * effective_parallels, corrected_processing_time)
         }

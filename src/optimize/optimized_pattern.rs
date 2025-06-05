@@ -1,5 +1,7 @@
-use crate::optimize::OptimizedItem;
-use serde::Serialize;
+use {
+    crate::optimize::OptimizedItem,
+    serde::Serialize,
+};
 
 /// An optimized pattern returned by the server.
 #[derive(Serialize, Debug)]

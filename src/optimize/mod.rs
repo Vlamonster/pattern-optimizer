@@ -1,22 +1,35 @@
 pub mod optimized_item;
 pub mod optimized_pattern;
+pub mod overclock;
 
-use crate::model::GregTechRecipe;
-use crate::optimization_request::OptimizationRequest;
-pub use optimized_item::OptimizedItem;
-pub use optimized_pattern::OptimizedPattern;
-use std::collections::HashMap;
-use std::iter::once;
+use {
+    crate::{
+        machines::optimize_batch_size,
+        model::GregTechRecipe,
+        request::OptimizationRequest,
+        MainError,
+    },
+    std::{
+        collections::HashMap,
+        iter::once,
+    },
+};
+pub use {
+    optimized_item::OptimizedItem,
+    optimized_pattern::OptimizedPattern,
+    overclock::Overclock,
+};
 
 /// Wildcard value for item metadata (matches any damage/meta).
 pub const WILDCARD: u64 = (1 << 15) - 1;
 
-pub fn optimize(
-    recipe: &GregTechRecipe,
-    advised_batch: u64,
-    duration: u64,
-    request: &OptimizationRequest,
-) -> OptimizedPattern {
+pub fn optimize(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Result<OptimizedPattern, MainError> {
+    if request.machine.energy_usage < recipe.energy_usage {
+        return Err(MainError::NotEnoughEnergy(request.machine.energy_usage, recipe.energy_usage));
+    }
+
+    let (optimal_batch_size, duration) = optimize_batch_size(request, recipe);
+
     let meta_map = recipe
         .item_inputs
         .iter()
@@ -37,7 +50,7 @@ pub fn optimize(
                 .map(|fluid| fluid.amount),
         )
         .map(|amount| i32::MAX as u64 / u64::max(amount, 1))
-        .chain(once(advised_batch))
+        .chain(once(optimal_batch_size))
         .min()
         .unwrap();
 
@@ -48,9 +61,7 @@ pub fn optimize(
         .map(|item| OptimizedItem {
             id: item.id.clone().unwrap(),
             amount: u64::max(item.amount * max_factor, 1),
-            meta: *meta_map
-                .get(&item.id.clone().unwrap())
-                .unwrap_or(&item.meta),
+            meta: *meta_map.get(&item.id.clone().unwrap()).unwrap_or(&item.meta),
             nbt: item.nbt.clone().unwrap_or_default(),
         });
 
@@ -67,7 +78,7 @@ pub fn optimize(
         .filter(|recipe_item| {
             request.restore
                 || request.outputs.iter().any(|request_item| {
-                    recipe_item.id.as_ref() == Some(&request_item.name)
+                    recipe_item.id.as_ref() == Some(&request_item.id)
                         && (recipe_item.meta == request_item.meta || recipe_item.meta == WILDCARD)
                 })
         })
@@ -83,12 +94,10 @@ pub fn optimize(
         .iter()
         .filter(|recipe_fluid| {
             request.restore
-                || request.outputs.iter().any(|request_item| {
-                    request_item
-                        .fluid_drop
-                        .as_ref()
-                        .is_some_and(|fluid| fluid.name == recipe_fluid.id)
-                })
+                || request
+                    .outputs
+                    .iter()
+                    .any(|request_item| request_item.fluid_drop.as_ref().is_some_and(|fluid| fluid.id == recipe_fluid.id))
         })
         .map(|fluid| OptimizedItem {
             id: "ae2fc:fluid_drop".to_string(),
@@ -97,9 +106,9 @@ pub fn optimize(
             nbt: format!("{{Fluid: \"{}\"}}", fluid.id),
         });
 
-    OptimizedPattern {
+    Ok(OptimizedPattern {
         inputs: item_inputs.chain(fluid_inputs).collect(),
         outputs: item_outputs.chain(fluid_outputs).collect(),
         duration,
-    }
+    })
 }

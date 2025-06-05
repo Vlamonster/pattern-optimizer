@@ -1,17 +1,13 @@
-use crate::machines::Overclock;
-use crate::model::GregTechRecipe;
-use crate::optimization_request::MachineConfiguration;
+use crate::{
+    model::GregTechRecipe,
+    optimize::Overclock,
+    request::MachineConfiguration,
+};
 
 pub struct MagneticFluxExhibitor();
 
 impl Overclock for MagneticFluxExhibitor {
-    fn max_parallels(
-        &self,
-        _parallels_offset: u64,
-        _parallels_per_tier: u64,
-        _tier: u64,
-        machine: &MachineConfiguration,
-    ) -> u64 {
+    fn max_parallels(&self, _parallels_offset: u64, _parallels_per_tier: u64, _tier: u64, machine: &MachineConfiguration) -> u64 {
         match machine.tier {
             ..=1 => 8,
             2 => 24,
@@ -31,13 +27,7 @@ impl Overclock for MagneticFluxExhibitor {
         }
     }
 
-    fn energy_modifier(
-        &self,
-        machine: &MachineConfiguration,
-        _recipe: &GregTechRecipe,
-        _tier: u64,
-        _energy_modifier: f64,
-    ) -> f64 {
+    fn energy_modifier(&self, machine: &MachineConfiguration, _recipe: &GregTechRecipe, _tier: u64, _energy_modifier: f64) -> f64 {
         match machine.tier {
             ..=1 => 0.80,
             2 => 0.75,

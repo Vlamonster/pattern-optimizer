@@ -5,9 +5,11 @@ pub mod recipe_database;
 pub mod recipe_fluid;
 pub mod recipe_item;
 
-pub use furnace_recipe::FurnaceRecipe;
-pub use gregtech_machine::GregTechMachine;
-pub use gregtech_recipe::GregTechRecipe;
-pub use recipe_database::RecipeDatabase;
-pub use recipe_fluid::RecipeFluid;
-pub use recipe_item::RecipeItem;
+pub use {
+    furnace_recipe::FurnaceRecipe,
+    gregtech_machine::GregTechMachine,
+    gregtech_recipe::GregTechRecipe,
+    recipe_database::RecipeDatabase,
+    recipe_fluid::RecipeFluid,
+    recipe_item::RecipeItem,
+};

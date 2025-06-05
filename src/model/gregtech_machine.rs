@@ -1,6 +1,11 @@
-use crate::model::gregtech_recipe::GregTechRecipe;
-use serde::Deserialize;
-use std::fmt::{Display, Formatter};
+use {
+    crate::model::GregTechRecipe,
+    serde::Deserialize,
+    std::fmt::{
+        Display,
+        Formatter,
+    },
+};
 
 /// A machine and its processing recipes.
 #[derive(Deserialize, Debug)]
@@ -17,7 +22,7 @@ pub struct GregTechMachine {
 impl Display for GregTechMachine {
     #[rustfmt::skip]
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Machine:        {}", self.name)?;
-        writeln!(f, "Recipes:        {}", self.recipes.len())
+        writeln!(f, "Machine:         {}", self.name)?;
+        writeln!(f, "Recipes:         {}", self.recipes.len())
     }
 }
