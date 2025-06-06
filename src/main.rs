@@ -74,8 +74,10 @@ fn main() -> Result<(), std::io::Error> {
                     Ok(request) => request,
                     Err(err) => {
                         println!("Failed to parse request JSON: {err}");
-                        let response = json!({"error": "Internal Server Error: Parsing\n"});
-                        stream.write_all(response.to_string().as_bytes()).unwrap();
+                        let response = json!({"error": "Internal Server Error: Parsing"}).to_string();
+                        println!("Returning response");
+                        stream.write_all((response + "\n").as_bytes()).unwrap();
+                        stream.flush().unwrap();
                         continue;
                     },
                 };
@@ -86,15 +88,19 @@ fn main() -> Result<(), std::io::Error> {
                     .query(&recipes[&request.version])
                     .and_then(|matched_recipe| optimize(&request, &matched_recipe));
 
+                println!("Finished optimizing");
+
                 let response = match optimized_pattern {
                     Ok(optimized_pattern) => serde_json::to_string(&optimized_pattern).unwrap(),
-                    Err(MainError::RecipeNotFound) => json!({"error": "Recipe not found for the given inputs\n"}).to_string(),
-                    Err(MainError::MachineNotFound) => json!({"error": "Machine not found\n"}).to_string(),
+                    Err(MainError::RecipeNotFound) => json!({"error": "Recipe not found for the given inputs"}).to_string(),
+                    Err(MainError::MachineNotFound) => json!({"error": "Machine not found"}).to_string(),
                     Err(MainError::NotEnoughEnergy(provided, required)) =>
-                        json!({"error": format!("Not enough energy. Provided: {provided}, Required: {required}\n")}).to_string(),
+                        json!({"error": format!("Not enough energy. Provided: {provided}, Required: {required}")}).to_string(),
                 };
 
-                stream.write_all(response.as_bytes()).unwrap();
+                println!("Returning response");
+                stream.write_all((response + "\n").as_bytes()).unwrap();
+                stream.flush().unwrap();
             }
         });
     }

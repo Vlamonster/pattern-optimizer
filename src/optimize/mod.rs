@@ -24,6 +24,8 @@ pub use {
 pub const WILDCARD: u64 = (1 << 15) - 1;
 
 pub fn optimize(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Result<OptimizedPattern, MainError> {
+    println!("Start optimizing");
+
     if request.machine.energy_usage < recipe.energy_usage {
         return Err(MainError::NotEnoughEnergy(request.machine.energy_usage, recipe.energy_usage));
     }

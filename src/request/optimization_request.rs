@@ -86,6 +86,8 @@ impl OptimizationRequest {
     }
 
     pub fn query(&self, recipe_database: &RecipeDatabase) -> Result<GregTechRecipe, MainError> {
+        println!("Starting a query");
+
         let mut machine_present = false;
 
         // Check if the request is a Furnace Recipe.
@@ -123,13 +125,13 @@ impl OptimizationRequest {
 impl Display for OptimizationRequest {
     #[rustfmt::skip]
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "Version:         {}", self.version)?;
-        writeln!(f, "Machine:         {}", self.machine)?;
-        writeln!(f, "Ticks:           {}", self.ticks)?;
-        writeln!(f, "Skip NCs:        {}", self.skip)?;
-        writeln!(f, "Restore Missing: {}", self.restore)?;
-        writeln!(f, "Multiplier:      {}", self.multiplier.as_ref().map_or("None".into(), u64::to_string))?;
-        writeln!(f, "Inputs:        \n{}", self.inputs.iter().join("\n"))?;
-        writeln!(f, "Outputs:       \n{}", self.inputs.iter().join("\n"))
+        writeln!(f, "Version:                    {}", self.version)?;
+        writeln!(f, "Machine:                  \n{}", self.machine)?;
+        writeln!(f, "Ticks:                      {}", self.ticks)?;
+        writeln!(f, "Skip NCs:                   {}", self.skip)?;
+        writeln!(f, "Restore Missing:            {}", self.restore)?;
+        writeln!(f, "Multiplier:                 {}", self.multiplier.as_ref().map_or("None".into(), u64::to_string))?;
+        writeln!(f, "Inputs:                   \n{}", self.inputs.iter().join("\n------------------------------------------------------\n"))?;
+        writeln!(f, "Outputs:                  \n{}", self.outputs.iter().join("\n------------------------------------------------------\n"))
     }
 }

@@ -78,10 +78,10 @@ impl PartialEq<RecipeFluid> for RequestItem {
 impl Display for RequestItem {
     #[rustfmt::skip]
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "  Name:            {}", self.name)?;
-        writeln!(f, "  ID:              {}", self.id)?;
-        writeln!(f, "  Max Stack Size:  {}", self.max_size)?;
-        writeln!(f, "  Meta:            {}", self.meta)?;
-        writeln!(f, "  Fluid Drop:      {}", self.fluid_drop.as_ref().map_or("None".into(), FluidDrop::to_string))
+        writeln!(f, "  Name:                     {}", self.name)?;
+        writeln!(f, "  ID:                       {}", self.id)?;
+        writeln!(f, "  Max Stack Size:           {}", self.max_size)?;
+        writeln!(f, "  Meta:                     {}", self.meta)?;
+        writeln!(f, "  Fluid Drop:               {}", self.fluid_drop.as_ref().map_or("None".into(), FluidDrop::to_string))
     }
 }
