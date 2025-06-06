@@ -1,17 +1,13 @@
-use crate::machines::Overclock;
-use crate::model::GregTechRecipe;
-use crate::optimization_request::MachineConfiguration;
+use crate::{
+    model::GregTechRecipe,
+    optimize::Overclock,
+    request::MachineConfiguration,
+};
 
 pub struct Zyngen();
 
 impl Overclock for Zyngen {
-    fn max_parallels(
-        &self,
-        _parallels_offset: u64,
-        _parallels_per_tier: u64,
-        tier: u64,
-        machine: &MachineConfiguration,
-    ) -> u64 {
+    fn max_parallels(&self, _parallels_offset: u64, _parallels_per_tier: u64, tier: u64, machine: &MachineConfiguration) -> u64 {
         tier * machine.coil_tier
     }
 
@@ -19,12 +15,7 @@ impl Overclock for Zyngen {
         speed_modifier + machine.coil_tier as f64 * 0.05
     }
 
-    fn perfect_overclocks(
-        &self,
-        machine: &MachineConfiguration,
-        _recipe: &GregTechRecipe,
-        _tier: u64,
-    ) -> u64 {
+    fn perfect_overclocks(&self, machine: &MachineConfiguration, _recipe: &GregTechRecipe, _tier: u64) -> u64 {
         let heat = 901 + 900 * machine.coil_tier;
         heat / 900
     }

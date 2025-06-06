@@ -5,7 +5,7 @@
    - Place an **Adapter** with a **Database** next to the Interface.
    - Ensure everything is configured as shown in the image below.
 2. Download the script:
-   - `wget https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/resources/optimize.lua`
+   - `wget https://raw.githubusercontent.com/Vlamonster/pattern-optimizer/refs/heads/master/src/lua/optimize.lua`
 3. Run the script once to download dependencies & config:
    - `optimize -h`
 4. Configure machines.lua as needed.
@@ -21,4 +21,4 @@
      - `-h, --help`       → Show help information.
 
 # Example Setup
-<img src="src/resources/setup.png" width="600">
+<img src="setup.png" width="600">

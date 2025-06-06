@@ -1,4 +1,4 @@
-use crate::machines::Overclock;
+use crate::optimize::Overclock;
 
 pub struct IndustrialElectrolyzer();
 
