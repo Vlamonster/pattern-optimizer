@@ -30,7 +30,10 @@ pub fn optimize(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Resul
         return Err(MainError::NotEnoughEnergy(request.machine.energy_usage, recipe.energy_usage));
     }
 
-    let (optimal_batch_size, duration) = optimize_batch_size(request, recipe);
+    let (optimal_batch_size, duration) = match request.multiplier {
+        None => optimize_batch_size(request, recipe),
+        Some(multiplier) => (multiplier, 0),
+    };
 
     let meta_map = recipe
         .item_inputs
