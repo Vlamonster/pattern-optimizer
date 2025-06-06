@@ -115,9 +115,9 @@ impl OptimizationRequest {
         }
 
         if machine_present {
-            Err(MainError::MachineNotFound)
-        } else {
             Err(MainError::RecipeNotFound)
+        } else {
+            Err(MainError::MachineNotFound)
         }
     }
 }
