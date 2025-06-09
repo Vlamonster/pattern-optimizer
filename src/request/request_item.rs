@@ -65,7 +65,7 @@ pub struct RequestItem {
 
 impl PartialEq<RecipeItem> for RequestItem {
     fn eq(&self, other: &RecipeItem) -> bool {
-        other.id.as_deref().is_some_and(|id| self.id == id) && self.meta == other.meta || other.meta == WILDCARD
+        other.id.as_deref().is_some_and(|id| self.id == id) && (self.meta == other.meta || other.meta == WILDCARD)
     }
 }
 
