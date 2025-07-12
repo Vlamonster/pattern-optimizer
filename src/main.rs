@@ -30,6 +30,7 @@ pub enum MainError {
     RecipeNotFound,
     MachineNotFound,
     NotEnoughEnergy(u64, u64),
+    NotEnoughHeat(u64, u64),
 }
 
 fn main() -> Result<(), std::io::Error> {
@@ -96,6 +97,8 @@ fn main() -> Result<(), std::io::Error> {
                     Err(MainError::MachineNotFound) => json!({"error": "Machine not found"}).to_string(),
                     Err(MainError::NotEnoughEnergy(provided, required)) =>
                         json!({"error": format!("Not enough energy. Provided: {provided}, Required: {required}")}).to_string(),
+                    Err(MainError::NotEnoughHeat(provided, required)) =>
+                        json!({"error": format!("Not enough heat. Provided: {provided}K, Required: {required}K")}).to_string(),
                 };
 
                 println!("Returning response");

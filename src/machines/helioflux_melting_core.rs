@@ -6,6 +6,7 @@ use crate::{
         MachineConfiguration,
         OptimizationRequest,
     },
+    MainError,
 };
 
 pub struct HeliofluxMeltingCore();
@@ -96,7 +97,7 @@ impl Overclock for HeliofluxMeltingCore {
         (heat - recipe.special as u64) / 1800
     }
 
-    fn optimize_batch_size(&self, request: &OptimizationRequest, recipe: &GregTechRecipe) -> (u64, u64) {
+    fn optimize_batch_size(&self, request: &OptimizationRequest, recipe: &GregTechRecipe) -> Result<(u64, u64), MainError> {
         let machine = &request.machine;
 
         if !machine.upgrades.start {
@@ -138,9 +139,9 @@ impl Overclock for HeliofluxMeltingCore {
             let optimize_batch_size =
                 (effective_parallels as f64 * (request.ticks as f64 + 0.99) / corrected_processing_time as f64) as u64;
             let duration = (corrected_processing_time as f64 * (optimize_batch_size as f64 / effective_parallels as f64)) as u64;
-            (parallels * optimize_batch_size, duration)
+            Ok((parallels * optimize_batch_size, duration))
         } else {
-            (parallels * effective_parallels, corrected_processing_time)
+            Ok((parallels * effective_parallels, corrected_processing_time))
         }
     }
 }

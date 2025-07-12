@@ -46,6 +46,7 @@ use {
         model::GregTechRecipe,
         optimize::Overclock,
         request::OptimizationRequest,
+        MainError,
     },
     big_barrel_brewery::BigBarrelBrewery,
     blast_furnace::BlastFurnace,
@@ -91,7 +92,7 @@ use {
     zyngen::Zyngen,
 };
 
-pub fn optimize_batch_size(request: &OptimizationRequest, recipe: &GregTechRecipe) -> (u64, u64) {
+pub fn optimize_batch_size(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Result<(u64, u64), MainError> {
     match request.machine.id.as_str() {
         "Industrial Material Press" => IndustrialMaterialPress().optimize_batch_size(request, recipe),
         "Industrial Extrusion Machine" => IndustrialExtrusionMachine().optimize_batch_size(request, recipe),

@@ -5,6 +5,7 @@ use crate::{
         MachineConfiguration,
         OptimizationRequest,
     },
+    MainError,
 };
 
 pub struct NeutronActivator();
@@ -14,7 +15,7 @@ impl Overclock for NeutronActivator {
         0.90f64.powf(-(machine.height.saturating_sub(4) as f64))
     }
 
-    fn optimize_batch_size(&self, request: &OptimizationRequest, recipe: &GregTechRecipe) -> (u64, u64) {
+    fn optimize_batch_size(&self, request: &OptimizationRequest, recipe: &GregTechRecipe) -> Result<(u64, u64), MainError> {
         let machine = &request.machine;
 
         let speed_modifier = machine.speed_modifier.unwrap_or(Self::SPEED_MODIFIER);
@@ -38,9 +39,9 @@ impl Overclock for NeutronActivator {
             let optimize_batch_size =
                 (effective_parallels as f64 * (request.ticks as f64 + 0.99) / corrected_processing_time as f64) as u64;
             let duration = (corrected_processing_time as f64 * (optimize_batch_size as f64 / effective_parallels as f64)) as u64;
-            (optimize_batch_size, duration)
+            Ok((optimize_batch_size, duration))
         } else {
-            (effective_parallels, corrected_processing_time)
+            Ok((effective_parallels, corrected_processing_time))
         }
     }
 }

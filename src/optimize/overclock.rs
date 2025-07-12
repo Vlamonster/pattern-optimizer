@@ -4,6 +4,7 @@ use crate::{
         MachineConfiguration,
         OptimizationRequest,
     },
+    MainError,
 };
 
 pub trait Overclock {
@@ -28,7 +29,13 @@ pub trait Overclock {
         0
     }
 
-    fn optimize_batch_size(&self, request: &OptimizationRequest, recipe: &GregTechRecipe) -> (u64, u64) {
+    fn validate(&self, machine: &MachineConfiguration, recipe: &GregTechRecipe, _tier: u64) -> Result<(), MainError> {
+        (machine.energy_usage >= recipe.energy_usage)
+            .then_some(())
+            .ok_or(MainError::NotEnoughEnergy(machine.energy_usage, recipe.energy_usage))
+    }
+
+    fn optimize_batch_size(&self, request: &OptimizationRequest, recipe: &GregTechRecipe) -> Result<(u64, u64), MainError> {
         let machine = &request.machine;
 
         // Extract machine parameters or fallback to defaults
@@ -38,7 +45,9 @@ pub trait Overclock {
         let energy_modifier = machine.energy_modifier.unwrap_or(Self::ENERGY_MODIFIER);
 
         // Determine the machine tier based on energy usage
-        let tier = u64::ilog(machine.energy_usage / 8, 4) as u64;
+        let tier = u64::ilog((machine.energy_usage / 8).max(4), 4) as u64;
+
+        self.validate(machine, recipe, tier)?;
 
         // Calculate max parallels allowed at this tier
         let max_parallels = self.max_parallels(parallels_offset, parallels_per_tier, tier, machine);
@@ -76,9 +85,9 @@ pub trait Overclock {
             let optimize_batch_size =
                 (effective_parallels as f64 * (request.ticks as f64 + 0.99) / corrected_processing_time as f64) as u64;
             let duration = (corrected_processing_time as f64 * (optimize_batch_size as f64 / effective_parallels as f64)) as u64;
-            (optimize_batch_size, duration)
+            Ok((optimize_batch_size, duration))
         } else {
-            (effective_parallels, corrected_processing_time)
+            Ok((effective_parallels, corrected_processing_time))
         }
     }
 }
