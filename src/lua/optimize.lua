@@ -57,10 +57,6 @@ local function log(...)
   if not args.quiet then print(...) end
 end
 
-local function formatIdentifier(id, meta)
-    return string.format("%s:%d", id, meta)
-end
-
 local function formatNumber(n)
     return tostring(n):reverse():gsub("(%d%d%d)", "%1,"):reverse():gsub("^,", "")
 end
@@ -140,7 +136,7 @@ local function handleItems(type, items, slot)
     log(string.format("  %s>>%s %s:", YELLOW, WHITE, type:upper()))
     local setFunction = type == "inputs" and interface.setInterfacePatternInput or interface.setInterfacePatternOutput
     for i, v in ipairs(items) do
-        local identifier = formatIdentifier(v.id, v.meta)
+        local identifier = string.format("%s:%d", v.ln or v.id, v.meta)
         local amount = formatNumber(v.amount)
         local nbt = formatNBT(v.nbt)
         log(string.format("    %s-%s %-40s %sx%s %-15s%s", CYAN, WHITE, identifier, CYAN, WHITE, amount, nbt))

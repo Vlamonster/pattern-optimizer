@@ -7,6 +7,9 @@ pub struct OptimizedItem {
     #[serde(rename = "id")]
     pub id: String,
 
+    /// Localized name of the item.
+    pub ln: String,
+
     /// Optimized item quantity.
     #[serde(rename = "amount")]
     pub amount: u64,

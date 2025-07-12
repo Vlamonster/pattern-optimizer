@@ -61,6 +61,7 @@ pub fn optimize(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Resul
         .filter(|item| !request.skip || item.amount > 0)
         .map(|item| OptimizedItem {
             id: item.id.clone().unwrap(),
+            ln: item.localized_name.clone().unwrap(),
             amount: u64::max(item.amount * max_factor, 1),
             meta: *meta_map.get(&item.id.clone().unwrap()).unwrap_or(&item.meta),
             nbt: item.nbt.clone().unwrap_or_default(),
@@ -68,6 +69,7 @@ pub fn optimize(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Resul
 
     let fluid_inputs = recipe.fluid_inputs.iter().map(|fluid| OptimizedItem {
         id: "ae2fc:fluid_drop".to_string(),
+        ln: fluid.localized_name.clone(),
         amount: fluid.amount * max_factor,
         meta: 0,
         nbt: format!("{{Fluid: \"{}\"}}", fluid.id),
@@ -85,6 +87,7 @@ pub fn optimize(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Resul
         })
         .map(|item| OptimizedItem {
             id: item.id.clone().unwrap(),
+            ln: item.localized_name.clone().unwrap(),
             amount: u64::max(item.amount * max_factor, 1),
             meta: item.meta,
             nbt: item.nbt.clone().unwrap_or_default(),
@@ -102,6 +105,7 @@ pub fn optimize(request: &OptimizationRequest, recipe: &GregTechRecipe) -> Resul
         })
         .map(|fluid| OptimizedItem {
             id: "ae2fc:fluid_drop".to_string(),
+            ln: fluid.localized_name.clone(),
             amount: fluid.amount * max_factor,
             meta: 0,
             nbt: format!("{{Fluid: \"{}\"}}", fluid.id),
